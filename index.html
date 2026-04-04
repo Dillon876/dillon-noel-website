@@ -10,35 +10,73 @@
   />
   <style>
     :root {
-      --bg: #050505;
-      --bg-soft: #0d0d0d;
-      --panel: rgba(255,255,255,0.04);
-      --panel-2: rgba(0,0,0,0.22);
-      --line: rgba(255,255,255,0.1);
-      --text: #f5f5f5;
-      --muted: #b8b8b8;
-      --gold: #d4af37;
-      --gold-soft: rgba(212,175,55,0.1);
+      --bg: #060606;
+      --bg-2: #0b0b0b;
+      --bg-3: #111111;
+      --panel: rgba(255,255,255,0.05);
+      --panel-2: rgba(255,255,255,0.035);
+      --line: rgba(255,255,255,0.09);
+      --line-soft: rgba(255,255,255,0.05);
+      --text: #f7f7f7;
+      --muted: #b7b7b7;
+      --gold: #c9a227;
+      --gold-2: #e0bc4a;
+      --gold-soft: rgba(201,162,39,0.12);
+      --gold-glow: rgba(201,162,39,0.18);
       --max: 1180px;
-      --radius: 24px;
-      --shadow: 0 24px 60px rgba(0,0,0,0.38);
+      --radius: 26px;
+      --shadow: 0 24px 60px rgba(0,0,0,0.35);
     }
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top right, rgba(212,175,55,0.12), transparent 26%),
-        radial-gradient(circle at bottom left, rgba(255,255,255,0.04), transparent 24%),
-        var(--bg);
+        radial-gradient(circle at 10% 10%, rgba(201,162,39,0.10), transparent 22%),
+        radial-gradient(circle at 90% 8%, rgba(201,162,39,0.08), transparent 18%),
+        radial-gradient(circle at 80% 40%, rgba(255,255,255,0.03), transparent 20%),
+        linear-gradient(180deg, #080808 0%, #050505 100%);
       line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(circle at center, black 35%, transparent 90%);
+      opacity: 0.22;
+      z-index: 0;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(201,162,39,0.06), transparent 20%),
+        radial-gradient(circle at 80% 70%, rgba(201,162,39,0.05), transparent 18%);
+      filter: blur(20px);
+      z-index: 0;
     }
 
     a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; display: block; }
+    img { display: block; max-width: 100%; }
+
+    .site {
+      position: relative;
+      z-index: 1;
+    }
 
     .container {
       width: min(var(--max), calc(100% - 32px));
@@ -46,12 +84,34 @@
     }
 
     .section {
-      padding: 80px 0;
+      padding: 86px 0;
+      position: relative;
+    }
+
+    .section-shell {
+      position: relative;
+      border: 1px solid var(--line-soft);
+      border-radius: 34px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      padding: 34px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .section-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top right, rgba(201,162,39,0.08), transparent 22%),
+        radial-gradient(circle at bottom left, rgba(255,255,255,0.04), transparent 18%);
+      pointer-events: none;
     }
 
     .eyebrow {
       margin: 0 0 14px;
-      color: var(--gold);
+      color: var(--gold-2);
       font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.28em;
@@ -61,16 +121,17 @@
     h1, h2, h3, p { margin-top: 0; }
 
     h1 {
-      font-size: clamp(2.4rem, 5vw, 4.7rem);
-      line-height: 0.98;
-      letter-spacing: -0.04em;
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      line-height: 0.96;
+      letter-spacing: -0.045em;
       margin-bottom: 18px;
+      max-width: 900px;
     }
 
     h2 {
-      font-size: clamp(1.9rem, 3vw, 3.2rem);
-      line-height: 1.06;
-      letter-spacing: -0.03em;
+      font-size: clamp(2rem, 3vw, 3.4rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
       margin-bottom: 18px;
     }
 
@@ -81,7 +142,7 @@
     }
 
     .lead {
-      font-size: 1.12rem;
+      font-size: 1.13rem;
       color: var(--muted);
       max-width: 760px;
     }
@@ -91,14 +152,14 @@
     .topbar {
       position: sticky;
       top: 0;
-      z-index: 40;
-      backdrop-filter: blur(14px);
-      background: rgba(5,5,5,0.8);
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: rgba(8,8,8,0.72);
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
     .nav {
-      min-height: 74px;
+      min-height: 76px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -106,7 +167,7 @@
     }
 
     .brand {
-      color: var(--gold);
+      color: var(--gold-2);
       font-weight: 800;
       font-size: 1.08rem;
       letter-spacing: 0.02em;
@@ -120,7 +181,7 @@
       font-size: 0.95rem;
     }
 
-    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover { color: white; }
 
     .btn {
       display: inline-flex;
@@ -137,25 +198,26 @@
     .btn:hover { transform: translateY(-1px); }
 
     .btn-primary {
-      background: var(--gold);
-      color: #0b0b0b;
-      box-shadow: var(--shadow);
+      background: linear-gradient(180deg, var(--gold-2), var(--gold));
+      color: #111;
+      box-shadow: 0 18px 40px rgba(201,162,39,0.18);
     }
 
     .btn-secondary {
       border-color: var(--line);
       background: rgba(255,255,255,0.03);
-      color: var(--text);
+      color: white;
     }
 
     .hero {
-      padding: 72px 0 34px;
+      padding: 68px 0 32px;
+      position: relative;
     }
 
     .hero-grid {
       display: grid;
       grid-template-columns: 420px 1fr;
-      gap: 48px;
+      gap: 52px;
       align-items: center;
     }
 
@@ -166,9 +228,18 @@
 
     .hero-glow {
       position: absolute;
-      inset: 8% 2% -2% 8%;
-      background: radial-gradient(circle, rgba(212,175,55,0.2), transparent 62%);
+      inset: 8% 0% -2% 8%;
+      background:
+        radial-gradient(circle, rgba(201,162,39,0.24), transparent 60%);
       filter: blur(34px);
+      z-index: 0;
+    }
+
+    .hero-ring {
+      position: absolute;
+      inset: -18px;
+      border: 1px solid rgba(201,162,39,0.16);
+      border-radius: 36px;
       z-index: 0;
     }
 
@@ -176,19 +247,20 @@
       position: relative;
       z-index: 1;
       width: 100%;
-      height: 540px;
+      height: 560px;
       object-fit: cover;
       object-position: center top;
       border-radius: 30px;
       border: 1px solid var(--line);
       box-shadow: var(--shadow);
-      background: #101010;
+      background: #111;
     }
 
     .authority-line {
       margin-top: 18px;
-      color: #cfcfcf;
+      color: #d0d0d0;
       font-size: 0.96rem;
+      max-width: 720px;
     }
 
     .pill-row,
@@ -213,22 +285,18 @@
     }
 
     .cert {
-      color: var(--gold);
-      border-color: rgba(212,175,55,0.26);
+      color: var(--gold-2);
+      border-color: rgba(201,162,39,0.24);
       background: var(--gold-soft);
       font-size: 0.8rem;
       font-weight: 700;
     }
 
     .proof-bar {
-      margin-top: 24px;
-      padding: 20px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,0.04);
-      border-radius: 26px;
+      margin-top: 28px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      gap: 18px;
     }
 
     .proof-item,
@@ -239,14 +307,25 @@
     }
 
     .proof-item {
-      background: var(--panel-2);
-      border-radius: 18px;
-      padding: 22px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025));
+      border-radius: 22px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .proof-item::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(201,162,39,0.10), transparent 28%);
+      pointer-events: none;
     }
 
     .proof-stat {
-      color: var(--gold);
-      font-size: 2.5rem;
+      color: var(--gold-2);
+      font-size: 2.7rem;
       font-weight: 800;
       line-height: 1;
       margin-bottom: 10px;
@@ -267,9 +346,21 @@
     }
 
     .card {
-      background: var(--panel);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.02));
       border-radius: var(--radius);
       padding: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top right, rgba(201,162,39,0.08), transparent 22%);
+      pointer-events: none;
     }
 
     .stack {
@@ -278,7 +369,7 @@
     }
 
     .mini-card {
-      background: var(--panel-2);
+      background: rgba(255,255,255,0.025);
       border-radius: 18px;
       padding: 18px 20px;
     }
@@ -297,7 +388,7 @@
 
     .case-grid {
       grid-template-columns: repeat(3, 1fr);
-      margin-top: 24px;
+      margin-top: 26px;
     }
 
     .list-clean {
@@ -312,32 +403,55 @@
       padding: 14px 16px;
       border: 1px solid var(--line);
       border-radius: 16px;
-      background: var(--panel-2);
+      background: rgba(255,255,255,0.025);
     }
 
     .positioning {
       display: grid;
       grid-template-columns: 1.08fr 0.92fr;
       gap: 24px;
-      padding: 34px;
-      border: 1px solid rgba(212,175,55,0.22);
-      border-radius: 30px;
-      background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(255,255,255,0.03));
+      padding: 36px;
+      border: 1px solid rgba(201,162,39,0.2);
+      border-radius: 34px;
+      background:
+        linear-gradient(135deg, rgba(201,162,39,0.10), rgba(255,255,255,0.02));
       box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .positioning::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top right, rgba(201,162,39,0.10), transparent 24%);
+      pointer-events: none;
     }
 
     blockquote {
       margin: 0;
-      font-size: clamp(1.65rem, 3vw, 2.9rem);
+      font-size: clamp(1.7rem, 3vw, 3rem);
       line-height: 1.12;
       font-weight: 800;
       letter-spacing: -0.03em;
+      position: relative;
+      z-index: 1;
     }
 
     .band {
-      background: rgba(255,255,255,0.03);
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
+      position: relative;
+    }
+
+    .band::before {
+      content: "";
+      position: absolute;
+      inset: 20px 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.015));
+      border-top: 1px solid var(--line-soft);
+      border-bottom: 1px solid var(--line-soft);
+      pointer-events: none;
     }
 
     .contact-grid {
@@ -348,7 +462,7 @@
     }
 
     .footer {
-      padding: 34px 0 56px;
+      padding: 36px 0 56px;
       color: var(--muted);
       font-size: 0.94rem;
     }
@@ -384,331 +498,360 @@
         grid-template-columns: 1fr;
       }
 
-      .section { padding: 60px 0; }
+      .section { padding: 62px 0; }
       .hero { padding: 48px 0 26px; }
-
+      .section-shell,
       .card,
       .positioning {
         padding: 22px;
       }
 
       .hero-photo {
-        height: 460px;
+        height: 470px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="container nav">
-      <div class="brand">Dillon Noel</div>
-      <div class="nav-links">
-        <a href="#about">Executive Profile</a>
-        <a href="#impact">Selected Impact</a>
-        <a href="#services">Advisory Focus</a>
-        <a href="#intensive">Strategy Intensive</a>
-        <a href="#contact">Contact</a>
+  <div class="site">
+    <div class="topbar">
+      <div class="container nav">
+        <div class="brand">Dillon Noel</div>
+        <div class="nav-links">
+          <a href="#about">Executive Profile</a>
+          <a href="#impact">Selected Impact</a>
+          <a href="#services">Advisory Focus</a>
+          <a href="#intensive">Strategy Intensive</a>
+          <a href="#contact">Contact</a>
+        </div>
       </div>
     </div>
+
+    <header class="hero container">
+      <div class="section-shell">
+        <div class="hero-grid">
+          <div class="hero-photo-wrap">
+            <div class="hero-glow"></div>
+            <div class="hero-ring"></div>
+            <img class="hero-photo" src="Headshot.jpg" alt="Dillon Noel headshot" />
+          </div>
+
+          <div>
+            <p class="eyebrow">Dillon Noel</p>
+            <h1>Strategy, execution, and growth architecture for leaders solving complex business problems.</h1>
+            <p class="lead">
+              I help organizations clarify priorities, align stakeholders, and build execution systems that turn strategy into measurable progress.
+            </p>
+
+            <div class="authority-line">
+              Managed 7 enterprise SaaS applications • Built 2 applications from concept to production
+            </div>
+
+            <div class="pill-row">
+              <span class="pill">Business Analysis</span>
+              <span class="pill">Strategy Consulting</span>
+              <span class="pill">Execution Leadership</span>
+            </div>
+
+            <div class="cert-row">
+              <span class="cert">CBAP®</span>
+              <span class="cert">PSPO</span>
+              <span class="cert">PSM</span>
+            </div>
+
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#intensive">Apply for Strategy Intensive</a>
+              <a class="btn btn-secondary" href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">LinkedIn Profile</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="proof-bar">
+          <div class="proof-item">
+            <div class="proof-stat">7</div>
+            <p class="muted">Enterprise SaaS applications managed</p>
+          </div>
+          <div class="proof-item">
+            <div class="proof-stat">2</div>
+            <p class="muted">Applications built from concept to production</p>
+          </div>
+          <div class="proof-item">
+            <div class="proof-stat">SMB</div>
+            <p class="muted">Growth systems designed for scaling businesses</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section id="about" class="section">
+      <div class="container">
+        <div class="section-shell">
+          <div class="grid-2">
+            <div>
+              <p class="eyebrow">Executive Profile</p>
+              <h2>Clarity in complexity. Structure in execution.</h2>
+              <p class="lead">
+                Dillon Noel is a strategy and execution professional who helps leaders navigate complex initiatives, strengthen delivery, and build systems that scale.
+              </p>
+              <p class="muted">
+                His work bridges business analysis, product thinking, and operational execution—bringing structure to ambiguity and turning ideas into actionable outcomes.
+              </p>
+            </div>
+
+            <div class="card">
+              <p class="eyebrow">Why Leaders Work With Me</p>
+              <div class="stack">
+                <div class="mini-card">
+                  <h3>Clarity Over Confusion</h3>
+                  <p class="muted">Breaks complex business problems into structured, actionable paths leaders and teams can execute with confidence.</p>
+                </div>
+                <div class="mini-card">
+                  <h3>Execution, Not Theory</h3>
+                  <p class="muted">Focuses on implementation, alignment, and measurable progress—not recommendations that stay on paper.</p>
+                </div>
+                <div class="mini-card">
+                  <h3>Enterprise-Grade Thinking</h3>
+                  <p class="muted">Applies structured thinking shaped by high-scale environments and delivery complexity.</p>
+                </div>
+                <div class="mini-card">
+                  <h3>Built for Growth</h3>
+                  <p class="muted">Designs systems that support stronger operating clarity, better execution, and scalable growth.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section band">
+      <div class="container">
+        <div class="section-shell">
+          <div class="grid-2-alt">
+            <div>
+              <p class="eyebrow">Advisory Focus</p>
+              <h2>Where I create value</h2>
+              <p class="lead">
+                I help businesses and teams move from ambiguity to execution by creating clarity across strategy, operations, delivery, and growth.
+              </p>
+            </div>
+
+            <div class="focus-grid">
+              <div class="card">
+                <p class="eyebrow">Focus Area</p>
+                <h3>Strategy & Decision Structuring</h3>
+              </div>
+              <div class="card">
+                <p class="eyebrow">Focus Area</p>
+                <h3>Execution Leadership</h3>
+              </div>
+              <div class="card">
+                <p class="eyebrow">Focus Area</p>
+                <h3>Operational Clarity</h3>
+              </div>
+              <div class="card">
+                <p class="eyebrow">Focus Area</p>
+                <h3>Growth Systems</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="impact" class="section">
+      <div class="container">
+        <div class="section-shell">
+          <p class="eyebrow">Selected Impact</p>
+          <h2>Representative outcomes</h2>
+
+          <div class="case-grid">
+            <div class="card">
+              <h3>Enterprise Delivery Leadership</h3>
+              <p class="muted">Led coordination and execution across multiple enterprise SaaS systems, creating structure, alignment, and stronger delivery control.</p>
+            </div>
+
+            <div class="card">
+              <h3>0-to-1 Product Execution</h3>
+              <p class="muted">Supported the build of high-value applications from concept through production, bridging strategic intent with practical execution.</p>
+            </div>
+
+            <div class="card">
+              <h3>Business Growth Systems</h3>
+              <p class="muted">Designed operating structures and growth-oriented systems that help small and mid-sized businesses scale more effectively.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="section band">
+      <div class="container">
+        <div class="section-shell">
+          <div class="grid-2-alt">
+            <div>
+              <p class="eyebrow">Engagement Models</p>
+              <h2>How I support organizations</h2>
+              <p class="lead">
+                I work with leaders, teams, and businesses that need better structure, sharper thinking, and stronger execution.
+              </p>
+
+              <ul class="list-clean">
+                <li>Strategic advisory for founders, operators, and business leaders</li>
+                <li>Business analysis and requirements clarity for initiatives</li>
+                <li>Project and execution leadership for cross-functional delivery</li>
+                <li>Growth architecture for small and mid-sized businesses</li>
+              </ul>
+            </div>
+
+            <div>
+              <p class="eyebrow">Core Capabilities</p>
+              <h2>Advisory and execution capabilities</h2>
+
+              <div class="service-grid">
+                <div class="card">
+                  <h3>Business Analysis</h3>
+                  <p class="muted">Clarify business needs, sharpen requirements, and translate complexity into executable decisions and solutions.</p>
+                </div>
+                <div class="card">
+                  <h3>Project & Execution Leadership</h3>
+                  <p class="muted">Bring structure, stakeholder alignment, and delivery discipline to high-value initiatives that need forward momentum.</p>
+                </div>
+                <div class="card">
+                  <h3>Strategy Consulting</h3>
+                  <p class="muted">Support leaders with decision framing, priority setting, execution planning, and strategic problem solving.</p>
+                </div>
+                <div class="card">
+                  <h3>Management Consulting</h3>
+                  <p class="muted">Improve operating clarity, identify performance gaps, and strengthen how teams and initiatives execute.</p>
+                </div>
+                <div class="card">
+                  <h3>Growth Systems Architecture</h3>
+                  <p class="muted">Design scalable systems, frameworks, and operating structures that support sustainable business growth.</p>
+                </div>
+                <div class="card">
+                  <h3>Strategic Partnering</h3>
+                  <p class="muted">Support leaders who need a trusted thinking partner for high-value business, execution, and growth decisions.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="positioning">
+          <div>
+            <p class="eyebrow">Strategic Positioning</p>
+            <blockquote>
+              “For leaders who need more than ideas—clarity, structure, and execution that moves the business forward.”
+            </blockquote>
+          </div>
+
+          <div class="card" style="background: rgba(255,255,255,0.03);">
+            <p class="eyebrow">Best Fit</p>
+            <div class="stack">
+              <div class="mini-card"><p>Leaders navigating complex initiatives or cross-functional delivery.</p></div>
+              <div class="mini-card"><p>Businesses that need clearer operating structure to scale effectively.</p></div>
+              <div class="mini-card"><p>Teams that need stronger alignment between strategy and execution.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="intensive" class="section band">
+      <div class="container">
+        <div class="section-shell">
+          <div class="grid-2">
+            <div>
+              <p class="eyebrow">Strategy Intensive</p>
+              <h2>Start with a focused strategy session</h2>
+              <p class="lead">
+                A structured session designed for leaders who need clarity on a complex business, execution, or growth challenge.
+              </p>
+
+              <ul class="list-clean" style="margin-top: 26px;">
+                <li>Diagnose the real problem</li>
+                <li>Identify execution gaps and priority issues</li>
+                <li>Define a structured path forward</li>
+              </ul>
+
+              <div class="hero-actions">
+                <a class="btn btn-primary" href="https://form.typeform.com/to/your-typeform-id" target="_blank" rel="noreferrer">Apply for Strategy Call</a>
+                <a class="btn btn-secondary" href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">Message on LinkedIn</a>
+              </div>
+
+              <p class="muted" style="margin-top: 18px;">
+                Most clients come in with unclear problems. They leave with structured clarity and a path forward.
+              </p>
+            </div>
+
+            <div class="card">
+              <p class="eyebrow">Ideal Clients</p>
+              <div class="stack">
+                <div class="mini-card"><p>Founders and operators scaling their business</p></div>
+                <div class="mini-card"><p>Teams facing execution friction or alignment issues</p></div>
+                <div class="mini-card"><p>Leaders managing complex, high-stakes initiatives</p></div>
+              </div>
+
+              <p class="eyebrow" style="margin-top: 28px;">Pre-Call Qualification</p>
+              <div class="stack">
+                <div class="mini-card"><p>1. What problem are you trying to solve?</p></div>
+                <div class="mini-card"><p>2. What stage is your business or initiative in?</p></div>
+                <div class="mini-card"><p>3. What happens if this problem is not solved?</p></div>
+                <div class="mini-card"><p>4. What level of support do you need?</p></div>
+                <div class="mini-card"><p>5. What is your budget range?</p></div>
+              </div>
+
+              <p class="muted" style="font-size: 0.86rem; margin-top: 14px;">
+                Replace the button link with your real Typeform link.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="section-shell">
+          <div class="contact-grid">
+            <div>
+              <p class="eyebrow">Contact</p>
+              <h2>Let’s discuss your next initiative</h2>
+              <p class="lead">
+                Reach out for consulting, strategic advisory, project leadership, or business growth conversations.
+              </p>
+            </div>
+
+            <div class="card">
+              <div class="stack">
+                <div class="mini-card">
+                  <h3>Email</h3>
+                  <p class="muted"><a href="mailto:dillon1.noel@outlook.com">dillon1.noel@outlook.com</a></p>
+                </div>
+
+                <div class="mini-card">
+                  <h3>LinkedIn</h3>
+                  <p class="muted"><a href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">Connect on LinkedIn</a></p>
+                </div>
+
+                <a class="btn btn-primary" href="#intensive">Start with Strategy Intensive</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        Dillon Noel © 2026. Strategy. Execution. Growth.
+      </div>
+    </footer>
   </div>
-
-  <header class="hero container">
-    <div class="hero-grid">
-      <div class="hero-photo-wrap">
-        <div class="hero-glow"></div>
-        <img class="hero-photo" src="Headshot.jpg" alt="Dillon Noel headshot" />
-      </div>
-
-      <div>
-        <p class="eyebrow">Dillon Noel</p>
-        <h1>Strategy, execution, and growth architecture for leaders solving complex business problems.</h1>
-        <p class="lead">
-          I help organizations clarify priorities, align stakeholders, and build execution systems that turn strategy into measurable progress.
-        </p>
-
-        <div class="authority-line">
-          Managed 7 enterprise SaaS applications • Built 2 applications from concept to production
-        </div>
-
-        <div class="pill-row">
-          <span class="pill">Business Analysis</span>
-          <span class="pill">Strategy Consulting</span>
-          <span class="pill">Execution Leadership</span>
-        </div>
-
-        <div class="cert-row">
-          <span class="cert">CBAP®</span>
-          <span class="cert">PSPO</span>
-          <span class="cert">PSM</span>
-        </div>
-
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#intensive">Apply for Strategy Intensive</a>
-          <a class="btn btn-secondary" href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">LinkedIn Profile</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="proof-bar">
-      <div class="proof-item">
-        <div class="proof-stat">7</div>
-        <p class="muted">Enterprise SaaS applications managed</p>
-      </div>
-      <div class="proof-item">
-        <div class="proof-stat">2</div>
-        <p class="muted">Applications built from concept to production</p>
-      </div>
-      <div class="proof-item">
-        <div class="proof-stat">SMB</div>
-        <p class="muted">Growth systems designed for scaling businesses</p>
-      </div>
-    </div>
-  </header>
-
-  <section id="about" class="section">
-    <div class="container grid-2">
-      <div>
-        <p class="eyebrow">Executive Profile</p>
-        <h2>Clarity in complexity. Structure in execution.</h2>
-        <p class="lead">
-          Dillon Noel is a strategy and execution professional who helps leaders navigate complex initiatives, strengthen delivery, and build systems that scale.
-        </p>
-        <p class="muted">
-          His work bridges business analysis, product thinking, and operational execution—bringing structure to ambiguity and turning ideas into actionable outcomes.
-        </p>
-      </div>
-
-      <div class="card">
-        <p class="eyebrow">Why Leaders Work With Me</p>
-        <div class="stack">
-          <div class="mini-card">
-            <h3>Clarity Over Confusion</h3>
-            <p class="muted">Breaks complex business problems into structured, actionable paths leaders and teams can execute with confidence.</p>
-          </div>
-          <div class="mini-card">
-            <h3>Execution, Not Theory</h3>
-            <p class="muted">Focuses on implementation, alignment, and measurable progress—not recommendations that stay on paper.</p>
-          </div>
-          <div class="mini-card">
-            <h3>Enterprise-Grade Thinking</h3>
-            <p class="muted">Applies structured thinking shaped by high-scale environments and delivery complexity.</p>
-          </div>
-          <div class="mini-card">
-            <h3>Built for Growth</h3>
-            <p class="muted">Designs systems that support stronger operating clarity, better execution, and scalable growth.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section band">
-    <div class="container grid-2-alt">
-      <div>
-        <p class="eyebrow">Advisory Focus</p>
-        <h2>Where I create value</h2>
-        <p class="lead">
-          I help businesses and teams move from ambiguity to execution by creating clarity across strategy, operations, delivery, and growth.
-        </p>
-      </div>
-
-      <div class="focus-grid">
-        <div class="card">
-          <p class="eyebrow">Focus Area</p>
-          <h3>Strategy & Decision Structuring</h3>
-        </div>
-        <div class="card">
-          <p class="eyebrow">Focus Area</p>
-          <h3>Execution Leadership</h3>
-        </div>
-        <div class="card">
-          <p class="eyebrow">Focus Area</p>
-          <h3>Operational Clarity</h3>
-        </div>
-        <div class="card">
-          <p class="eyebrow">Focus Area</p>
-          <h3>Growth Systems</h3>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="impact" class="section">
-    <div class="container">
-      <p class="eyebrow">Selected Impact</p>
-      <h2>Representative outcomes</h2>
-
-      <div class="case-grid">
-        <div class="card">
-          <h3>Enterprise Delivery Leadership</h3>
-          <p class="muted">Led coordination and execution across multiple enterprise SaaS systems, creating structure, alignment, and stronger delivery control.</p>
-        </div>
-
-        <div class="card">
-          <h3>0-to-1 Product Execution</h3>
-          <p class="muted">Supported the build of high-value applications from concept through production, bridging strategic intent with practical execution.</p>
-        </div>
-
-        <div class="card">
-          <h3>Business Growth Systems</h3>
-          <p class="muted">Designed operating structures and growth-oriented systems that help small and mid-sized businesses scale more effectively.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="services" class="section band">
-    <div class="container grid-2-alt">
-      <div>
-        <p class="eyebrow">Engagement Models</p>
-        <h2>How I support organizations</h2>
-        <p class="lead">
-          I work with leaders, teams, and businesses that need better structure, sharper thinking, and stronger execution.
-        </p>
-
-        <ul class="list-clean">
-          <li>Strategic advisory for founders, operators, and business leaders</li>
-          <li>Business analysis and requirements clarity for initiatives</li>
-          <li>Project and execution leadership for cross-functional delivery</li>
-          <li>Growth architecture for small and mid-sized businesses</li>
-        </ul>
-      </div>
-
-      <div>
-        <p class="eyebrow">Core Capabilities</p>
-        <h2>Advisory and execution capabilities</h2>
-
-        <div class="service-grid">
-          <div class="card">
-            <h3>Business Analysis</h3>
-            <p class="muted">Clarify business needs, sharpen requirements, and translate complexity into executable decisions and solutions.</p>
-          </div>
-          <div class="card">
-            <h3>Project & Execution Leadership</h3>
-            <p class="muted">Bring structure, stakeholder alignment, and delivery discipline to high-value initiatives that need forward momentum.</p>
-          </div>
-          <div class="card">
-            <h3>Strategy Consulting</h3>
-            <p class="muted">Support leaders with decision framing, priority setting, execution planning, and strategic problem solving.</p>
-          </div>
-          <div class="card">
-            <h3>Management Consulting</h3>
-            <p class="muted">Improve operating clarity, identify performance gaps, and strengthen how teams and initiatives execute.</p>
-          </div>
-          <div class="card">
-            <h3>Growth Systems Architecture</h3>
-            <p class="muted">Design scalable systems, frameworks, and operating structures that support sustainable business growth.</p>
-          </div>
-          <div class="card">
-            <h3>Strategic Partnering</h3>
-            <p class="muted">Support leaders who need a trusted thinking partner for high-value business, execution, and growth decisions.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container positioning">
-      <div>
-        <p class="eyebrow">Strategic Positioning</p>
-        <blockquote>
-          “For leaders who need more than ideas—clarity, structure, and execution that moves the business forward.”
-        </blockquote>
-      </div>
-
-      <div class="card" style="background: var(--panel-2);">
-        <p class="eyebrow">Best Fit</p>
-        <div class="stack">
-          <div class="mini-card"><p>Leaders navigating complex initiatives or cross-functional delivery.</p></div>
-          <div class="mini-card"><p>Businesses that need clearer operating structure to scale effectively.</p></div>
-          <div class="mini-card"><p>Teams that need stronger alignment between strategy and execution.</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="intensive" class="section band">
-    <div class="container grid-2">
-      <div>
-        <p class="eyebrow">Strategy Intensive</p>
-        <h2>Start with a focused strategy session</h2>
-        <p class="lead">
-          A structured session designed for leaders who need clarity on a complex business, execution, or growth challenge.
-        </p>
-
-        <ul class="list-clean" style="margin-top: 26px;">
-          <li>Diagnose the real problem</li>
-          <li>Identify execution gaps and priority issues</li>
-          <li>Define a structured path forward</li>
-        </ul>
-
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="https://form.typeform.com/to/your-typeform-id" target="_blank" rel="noreferrer">Apply for Strategy Call</a>
-          <a class="btn btn-secondary" href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">Message on LinkedIn</a>
-        </div>
-
-        <p class="muted" style="margin-top: 18px;">
-          Most clients come in with unclear problems. They leave with structured clarity and a path forward.
-        </p>
-      </div>
-
-      <div class="card" style="background: var(--panel-2);">
-        <p class="eyebrow">Ideal Clients</p>
-        <div class="stack">
-          <div class="mini-card"><p>Founders and operators scaling their business</p></div>
-          <div class="mini-card"><p>Teams facing execution friction or alignment issues</p></div>
-          <div class="mini-card"><p>Leaders managing complex, high-stakes initiatives</p></div>
-        </div>
-
-        <p class="eyebrow" style="margin-top: 28px;">Pre-Call Qualification</p>
-        <div class="stack">
-          <div class="mini-card"><p>1. What problem are you trying to solve?</p></div>
-          <div class="mini-card"><p>2. What stage is your business or initiative in?</p></div>
-          <div class="mini-card"><p>3. What happens if this problem is not solved?</p></div>
-          <div class="mini-card"><p>4. What level of support do you need?</p></div>
-          <div class="mini-card"><p>5. What is your budget range?</p></div>
-        </div>
-
-        <p class="muted" style="font-size: 0.86rem; margin-top: 14px;">
-          Replace the current button link with your real Typeform link.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact" class="section">
-    <div class="container contact-grid">
-      <div>
-        <p class="eyebrow">Contact</p>
-        <h2>Let’s discuss your next initiative</h2>
-        <p class="lead">
-          Reach out for consulting, strategic advisory, project leadership, or business growth conversations.
-        </p>
-      </div>
-
-      <div class="card">
-        <div class="stack">
-          <div class="mini-card">
-            <h3>Email</h3>
-            <p class="muted"><a href="mailto:dillon1.noel@outlook.com">dillon1.noel@outlook.com</a></p>
-          </div>
-
-          <div class="mini-card">
-            <h3>LinkedIn</h3>
-            <p class="muted"><a href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">Connect on LinkedIn</a></p>
-          </div>
-
-          <a class="btn btn-primary" href="#intensive">Start with Strategy Intensive</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div class="container">
-      Dillon Noel © 2026. Strategy. Execution. Growth.
-    </div>
-  </footer>
 </body>
 </html>
