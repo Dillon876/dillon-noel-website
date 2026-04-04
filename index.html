@@ -43,6 +43,13 @@
         linear-gradient(180deg, #080808 0%, #050505 100%);
       line-height: 1.6;
       overflow-x: hidden;
+      opacity: 0;
+      animation: pageFadeIn 0.85s ease forwards;
+    }
+
+    @keyframes pageFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     body::before {
@@ -189,7 +196,34 @@
       font-size: 0.95rem;
     }
 
-    .nav-links a:hover { color: white; }
+    .nav-links a {
+      position: relative;
+      transition: color 0.25s ease;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+      opacity: 0.85;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--gold-2);
+    }
+
+    .nav-links a.active::after,
+    .nav-links a:hover::after {
+      transform: scaleX(1);
+    }
 
     .btn {
       display: inline-flex;
@@ -321,6 +355,7 @@
       padding: 24px;
       position: relative;
       overflow: hidden;
+      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
     }
 
     .proof-item::before {
@@ -329,6 +364,14 @@
       inset: 0;
       background: radial-gradient(circle at top right, rgba(201,162,39,0.10), transparent 28%);
       pointer-events: none;
+    }
+
+    .proof-item:hover {
+      transform: translateY(-4px);
+      border-color: rgba(201,162,39,0.28);
+      box-shadow:
+        0 26px 60px rgba(0,0,0,0.4),
+        inset 3px 0 0 rgba(201,162,39,0.8);
     }
 
     .proof-stat {
@@ -360,6 +403,7 @@
       padding: 30px;
       position: relative;
       overflow: hidden;
+      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
     }
 
     .card::before {
@@ -371,6 +415,29 @@
       pointer-events: none;
     }
 
+    .card::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 18px;
+      bottom: 18px;
+      width: 0;
+      background: linear-gradient(180deg, var(--gold-2), var(--gold));
+      border-radius: 999px;
+      transition: width 0.24s ease;
+      opacity: 0.9;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(201,162,39,0.28);
+      box-shadow: 0 30px 70px rgba(0,0,0,0.42);
+    }
+
+    .card:hover::after {
+      width: 4px;
+    }
+
     .stack {
       display: grid;
       gap: 16px;
@@ -380,6 +447,13 @@
       background: rgba(255,255,255,0.025);
       border-radius: 18px;
       padding: 18px 20px;
+      transition: transform 0.26s ease, border-color 0.26s ease, background 0.26s ease;
+    }
+
+    .mini-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(201,162,39,0.22);
+      background: rgba(255,255,255,0.04);
     }
 
     .focus-grid,
@@ -412,6 +486,12 @@
       border: 1px solid var(--line);
       border-radius: 16px;
       background: rgba(255,255,255,0.025);
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .list-clean li:hover {
+      transform: translateY(-2px);
+      border-color: rgba(201,162,39,0.2);
     }
 
     .positioning {
@@ -550,6 +630,41 @@
       }
     }
 
+    .reveal {
+      opacity: 0;
+      transform: translateY(34px);
+      transition:
+        opacity 0.8s ease,
+        transform 0.8s ease;
+      will-change: opacity, transform;
+    }
+
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .delay-1 { transition-delay: 0.08s; }
+    .delay-2 { transition-delay: 0.16s; }
+    .delay-3 { transition-delay: 0.24s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      body { animation: none; opacity: 1; }
+      .reveal,
+      .reveal.in-view,
+      .back-to-top,
+      .card,
+      .proof-item,
+      .mini-card,
+      .list-clean li {
+        transition: none !important;
+        animation: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+      }
+    }
+
     @media (max-width: 1100px) {
       .hero-grid,
       .grid-2,
@@ -586,15 +701,42 @@
       }
 
       .section { padding: 62px 0; }
-      .hero { padding: 48px 0 26px; }
+      .hero { padding: 36px 0 20px; }
       .section-shell,
       .card,
       .positioning {
         padding: 22px;
       }
 
+      .hero-grid {
+        gap: 26px;
+      }
+
+      .hero-photo-wrap {
+        max-width: 320px;
+      }
+
       .hero-photo {
-        height: 470px;
+        height: 380px;
+        border-radius: 24px;
+      }
+
+      .hero-ring {
+        inset: -12px;
+        border-radius: 28px;
+      }
+
+      h1 {
+        font-size: clamp(2.1rem, 9vw, 3rem);
+        line-height: 1;
+      }
+
+      .lead {
+        font-size: 1rem;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
       }
 
       .back-to-top {
@@ -626,16 +768,16 @@
       </div>
     </div>
 
-    <header class="hero container" id="top">
+    <header class="hero container reveal" id="top">
       <div class="section-shell">
         <div class="hero-grid">
-          <div class="hero-photo-wrap">
+          <div class="hero-photo-wrap reveal delay-1">
             <div class="hero-glow"></div>
             <div class="hero-ring"></div>
             <img class="hero-photo" src="Headshot.jpg" alt="Dillon Noel headshot" />
           </div>
 
-          <div>
+          <div class="reveal delay-2">
             <p class="eyebrow">Dillon Noel</p>
             <h1>Strategy, execution, and growth architecture for leaders solving complex business problems.</h1>
             <p class="lead">
@@ -666,15 +808,15 @@
         </div>
 
         <div class="proof-bar">
-          <div class="proof-item">
-            <div class="proof-stat">7</div>
+          <div class="proof-item reveal delay-1">
+            <div class="proof-stat counter" data-target="7">0</div>
             <p class="muted">Enterprise SaaS applications managed</p>
           </div>
-          <div class="proof-item">
-            <div class="proof-stat">2</div>
+          <div class="proof-item reveal delay-2">
+            <div class="proof-stat counter" data-target="2">0</div>
             <p class="muted">Applications built from concept to production</p>
           </div>
-          <div class="proof-item">
+          <div class="proof-item reveal delay-3">
             <div class="proof-stat">SMB</div>
             <p class="muted">Growth systems designed for scaling businesses</p>
           </div>
@@ -682,11 +824,11 @@
       </div>
     </header>
 
-    <section id="about" class="section">
+    <section id="about" class="section reveal">
       <div class="container">
         <div class="section-shell">
           <div class="grid-2">
-            <div>
+            <div class="reveal delay-1">
               <p class="eyebrow">Executive Profile</p>
               <h2>Clarity in complexity. Structure in execution.</h2>
               <p class="lead">
@@ -697,7 +839,7 @@
               </p>
             </div>
 
-            <div class="card">
+            <div class="card reveal delay-2">
               <p class="eyebrow">Why Leaders Work With Me</p>
               <div class="stack">
                 <div class="mini-card">
@@ -723,11 +865,11 @@
       </div>
     </section>
 
-    <section class="section band">
+    <section class="section band reveal">
       <div class="container">
         <div class="section-shell">
           <div class="grid-2-alt">
-            <div>
+            <div class="reveal delay-1">
               <p class="eyebrow">Advisory Focus</p>
               <h2>Where I create value</h2>
               <p class="lead">
@@ -736,19 +878,19 @@
             </div>
 
             <div class="focus-grid">
-              <div class="card">
+              <div class="card reveal delay-1">
                 <p class="eyebrow">Focus Area</p>
                 <h3>Strategy & Decision Structuring</h3>
               </div>
-              <div class="card">
+              <div class="card reveal delay-2">
                 <p class="eyebrow">Focus Area</p>
                 <h3>Execution Leadership</h3>
               </div>
-              <div class="card">
+              <div class="card reveal delay-2">
                 <p class="eyebrow">Focus Area</p>
                 <h3>Operational Clarity</h3>
               </div>
-              <div class="card">
+              <div class="card reveal delay-3">
                 <p class="eyebrow">Focus Area</p>
                 <h3>Growth Systems</h3>
               </div>
@@ -758,24 +900,24 @@
       </div>
     </section>
 
-    <section id="impact" class="section">
+    <section id="impact" class="section reveal">
       <div class="container">
         <div class="section-shell">
           <p class="eyebrow">Selected Impact</p>
           <h2>Representative outcomes</h2>
 
           <div class="case-grid">
-            <div class="card">
+            <div class="card reveal delay-1">
               <h3>Enterprise Delivery Leadership</h3>
               <p class="muted">Led coordination and execution across multiple enterprise SaaS systems, creating structure, alignment, and stronger delivery control.</p>
             </div>
 
-            <div class="card">
+            <div class="card reveal delay-2">
               <h3>0-to-1 Product Execution</h3>
               <p class="muted">Supported the build of high-value applications from concept through production, bridging strategic intent with practical execution.</p>
             </div>
 
-            <div class="card">
+            <div class="card reveal delay-3">
               <h3>Business Growth Systems</h3>
               <p class="muted">Designed operating structures and growth-oriented systems that help small and mid-sized businesses scale more effectively.</p>
             </div>
@@ -784,11 +926,11 @@
       </div>
     </section>
 
-    <section id="services" class="section band">
+    <section id="services" class="section band reveal">
       <div class="container">
         <div class="section-shell">
           <div class="grid-2-alt">
-            <div>
+            <div class="reveal delay-1">
               <p class="eyebrow">Engagement Models</p>
               <h2>How I support organizations</h2>
               <p class="lead">
@@ -804,31 +946,31 @@
             </div>
 
             <div>
-              <p class="eyebrow">Core Capabilities</p>
-              <h2>Advisory and execution capabilities</h2>
+              <p class="eyebrow reveal delay-1">Core Capabilities</p>
+              <h2 class="reveal delay-1">Advisory and execution capabilities</h2>
 
               <div class="service-grid">
-                <div class="card">
+                <div class="card reveal delay-1">
                   <h3>Business Analysis</h3>
                   <p class="muted">Clarify business needs, sharpen requirements, and translate complexity into executable decisions and solutions.</p>
                 </div>
-                <div class="card">
+                <div class="card reveal delay-2">
                   <h3>Project & Execution Leadership</h3>
                   <p class="muted">Bring structure, stakeholder alignment, and delivery discipline to high-value initiatives that need forward momentum.</p>
                 </div>
-                <div class="card">
+                <div class="card reveal delay-2">
                   <h3>Strategy Consulting</h3>
                   <p class="muted">Support leaders with decision framing, priority setting, execution planning, and strategic problem solving.</p>
                 </div>
-                <div class="card">
+                <div class="card reveal delay-3">
                   <h3>Management Consulting</h3>
                   <p class="muted">Improve operating clarity, identify performance gaps, and strengthen how teams and initiatives execute.</p>
                 </div>
-                <div class="card">
+                <div class="card reveal delay-3">
                   <h3>Growth Systems Architecture</h3>
                   <p class="muted">Design scalable systems, frameworks, and operating structures that support sustainable business growth.</p>
                 </div>
-                <div class="card">
+                <div class="card reveal delay-3">
                   <h3>Strategic Partnering</h3>
                   <p class="muted">Support leaders who need a trusted thinking partner for high-value business, execution, and growth decisions.</p>
                 </div>
@@ -839,17 +981,17 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section reveal">
       <div class="container">
         <div class="positioning">
-          <div>
+          <div class="reveal delay-1">
             <p class="eyebrow">Strategic Positioning</p>
             <blockquote>
               “For leaders who need more than ideas—clarity, structure, and execution that moves the business forward.”
             </blockquote>
           </div>
 
-          <div class="card" style="background: rgba(255,255,255,0.03);">
+          <div class="card reveal delay-2" style="background: rgba(255,255,255,0.03);">
             <p class="eyebrow">Best Fit</p>
             <div class="stack">
               <div class="mini-card"><p>Leaders navigating complex initiatives or cross-functional delivery.</p></div>
@@ -861,11 +1003,11 @@
       </div>
     </section>
 
-    <section id="intensive" class="section band">
+    <section id="intensive" class="section band reveal">
       <div class="container">
         <div class="section-shell">
           <div class="grid-2">
-            <div>
+            <div class="reveal delay-1">
               <p class="eyebrow">Strategy Intensive</p>
               <h2>Start with a focused strategy session</h2>
               <p class="lead">
@@ -888,7 +1030,7 @@
               </p>
             </div>
 
-            <div class="card">
+            <div class="card reveal delay-2">
               <p class="eyebrow">Ideal Clients</p>
               <div class="stack">
                 <div class="mini-card"><p>Founders and operators scaling their business</p></div>
@@ -914,11 +1056,11 @@
       </div>
     </section>
 
-    <section id="contact" class="section">
+    <section id="contact" class="section reveal">
       <div class="container">
         <div class="section-shell">
           <div class="contact-grid">
-            <div>
+            <div class="reveal delay-1">
               <p class="eyebrow">Contact</p>
               <h2>Let’s discuss your next initiative</h2>
               <p class="lead">
@@ -926,7 +1068,7 @@
               </p>
             </div>
 
-            <div class="card">
+            <div class="card reveal delay-2">
               <div class="stack">
                 <div class="mini-card">
                   <h3>Email</h3>
@@ -946,7 +1088,7 @@
       </div>
     </section>
 
-    <footer class="footer">
+    <footer class="footer reveal">
       <div class="container">
         Dillon Noel © 2026. Strategy. Execution. Growth.
       </div>
@@ -964,6 +1106,9 @@
     const heroSection = document.querySelector(".hero");
     const navbar = document.querySelector(".topbar");
     const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+    const sectionsForNav = document.querySelectorAll("section[id]");
+    const reveals = document.querySelectorAll(".reveal");
+    const counters = document.querySelectorAll(".counter");
 
     function updateNavOffset() {
       const navHeight = navbar ? navbar.offsetHeight : 96;
@@ -998,6 +1143,67 @@
       }
     }
 
+    function setActiveNavLink() {
+      const navHeight = updateNavOffset();
+      let currentId = "";
+
+      sectionsForNav.forEach((section) => {
+        const sectionTop = section.offsetTop - navHeight - 40;
+        const sectionBottom = sectionTop + section.offsetHeight;
+
+        if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+          currentId = section.getAttribute("id");
+        }
+      });
+
+      navLinks.forEach((link) => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") === `#${currentId}`) {
+          link.classList.add("active");
+        }
+      });
+    }
+
+    function animateCounter(el) {
+      if (el.dataset.animated === "true") return;
+      el.dataset.animated = "true";
+
+      const target = parseInt(el.dataset.target, 10);
+      const duration = 1400;
+      const startTime = performance.now();
+
+      function update(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = Math.floor(eased * target);
+        el.textContent = value;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = target;
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          if (entry.target.classList.contains("counter")) {
+            animateCounter(entry.target);
+          }
+        }
+      });
+    }, {
+      threshold: 0.14
+    });
+
+    reveals.forEach((item) => revealObserver.observe(item));
+    counters.forEach((item) => revealObserver.observe(item));
+
     navLinks.forEach((link) => {
       link.addEventListener("click", function (e) {
         const href = this.getAttribute("href");
@@ -1014,15 +1220,22 @@
       });
     });
 
-    window.addEventListener("scroll", toggleBackToTop);
+    function onScroll() {
+      toggleBackToTop();
+      setActiveNavLink();
+    }
+
+    window.addEventListener("scroll", onScroll);
     window.addEventListener("resize", () => {
       updateNavOffset();
       toggleBackToTop();
+      setActiveNavLink();
     });
 
     window.addEventListener("load", () => {
       updateNavOffset();
       toggleBackToTop();
+      setActiveNavLink();
     });
   </script>
 </body>
