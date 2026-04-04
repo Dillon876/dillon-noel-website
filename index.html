@@ -126,11 +126,21 @@
 
     .eyebrow {
       margin: 0 0 14px;
-      color: var(--gold-2);
       font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.28em;
       text-transform: uppercase;
+      color: transparent;
+      background: linear-gradient(90deg, var(--gold), var(--gold-2), var(--gold), var(--gold-2));
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: shimmerText 7s linear infinite;
+    }
+
+    @keyframes shimmerText {
+      0% { background-position: 0% center; }
+      100% { background-position: 220% center; }
     }
 
     h1, h2, h3, p { margin-top: 0; }
@@ -164,6 +174,18 @@
 
     .muted { color: var(--muted); }
 
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      z-index: 999;
+      background: linear-gradient(90deg, var(--gold), var(--gold-2));
+      box-shadow: 0 0 12px rgba(224,188,74,0.35);
+      transition: width 0.08s linear;
+    }
+
     .topbar {
       position: sticky;
       top: 0;
@@ -182,10 +204,15 @@
     }
 
     .brand {
-      color: var(--gold-2);
       font-weight: 800;
       font-size: 1.08rem;
       letter-spacing: 0.02em;
+      color: transparent;
+      background: linear-gradient(90deg, var(--gold), var(--gold-2), var(--gold), var(--gold-2));
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: shimmerText 7s linear infinite;
     }
 
     .nav-links {
@@ -267,6 +294,9 @@
     .hero-photo-wrap {
       position: relative;
       max-width: 420px;
+      transform: translateY(var(--hero-shift, 0px));
+      transition: transform 0.1s linear;
+      will-change: transform;
     }
 
     .hero-glow {
@@ -276,6 +306,9 @@
         radial-gradient(circle, rgba(201,162,39,0.24), transparent 60%);
       filter: blur(34px);
       z-index: 0;
+      transform: translateY(var(--glow-shift, 0px));
+      transition: transform 0.1s linear;
+      will-change: transform;
     }
 
     .hero-ring {
@@ -457,6 +490,50 @@
       background: rgba(255,255,255,0.04);
     }
 
+    .icon-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .icon-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(201,162,39,0.10);
+      border: 1px solid rgba(201,162,39,0.18);
+      color: var(--gold-2);
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .icon-badge svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .card:hover .icon-badge,
+    .mini-card:hover .icon-badge,
+    .proof-item:hover .icon-badge {
+      transform: translateY(-1px) scale(1.04);
+      box-shadow: 0 0 16px rgba(224,188,74,0.18);
+      background: rgba(201,162,39,0.16);
+      border-color: rgba(201,162,39,0.32);
+    }
+
     .focus-grid,
     .service-grid,
     .case-grid {
@@ -493,6 +570,29 @@
     .list-clean li:hover {
       transform: translateY(-2px);
       border-color: rgba(201,162,39,0.2);
+    }
+
+    .list-item-with-icon {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .list-item-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--gold-2);
+      flex-shrink: 0;
+    }
+
+    .list-item-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .positioning {
@@ -707,7 +807,9 @@
       .card,
       .proof-item,
       .mini-card,
-      .list-clean li {
+      .list-clean li,
+      .hero-photo-wrap,
+      .hero-glow {
         transition: none !important;
         animation: none !important;
         transform: none !important;
@@ -804,6 +906,8 @@
   </style>
 </head>
 <body>
+  <div class="progress-bar" id="scrollProgress"></div>
+
   <div class="site">
     <div class="topbar">
       <div class="container nav">
@@ -821,8 +925,8 @@
     <header class="hero container reveal" id="top">
       <div class="section-shell">
         <div class="hero-grid">
-          <div class="hero-photo-wrap reveal delay-1">
-            <div class="hero-glow"></div>
+          <div class="hero-photo-wrap reveal delay-1" id="heroPhotoWrap">
+            <div class="hero-glow" id="heroGlow"></div>
             <div class="hero-ring"></div>
             <img class="hero-photo" src="Headshot.jpg" alt="Dillon Noel headshot" />
           </div>
@@ -859,14 +963,43 @@
 
         <div class="proof-bar">
           <div class="proof-item reveal delay-1">
+            <div class="icon-row">
+              <span class="icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"></path>
+                  <path d="M9.5 12.5l1.7 1.7 3.3-3.7"></path>
+                </svg>
+              </span>
+            </div>
             <div class="proof-stat counter" data-target="7">0</div>
             <p class="muted">Enterprise SaaS applications managed</p>
           </div>
+
           <div class="proof-item reveal delay-2">
+            <div class="icon-row">
+              <span class="icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 19h16"></path>
+                  <path d="M6 16V8"></path>
+                  <path d="M12 16V5"></path>
+                  <path d="M18 16v-3"></path>
+                </svg>
+              </span>
+            </div>
             <div class="proof-stat counter" data-target="2">0</div>
             <p class="muted">Applications built from concept to production</p>
           </div>
+
           <div class="proof-item reveal delay-3">
+            <div class="icon-row">
+              <span class="icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 20v-8"></path>
+                  <path d="M8 16l4-4 4 4"></path>
+                  <path d="M6 10c0-3.3 2.7-6 6-6 2.7 0 5 1.8 5.7 4.3A4.5 4.5 0 1 1 18 17H7.5A3.5 3.5 0 0 1 6 10z"></path>
+                </svg>
+              </span>
+            </div>
             <div class="proof-stat">SMB</div>
             <p class="muted">Growth systems designed for scaling businesses</p>
           </div>
@@ -893,19 +1026,54 @@
               <p class="eyebrow">Why Leaders Work With Me</p>
               <div class="stack">
                 <div class="mini-card">
-                  <h3>Clarity Over Confusion</h3>
+                  <div class="icon-row">
+                    <span class="icon-badge" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M3 12h18"></path>
+                        <path d="M3 6h8"></path>
+                        <path d="M3 18h13"></path>
+                      </svg>
+                    </span>
+                    <h3>Clarity Over Confusion</h3>
+                  </div>
                   <p class="muted">Breaks complex business problems into structured, actionable paths leaders and teams can execute with confidence.</p>
                 </div>
+
                 <div class="mini-card">
-                  <h3>Execution, Not Theory</h3>
+                  <div class="icon-row">
+                    <span class="icon-badge" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M5 12l4 4L19 6"></path>
+                      </svg>
+                    </span>
+                    <h3>Execution, Not Theory</h3>
+                  </div>
                   <p class="muted">Focuses on implementation, alignment, and measurable progress—not recommendations that stay on paper.</p>
                 </div>
+
                 <div class="mini-card">
-                  <h3>Enterprise-Grade Thinking</h3>
+                  <div class="icon-row">
+                    <span class="icon-badge" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"></path>
+                      </svg>
+                    </span>
+                    <h3>Enterprise-Grade Thinking</h3>
+                  </div>
                   <p class="muted">Applies structured thinking shaped by high-scale environments and delivery complexity.</p>
                 </div>
+
                 <div class="mini-card">
-                  <h3>Built for Growth</h3>
+                  <div class="icon-row">
+                    <span class="icon-badge" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M12 20V9"></path>
+                        <path d="M8 13l4-4 4 4"></path>
+                        <path d="M5 20h14"></path>
+                      </svg>
+                    </span>
+                    <h3>Built for Growth</h3>
+                  </div>
                   <p class="muted">Designs systems that support stronger operating clarity, better execution, and scalable growth.</p>
                 </div>
               </div>
@@ -929,18 +1097,56 @@
 
             <div class="focus-grid">
               <div class="card reveal delay-1">
+                <div class="icon-row">
+                  <span class="icon-badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M4 20l6-6"></path>
+                      <path d="M14 10l6-6"></path>
+                      <path d="M14 4h6v6"></path>
+                      <path d="M4 14l6 6"></path>
+                    </svg>
+                  </span>
+                </div>
                 <p class="eyebrow">Focus Area</p>
                 <h3>Strategy & Decision Structuring</h3>
               </div>
+
               <div class="card reveal delay-2">
+                <div class="icon-row">
+                  <span class="icon-badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M6 12l4 4 8-8"></path>
+                      <path d="M4 5h16"></path>
+                    </svg>
+                  </span>
+                </div>
                 <p class="eyebrow">Focus Area</p>
                 <h3>Execution Leadership</h3>
               </div>
+
               <div class="card reveal delay-2">
+                <div class="icon-row">
+                  <span class="icon-badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="3"></circle>
+                      <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V22a2 2 0 0 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 0 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6 1.7 1.7 0 0 0 10 3.05V3a2 2 0 0 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.2.48.7 1 1.55 1H21a2 2 0 0 1 0 4h-.09c-.85 0-1.35.52-1.51 1z"></path>
+                    </svg>
+                  </span>
+                </div>
                 <p class="eyebrow">Focus Area</p>
                 <h3>Operational Clarity</h3>
               </div>
+
               <div class="card reveal delay-3">
+                <div class="icon-row">
+                  <span class="icon-badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M12 20V9"></path>
+                      <path d="M8 13l4-4 4 4"></path>
+                      <path d="M5 20h14"></path>
+                    </svg>
+                  </span>
+                </div>
                 <p class="eyebrow">Focus Area</p>
                 <h3>Growth Systems</h3>
               </div>
@@ -958,17 +1164,43 @@
 
           <div class="case-grid">
             <div class="card reveal delay-1">
-              <h3>Enterprise Delivery Leadership</h3>
+              <div class="icon-row">
+                <span class="icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M3 7h18"></path>
+                    <path d="M6 12h12"></path>
+                    <path d="M9 17h6"></path>
+                  </svg>
+                </span>
+                <h3>Enterprise Delivery Leadership</h3>
+              </div>
               <p class="muted">Led coordination and execution across multiple enterprise SaaS systems, creating structure, alignment, and stronger delivery control.</p>
             </div>
 
             <div class="card reveal delay-2">
-              <h3>0-to-1 Product Execution</h3>
+              <div class="icon-row">
+                <span class="icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M5 19l14-14"></path>
+                    <path d="M8 5h11v11"></path>
+                  </svg>
+                </span>
+                <h3>0-to-1 Product Execution</h3>
+              </div>
               <p class="muted">Supported the build of high-value applications from concept through production, bridging strategic intent with practical execution.</p>
             </div>
 
             <div class="card reveal delay-3">
-              <h3>Business Growth Systems</h3>
+              <div class="icon-row">
+                <span class="icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 20V9"></path>
+                    <path d="M8 13l4-4 4 4"></path>
+                    <path d="M5 20h14"></path>
+                  </svg>
+                </span>
+                <h3>Business Growth Systems</h3>
+              </div>
               <p class="muted">Designed operating structures and growth-oriented systems that help small and mid-sized businesses scale more effectively.</p>
             </div>
           </div>
@@ -988,10 +1220,38 @@
               </p>
 
               <ul class="list-clean">
-                <li>Strategic advisory for founders, operators, and business leaders</li>
-                <li>Business analysis and requirements clarity for initiatives</li>
-                <li>Project and execution leadership for cross-functional delivery</li>
-                <li>Growth architecture for small and mid-sized businesses</li>
+                <li>
+                  <div class="list-item-with-icon">
+                    <span class="list-item-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg>
+                    </span>
+                    Strategic advisory for founders, operators, and business leaders
+                  </div>
+                </li>
+                <li>
+                  <div class="list-item-with-icon">
+                    <span class="list-item-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h10"></path><path d="M4 17h7"></path></svg>
+                    </span>
+                    Business analysis and requirements clarity for initiatives
+                  </div>
+                </li>
+                <li>
+                  <div class="list-item-with-icon">
+                    <span class="list-item-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"></path></svg>
+                    </span>
+                    Project and execution leadership for cross-functional delivery
+                  </div>
+                </li>
+                <li>
+                  <div class="list-item-with-icon">
+                    <span class="list-item-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path></svg>
+                    </span>
+                    Growth architecture for small and mid-sized businesses
+                  </div>
+                </li>
               </ul>
             </div>
 
@@ -1001,27 +1261,62 @@
 
               <div class="service-grid">
                 <div class="card reveal delay-1">
-                  <h3>Business Analysis</h3>
+                  <div class="icon-row">
+                    <span class="icon-badge" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h10"></path><path d="M4 17h7"></path></svg>
+                    </span>
+                    <h3>Business Analysis</h3>
+                  </div>
                   <p class="muted">Clarify business needs, sharpen requirements, and translate complexity into executable decisions and solutions.</p>
                 </div>
+
                 <div class="card reveal delay-2">
-                  <h3>Project & Execution Leadership</h3>
+                  <div class="icon-row">
+                    <span class="icon-badge" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"></path><path d="M4 5h16"></path></svg>
+                    </span>
+                    <h3>Project & Execution Leadership</h3>
+                  </div>
                   <p class="muted">Bring structure, stakeholder alignment, and delivery discipline to high-value initiatives that need forward momentum.</p>
                 </div>
+
                 <div class="card reveal delay-2">
-                  <h3>Strategy Consulting</h3>
+                  <div class="icon-row">
+                    <span class="icon-badge" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M5 19l14-14"></path><path d="M8 5h11v11"></path></svg>
+                    </span>
+                    <h3>Strategy Consulting</h3>
+                  </div>
                   <p class="muted">Support leaders with decision framing, priority setting, execution planning, and strategic problem solving.</p>
                 </div>
+
                 <div class="card reveal delay-3">
-                  <h3>Management Consulting</h3>
+                  <div class="icon-row">
+                    <span class="icon-badge" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V22a2 2 0 0 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 0 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6 1.7 1.7 0 0 0 10 3.05V3a2 2 0 0 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.2.48.7 1 1.55 1H21a2 2 0 0 1 0 4h-.09c-.85 0-1.35.52-1.51 1z"></path></svg>
+                    </span>
+                    <h3>Management Consulting</h3>
+                  </div>
                   <p class="muted">Improve operating clarity, identify performance gaps, and strengthen how teams and initiatives execute.</p>
                 </div>
+
                 <div class="card reveal delay-3">
-                  <h3>Growth Systems Architecture</h3>
+                  <div class="icon-row">
+                    <span class="icon-badge" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path><path d="M5 20h14"></path></svg>
+                    </span>
+                    <h3>Growth Systems Architecture</h3>
+                  </div>
                   <p class="muted">Design scalable systems, frameworks, and operating structures that support sustainable business growth.</p>
                 </div>
+
                 <div class="card reveal delay-3">
-                  <h3>Strategic Partnering</h3>
+                  <div class="icon-row">
+                    <span class="icon-badge" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M8 12h8"></path><path d="M12 8v8"></path><circle cx="12" cy="12" r="9"></circle></svg>
+                    </span>
+                    <h3>Strategic Partnering</h3>
+                  </div>
                   <p class="muted">Support leaders who need a trusted thinking partner for high-value business, execution, and growth decisions.</p>
                 </div>
               </div>
@@ -1044,9 +1339,30 @@
           <div class="card reveal delay-2" style="background: rgba(255,255,255,0.03);">
             <p class="eyebrow">Best Fit</p>
             <div class="stack">
-              <div class="mini-card"><p>Leaders navigating complex initiatives or cross-functional delivery.</p></div>
-              <div class="mini-card"><p>Businesses that need clearer operating structure to scale effectively.</p></div>
-              <div class="mini-card"><p>Teams that need stronger alignment between strategy and execution.</p></div>
+              <div class="mini-card">
+                <div class="icon-row">
+                  <span class="icon-badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 12l8-4-8-4-8 4 8 4z"></path><path d="M4 8v8l8 4 8-4V8"></path></svg>
+                  </span>
+                  <p>Leaders navigating complex initiatives or cross-functional delivery.</p>
+                </div>
+              </div>
+              <div class="mini-card">
+                <div class="icon-row">
+                  <span class="icon-badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path></svg>
+                  </span>
+                  <p>Businesses that need clearer operating structure to scale effectively.</p>
+                </div>
+              </div>
+              <div class="mini-card">
+                <div class="icon-row">
+                  <span class="icon-badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M3 12h18"></path><path d="M12 3v18"></path></svg>
+                  </span>
+                  <p>Teams that need stronger alignment between strategy and execution.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1065,9 +1381,30 @@
               </p>
 
               <ul class="list-clean" style="margin-top: 26px;">
-                <li>Diagnose the real problem</li>
-                <li>Identify execution gaps and priority issues</li>
-                <li>Define a structured path forward</li>
+                <li>
+                  <div class="list-item-with-icon">
+                    <span class="list-item-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"></path></svg>
+                    </span>
+                    Diagnose the real problem
+                  </div>
+                </li>
+                <li>
+                  <div class="list-item-with-icon">
+                    <span class="list-item-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M4 12h16"></path><path d="M12 4v16"></path></svg>
+                    </span>
+                    Identify execution gaps and priority issues
+                  </div>
+                </li>
+                <li>
+                  <div class="list-item-with-icon">
+                    <span class="list-item-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M5 19l14-14"></path><path d="M8 5h11v11"></path></svg>
+                    </span>
+                    Define a structured path forward
+                  </div>
+                </li>
               </ul>
 
               <div class="hero-actions">
@@ -1083,9 +1420,32 @@
             <div class="card reveal delay-2">
               <p class="eyebrow">Ideal Clients</p>
               <div class="stack">
-                <div class="mini-card"><p>Founders and operators scaling their business</p></div>
-                <div class="mini-card"><p>Teams facing execution friction or alignment issues</p></div>
-                <div class="mini-card"><p>Leaders managing complex, high-stakes initiatives</p></div>
+                <div class="mini-card">
+                  <div class="icon-row">
+                    <span class="icon-badge" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </span>
+                    <p>Founders and operators scaling their business</p>
+                  </div>
+                </div>
+
+                <div class="mini-card">
+                  <div class="icon-row">
+                    <span class="icon-badge" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M8 10h8"></path><path d="M8 14h5"></path><path d="M21 12c0 4.97-4.03 9-9 9-1.54 0-2.99-.39-4.25-1.08L3 21l1.08-4.75A8.96 8.96 0 0 1 3 12c0-4.97 4.03-9 9-9s9 4.03 9 9z"></path></svg>
+                    </span>
+                    <p>Teams facing execution friction or alignment issues</p>
+                  </div>
+                </div>
+
+                <div class="mini-card">
+                  <div class="icon-row">
+                    <span class="icon-badge" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"></path></svg>
+                    </span>
+                    <p>Leaders managing complex, high-stakes initiatives</p>
+                  </div>
+                </div>
               </div>
 
               <p class="eyebrow" style="margin-top: 28px;">Pre-Call Qualification</p>
@@ -1165,13 +1525,27 @@
             <div class="card reveal delay-2">
               <div class="stack">
                 <div class="mini-card">
-                  <h3>Email</h3>
-                  <p class="muted"><a href="mailto:dillon1.noel@outlook.com">dillon1.noel@outlook.com</a></p>
+                  <div class="icon-row">
+                    <span class="icon-badge" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"></path><path d="M4 7l8 6 8-6"></path></svg>
+                    </span>
+                    <div>
+                      <h3>Email</h3>
+                      <p class="muted"><a href="mailto:dillon1.noel@outlook.com">dillon1.noel@outlook.com</a></p>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="mini-card">
-                  <h3>LinkedIn</h3>
-                  <p class="muted"><a href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">Connect on LinkedIn</a></p>
+                  <div class="icon-row">
+                    <span class="icon-badge" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-6a2 2 0 1 0-4 0v6h-4v-12h4v2"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    </span>
+                    <div>
+                      <h3>LinkedIn</h3>
+                      <p class="muted"><a href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">Connect on LinkedIn</a></p>
+                    </div>
+                  </div>
                 </div>
 
                 <a class="btn btn-primary" href="#intensive">Start with Strategy Intensive</a>
@@ -1198,11 +1572,14 @@
   <script>
     const backToTopBtn = document.getElementById("backToTop");
     const heroSection = document.querySelector(".hero");
+    const heroPhotoWrap = document.getElementById("heroPhotoWrap");
+    const heroGlow = document.getElementById("heroGlow");
     const navbar = document.querySelector(".topbar");
     const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
     const sectionsForNav = document.querySelectorAll("section[id]");
     const reveals = document.querySelectorAll(".reveal");
     const counters = document.querySelectorAll(".counter");
+    const progressBar = document.getElementById("scrollProgress");
 
     function updateNavOffset() {
       const navHeight = navbar ? navbar.offsetHeight : 96;
@@ -1282,6 +1659,27 @@
       requestAnimationFrame(update);
     }
 
+    function updateScrollProgress() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = `${progress}%`;
+    }
+
+    function updateHeroParallax() {
+      if (!heroSection || !heroPhotoWrap || !heroGlow) return;
+
+      const rect = heroSection.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const visibleAmount = Math.max(0, Math.min(1, 1 - Math.abs(rect.top) / viewportHeight));
+
+      const photoShift = rect.top * -0.06;
+      const glowShift = rect.top * -0.1;
+
+      heroPhotoWrap.style.setProperty("--hero-shift", `${photoShift}px`);
+      heroGlow.style.setProperty("--glow-shift", `${glowShift}px`);
+    }
+
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -1325,6 +1723,8 @@
     function onScroll() {
       toggleBackToTop();
       setActiveNavLink();
+      updateScrollProgress();
+      updateHeroParallax();
     }
 
     window.addEventListener("scroll", onScroll);
@@ -1332,12 +1732,16 @@
       updateNavOffset();
       toggleBackToTop();
       setActiveNavLink();
+      updateScrollProgress();
+      updateHeroParallax();
     });
 
     window.addEventListener("load", () => {
       updateNavOffset();
       toggleBackToTop();
       setActiveNavLink();
+      updateScrollProgress();
+      updateHeroParallax();
     });
   </script>
 </body>
