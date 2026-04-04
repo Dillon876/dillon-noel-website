@@ -235,6 +235,7 @@
       transition: 0.2s ease;
       border: 1px solid transparent;
       cursor: pointer;
+      font: inherit;
     }
 
     .btn:hover { transform: translateY(-1px); }
@@ -648,6 +649,55 @@
     .delay-2 { transition-delay: 0.16s; }
     .delay-3 { transition-delay: 0.24s; }
 
+    .qual-form {
+      margin-top: 14px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .qual-group {
+      display: grid;
+      gap: 8px;
+    }
+
+    .qual-label {
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    .qual-input,
+    .qual-textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.025);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 14px 14px;
+      font: inherit;
+      outline: none;
+      transition:
+        border-color 0.22s ease,
+        box-shadow 0.22s ease,
+        background 0.22s ease;
+    }
+
+    .qual-input::placeholder,
+    .qual-textarea::placeholder {
+      color: #7f7f7f;
+    }
+
+    .qual-input:focus,
+    .qual-textarea:focus {
+      border-color: rgba(201,162,39,0.45);
+      box-shadow: 0 0 0 3px rgba(201,162,39,0.12);
+      background: rgba(255,255,255,0.035);
+    }
+
+    .qual-textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       body { animation: none; opacity: 1; }
@@ -1039,17 +1089,61 @@
               </div>
 
               <p class="eyebrow" style="margin-top: 28px;">Pre-Call Qualification</p>
-              <div class="stack">
-                <div class="mini-card"><p>1. What problem are you trying to solve?</p></div>
-                <div class="mini-card"><p>2. What stage is your business or initiative in?</p></div>
-                <div class="mini-card"><p>3. What happens if this problem is not solved?</p></div>
-                <div class="mini-card"><p>4. What level of support do you need?</p></div>
-                <div class="mini-card"><p>5. What is your budget range?</p></div>
-              </div>
 
-              <p class="muted" style="font-size: 0.86rem; margin-top: 14px;">
-                Replace the button link with your real Typeform link.
-              </p>
+              <form class="qual-form">
+                <div class="qual-group">
+                  <label class="qual-label" for="qual-q1">1. What problem are you trying to solve?</label>
+                  <textarea
+                    id="qual-q1"
+                    class="qual-textarea"
+                    placeholder="Your answer..."
+                  ></textarea>
+                </div>
+
+                <div class="qual-group">
+                  <label class="qual-label" for="qual-q2">2. What stage is your business or initiative in?</label>
+                  <input
+                    id="qual-q2"
+                    class="qual-input"
+                    type="text"
+                    placeholder="Your answer..."
+                  />
+                </div>
+
+                <div class="qual-group">
+                  <label class="qual-label" for="qual-q3">3. What happens if this problem is not solved?</label>
+                  <input
+                    id="qual-q3"
+                    class="qual-input"
+                    type="text"
+                    placeholder="Your answer..."
+                  />
+                </div>
+
+                <div class="qual-group">
+                  <label class="qual-label" for="qual-q4">4. What level of support do you need?</label>
+                  <input
+                    id="qual-q4"
+                    class="qual-input"
+                    type="text"
+                    placeholder="Your answer..."
+                  />
+                </div>
+
+                <div class="qual-group">
+                  <label class="qual-label" for="qual-q5">5. What is your budget range?</label>
+                  <input
+                    id="qual-q5"
+                    class="qual-input"
+                    type="text"
+                    placeholder="Your answer..."
+                  />
+                </div>
+
+                <button type="button" class="btn btn-primary" style="margin-top: 8px;">
+                  Apply for Strategy Intensive
+                </button>
+              </form>
             </div>
           </div>
         </div>
@@ -1192,17 +1286,25 @@
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("in-view");
-          if (entry.target.classList.contains("counter")) {
-            animateCounter(entry.target);
-          }
         }
       });
     }, {
       threshold: 0.14
     });
 
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.5
+    });
+
     reveals.forEach((item) => revealObserver.observe(item));
-    counters.forEach((item) => revealObserver.observe(item));
+    counters.forEach((item) => counterObserver.observe(item));
 
     navLinks.forEach((link) => {
       link.addEventListener("click", function (e) {
