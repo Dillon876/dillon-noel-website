@@ -23,6 +23,7 @@
       --gold-2: #e0bc4a;
       --gold-soft: rgba(201,162,39,0.12);
       --gold-glow: rgba(201,162,39,0.18);
+      --focus-ring: rgba(224,188,74,0.42);
       --max: 1180px;
       --radius: 26px;
       --shadow: 0 24px 60px rgba(0,0,0,0.35);
@@ -143,7 +144,7 @@
       100% { background-position: 220% center; }
     }
 
-    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3, h4, p { margin-top: 0; }
 
     h1 {
       font-size: clamp(2.5rem, 5vw, 5rem);
@@ -164,6 +165,11 @@
       font-size: 1.3rem;
       line-height: 1.2;
       margin-bottom: 10px;
+    }
+
+    h4 {
+      font-size: 1rem;
+      margin-bottom: 8px;
     }
 
     .lead {
@@ -252,6 +258,27 @@
       transform: scaleX(1);
     }
 
+    .btn,
+    button,
+    input,
+    textarea,
+    a,
+    .mini-card,
+    .card {
+      outline: none;
+    }
+
+    .btn:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    a:focus-visible {
+      box-shadow:
+        0 0 0 3px rgba(0,0,0,0.5),
+        0 0 0 6px var(--focus-ring);
+      border-radius: 16px;
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -332,6 +359,35 @@
       background: #111;
     }
 
+    .hero-badge {
+      position: absolute;
+      right: -14px;
+      bottom: 24px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(10,10,10,0.85);
+      border: 1px solid rgba(201,162,39,0.24);
+      color: var(--gold-2);
+      font-size: 0.84rem;
+      font-weight: 700;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.28);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-badge svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
     .authority-line {
       margin-top: 18px;
       color: #d0d0d0;
@@ -352,7 +408,8 @@
     .hero-actions { margin-top: 28px; gap: 14px; }
 
     .pill,
-    .cert {
+    .cert,
+    .process-tag {
       border-radius: 999px;
       padding: 10px 14px;
       border: 1px solid var(--line);
@@ -377,7 +434,8 @@
 
     .proof-item,
     .card,
-    .mini-card {
+    .mini-card,
+    .testimonial-mini {
       border: 1px solid var(--line);
       box-shadow: var(--shadow);
     }
@@ -497,7 +555,8 @@
       margin-bottom: 10px;
     }
 
-    .icon-badge {
+    .icon-badge,
+    .process-number {
       width: 40px;
       height: 40px;
       border-radius: 12px;
@@ -513,6 +572,7 @@
         background 0.25s ease,
         border-color 0.25s ease;
       flex-shrink: 0;
+      font-weight: 800;
     }
 
     .icon-badge svg {
@@ -527,7 +587,9 @@
 
     .card:hover .icon-badge,
     .mini-card:hover .icon-badge,
-    .proof-item:hover .icon-badge {
+    .proof-item:hover .icon-badge,
+    .testimonial-mini:hover .icon-badge,
+    .process-step:hover .process-number {
       transform: translateY(-1px) scale(1.04);
       box-shadow: 0 0 16px rgba(224,188,74,0.18);
       background: rgba(201,162,39,0.16);
@@ -641,6 +703,172 @@
       border-top: 1px solid var(--line-soft);
       border-bottom: 1px solid var(--line-soft);
       pointer-events: none;
+    }
+
+    .process-wrap {
+      position: relative;
+      margin-top: 28px;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .process-line {
+      position: absolute;
+      top: 28px;
+      left: 16.5%;
+      right: 16.5%;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(201,162,39,0.12), rgba(224,188,74,0.5), rgba(201,162,39,0.12));
+      z-index: 0;
+    }
+
+    .process-step {
+      position: relative;
+      padding-top: 6px;
+    }
+
+    .process-card {
+      height: 100%;
+    }
+
+    .process-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .process-tag {
+      font-size: 0.78rem;
+      color: var(--gold-2);
+      border-color: rgba(201,162,39,0.24);
+      background: rgba(201,162,39,0.08);
+      padding: 8px 12px;
+    }
+
+    .process-cta-strip {
+      margin-top: 28px;
+      padding: 18px 20px;
+      border-radius: 20px;
+      border: 1px solid rgba(201,162,39,0.18);
+      background: linear-gradient(135deg, rgba(201,162,39,0.10), rgba(255,255,255,0.02));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .testimonials-stage {
+      position: relative;
+      min-height: 260px;
+      margin-top: 22px;
+    }
+
+    .testimonial-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+      pointer-events: none;
+    }
+
+    .testimonial-slide.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .quote-mark {
+      font-size: 4rem;
+      line-height: 1;
+      color: rgba(224,188,74,0.24);
+      margin-bottom: 8px;
+    }
+
+    .testimonial-quote {
+      font-size: 1.16rem;
+      line-height: 1.7;
+      color: var(--text);
+      max-width: 840px;
+    }
+
+    .testimonial-meta {
+      margin-top: 18px;
+      color: var(--muted);
+    }
+
+    .testimonial-name {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .testimonial-role {
+      font-size: 0.94rem;
+      color: var(--muted);
+    }
+
+    .testimonial-controls {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .testimonial-dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .testimonial-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: rgba(255,255,255,0.18);
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .testimonial-dot.active {
+      background: linear-gradient(180deg, var(--gold-2), var(--gold));
+      box-shadow: 0 0 10px rgba(224,188,74,0.25);
+    }
+
+    .testimonial-grid {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .testimonial-mini {
+      background: rgba(255,255,255,0.025);
+      border-radius: 18px;
+      padding: 16px;
+      cursor: pointer;
+      transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
+    }
+
+    .testimonial-mini:hover,
+    .testimonial-mini.active {
+      transform: translateY(-3px);
+      border-color: rgba(201,162,39,0.24);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .testimonial-mini p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
     }
 
     .contact-grid {
@@ -809,7 +1037,10 @@
       .mini-card,
       .list-clean li,
       .hero-photo-wrap,
-      .hero-glow {
+      .hero-glow,
+      .testimonial-slide,
+      .eyebrow,
+      .brand {
         transition: none !important;
         animation: none !important;
         transform: none !important;
@@ -826,12 +1057,18 @@
         grid-template-columns: 1fr;
       }
 
-      .case-grid {
+      .case-grid,
+      .testimonial-grid,
+      .process-grid {
         grid-template-columns: 1fr;
       }
 
       .hero-photo-wrap {
         margin: 0 auto;
+      }
+
+      .process-line {
+        display: none;
       }
     }
 
@@ -878,6 +1115,13 @@
         border-radius: 28px;
       }
 
+      .hero-badge {
+        right: 10px;
+        bottom: 12px;
+        font-size: 0.75rem;
+        padding: 8px 12px;
+      }
+
       h1 {
         font-size: clamp(2.1rem, 9vw, 3rem);
         line-height: 1;
@@ -887,7 +1131,8 @@
         font-size: 1rem;
       }
 
-      .hero-actions .btn {
+      .hero-actions .btn,
+      .process-cta-strip .btn {
         width: 100%;
       }
 
@@ -902,6 +1147,10 @@
         width: 20px;
         height: 20px;
       }
+
+      .testimonials-stage {
+        min-height: 320px;
+      }
     }
   </style>
 </head>
@@ -915,6 +1164,8 @@
         <div class="nav-links">
           <a href="#about">Executive Profile</a>
           <a href="#impact">Selected Impact</a>
+          <a href="#process">How I Work</a>
+          <a href="#testimonials">Testimonials</a>
           <a href="#services">Advisory Focus</a>
           <a href="#intensive">Strategy Intensive</a>
           <a href="#contact">Contact</a>
@@ -929,6 +1180,13 @@
             <div class="hero-glow" id="heroGlow"></div>
             <div class="hero-ring"></div>
             <img class="hero-photo" src="Headshot.jpg" alt="Dillon Noel headshot" />
+            <div class="hero-badge">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"></path>
+                <path d="M9.5 12.5l1.7 1.7 3.3-3.7"></path>
+              </svg>
+              CBAP® Certified
+            </div>
           </div>
 
           <div class="reveal delay-2">
@@ -1043,7 +1301,7 @@
                   <div class="icon-row">
                     <span class="icon-badge" aria-hidden="true">
                       <svg viewBox="0 0 24 24">
-                        <path d="M5 12l4 4L19 6"></path>
+                        <path d="M5 12l4 4 8-8"></path>
                       </svg>
                     </span>
                     <h3>Execution, Not Theory</h3>
@@ -1077,6 +1335,188 @@
                   <p class="muted">Designs systems that support stronger operating clarity, better execution, and scalable growth.</p>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="process" class="section reveal">
+      <div class="container">
+        <div class="section-shell">
+          <p class="eyebrow">How I Work</p>
+          <h2>From ambiguity to structured execution</h2>
+          <p class="lead">
+            My engagements are designed to reduce noise, create clarity, and move important work forward with structure.
+          </p>
+
+          <div class="process-wrap">
+            <div class="process-line"></div>
+
+            <div class="process-grid">
+              <div class="process-step reveal delay-1">
+                <div class="card process-card">
+                  <div class="icon-row">
+                    <span class="process-number">1</span>
+                    <h3>Diagnose</h3>
+                  </div>
+                  <p class="muted">
+                    Clarify the real problem, identify friction points, and surface the business, delivery, or growth constraints that matter most.
+                  </p>
+                  <div class="process-tags">
+                    <span class="process-tag">Discovery</span>
+                    <span class="process-tag">Problem Framing</span>
+                    <span class="process-tag">Context Mapping</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="process-step reveal delay-2">
+                <div class="card process-card">
+                  <div class="icon-row">
+                    <span class="process-number">2</span>
+                    <h3>Structure</h3>
+                  </div>
+                  <p class="muted">
+                    Turn complexity into a clear plan with priorities, requirements, operating structure, and an execution-ready path forward.
+                  </p>
+                  <div class="process-tags">
+                    <span class="process-tag">Priorities</span>
+                    <span class="process-tag">Requirements</span>
+                    <span class="process-tag">Operating Model</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="process-step reveal delay-3">
+                <div class="card process-card">
+                  <div class="icon-row">
+                    <span class="process-number">3</span>
+                    <h3>Execute</h3>
+                  </div>
+                  <p class="muted">
+                    Support leaders and teams through aligned action, stronger accountability, and disciplined movement toward measurable outcomes.
+                  </p>
+                  <div class="process-tags">
+                    <span class="process-tag">Delivery</span>
+                    <span class="process-tag">Alignment</span>
+                    <span class="process-tag">Momentum</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="process-cta-strip reveal delay-3">
+            <div>
+              <strong>Need a structured partner for a complex initiative?</strong>
+              <div class="muted">Start with the Strategy Intensive and we’ll map the right path forward.</div>
+            </div>
+            <a class="btn btn-primary" href="#intensive">Start with Strategy Intensive</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="testimonials" class="section band reveal">
+      <div class="container">
+        <div class="section-shell">
+          <p class="eyebrow">Testimonials</p>
+          <h2>What others say about working with me</h2>
+          <p class="lead">
+            Social proof builds trust. Replace these with real client, colleague, or LinkedIn recommendation quotes when ready.
+          </p>
+
+          <div class="testimonials-stage">
+            <div class="testimonial-slide active" data-index="0">
+              <div class="quote-mark">“</div>
+              <p class="testimonial-quote">
+                Dillon brings order to complexity. He has a strong ability to break down large, ambiguous initiatives into clear, actionable workstreams that teams can actually execute.
+              </p>
+              <div class="testimonial-meta">
+                <div class="testimonial-name">Senior Delivery Leader</div>
+                <div class="testimonial-role">Enterprise Technology / Cross-Functional Programs</div>
+              </div>
+            </div>
+
+            <div class="testimonial-slide" data-index="1">
+              <div class="quote-mark">“</div>
+              <p class="testimonial-quote">
+                What stands out most is his structured thinking. He does not just identify problems — he organizes them, frames decisions clearly, and helps move the work forward.
+              </p>
+              <div class="testimonial-meta">
+                <div class="testimonial-name">Product & Operations Partner</div>
+                <div class="testimonial-role">Strategy, Product, and Execution</div>
+              </div>
+            </div>
+
+            <div class="testimonial-slide" data-index="2">
+              <div class="quote-mark">“</div>
+              <p class="testimonial-quote">
+                Dillon has a rare mix of business analysis rigor and execution mindset. He asks the right questions, creates clarity fast, and helps teams stay aligned around what matters.
+              </p>
+              <div class="testimonial-meta">
+                <div class="testimonial-name">Cross-Functional Stakeholder</div>
+                <div class="testimonial-role">Enterprise SaaS / Program Delivery</div>
+              </div>
+            </div>
+
+            <div class="testimonial-slide" data-index="3">
+              <div class="quote-mark">“</div>
+              <p class="testimonial-quote">
+                He is the kind of person you want involved when an initiative feels too complex, too broad, or too messy. He brings structure, confidence, and momentum to the room.
+              </p>
+              <div class="testimonial-meta">
+                <div class="testimonial-name">Business Transformation Colleague</div>
+                <div class="testimonial-role">Strategy and Change Delivery</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-controls">
+            <div class="testimonial-dots" id="testimonialDots">
+              <button class="testimonial-dot active" aria-label="Show testimonial 1" data-index="0"></button>
+              <button class="testimonial-dot" aria-label="Show testimonial 2" data-index="1"></button>
+              <button class="testimonial-dot" aria-label="Show testimonial 3" data-index="2"></button>
+              <button class="testimonial-dot" aria-label="Show testimonial 4" data-index="3"></button>
+            </div>
+          </div>
+
+          <div class="testimonial-grid">
+            <div class="testimonial-mini active" data-index="0" tabindex="0">
+              <div class="icon-row">
+                <span class="icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M9 11H5V7h4v4zm10 0h-4V7h4v4zM9 17H5v-4h4v4zm10 0h-4v-4h4v4z"></path></svg>
+                </span>
+              </div>
+              <p>Structure, clarity, and strong workstream definition.</p>
+            </div>
+
+            <div class="testimonial-mini" data-index="1" tabindex="0">
+              <div class="icon-row">
+                <span class="icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path></svg>
+                </span>
+              </div>
+              <p>Sharp decision framing and organized thinking.</p>
+            </div>
+
+            <div class="testimonial-mini" data-index="2" tabindex="0">
+              <div class="icon-row">
+                <span class="icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h10"></path><path d="M4 17h7"></path></svg>
+                </span>
+              </div>
+              <p>Strong blend of analysis rigor and execution focus.</p>
+            </div>
+
+            <div class="testimonial-mini" data-index="3" tabindex="0">
+              <div class="icon-row">
+                <span class="icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M3 12h18"></path><path d="M12 3v18"></path></svg>
+                </span>
+              </div>
+              <p>Trusted in ambiguity, complexity, and change.</p>
             </div>
           </div>
         </div>
@@ -1581,6 +2021,12 @@
     const counters = document.querySelectorAll(".counter");
     const progressBar = document.getElementById("scrollProgress");
 
+    const testimonialSlides = document.querySelectorAll(".testimonial-slide");
+    const testimonialDots = document.querySelectorAll(".testimonial-dot");
+    const testimonialMiniCards = document.querySelectorAll(".testimonial-mini");
+    let testimonialIndex = 0;
+    let testimonialInterval;
+
     function updateNavOffset() {
       const navHeight = navbar ? navbar.offsetHeight : 96;
       document.documentElement.style.setProperty("--nav-offset", `${navHeight + 20}px`);
@@ -1668,10 +2114,7 @@
 
     function updateHeroParallax() {
       if (!heroSection || !heroPhotoWrap || !heroGlow) return;
-
       const rect = heroSection.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const visibleAmount = Math.max(0, Math.min(1, 1 - Math.abs(rect.top) / viewportHeight));
 
       const photoShift = rect.top * -0.06;
       const glowShift = rect.top * -0.1;
@@ -1699,6 +2142,52 @@
       });
     }, {
       threshold: 0.5
+    });
+
+    function showTestimonial(index) {
+      testimonialIndex = index;
+
+      testimonialSlides.forEach((slide, i) => {
+        slide.classList.toggle("active", i === index);
+      });
+
+      testimonialDots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === index);
+      });
+
+      testimonialMiniCards.forEach((card, i) => {
+        card.classList.toggle("active", i === index);
+      });
+    }
+
+    function startTestimonialRotation() {
+      clearInterval(testimonialInterval);
+      testimonialInterval = setInterval(() => {
+        testimonialIndex = (testimonialIndex + 1) % testimonialSlides.length;
+        showTestimonial(testimonialIndex);
+      }, 5000);
+    }
+
+    testimonialDots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        showTestimonial(Number(dot.dataset.index));
+        startTestimonialRotation();
+      });
+    });
+
+    testimonialMiniCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        showTestimonial(Number(card.dataset.index));
+        startTestimonialRotation();
+      });
+
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          showTestimonial(Number(card.dataset.index));
+          startTestimonialRotation();
+        }
+      });
     });
 
     reveals.forEach((item) => revealObserver.observe(item));
@@ -1742,6 +2231,8 @@
       setActiveNavLink();
       updateScrollProgress();
       updateHeroParallax();
+      showTestimonial(0);
+      startTestimonialRotation();
     });
   </script>
 </body>
