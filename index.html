@@ -1,453 +1,714 @@
-export default function PersonalBrandWebsite() {
-  const services = [
-    {
-      title: "Business Analysis",
-      description:
-        "Clarify business needs, sharpen requirements, and translate complexity into executable decisions and solutions.",
-    },
-    {
-      title: "Project & Execution Leadership",
-      description:
-        "Bring structure, stakeholder alignment, and delivery discipline to high-value initiatives that need forward momentum.",
-    },
-    {
-      title: "Strategy Consulting",
-      description:
-        "Support leaders with decision framing, priority setting, execution planning, and strategic problem solving.",
-    },
-    {
-      title: "Management Consulting",
-      description:
-        "Improve operating clarity, identify performance gaps, and strengthen how teams and initiatives execute.",
-    },
-    {
-      title: "Growth Systems Architecture",
-      description:
-        "Design scalable systems, frameworks, and operating structures that support sustainable business growth.",
-    },
-  ];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dillon Noel | Strategy, Execution, and Growth Architecture</title>
+  <meta
+    name="description"
+    content="Dillon Noel helps leaders solve complex business problems through strategy, execution, and growth-focused operating structure."
+  />
+  <style>
+    :root {
+      --bg: #050505;
+      --bg-soft: #0d0d0d;
+      --panel: rgba(255,255,255,0.04);
+      --panel-2: rgba(0,0,0,0.22);
+      --line: rgba(255,255,255,0.1);
+      --text: #f5f5f5;
+      --muted: #b8b8b8;
+      --gold: #d4af37;
+      --gold-soft: rgba(212,175,55,0.1);
+      --max: 1180px;
+      --radius: 24px;
+      --shadow: 0 24px 60px rgba(0,0,0,0.38);
+    }
 
-  const proofPoints = [
-    { stat: "7", label: "enterprise SaaS applications managed" },
-    { stat: "2", label: "applications built from concept to production" },
-    { stat: "SMB", label: "growth systems designed for scaling businesses" },
-  ];
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(212,175,55,0.12), transparent 26%),
+        radial-gradient(circle at bottom left, rgba(255,255,255,0.04), transparent 24%),
+        var(--bg);
+      line-height: 1.6;
+    }
 
-  const certifications = [
-    "CBAP®",
-    "PSPO",
-    "PSM",
-  ];
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
 
-  const differentiators = [
-    {
-      title: "Clarity Over Confusion",
-      description:
-        "I break complex business problems into structured, actionable paths leaders and teams can execute with confidence.",
-    },
-    {
-      title: "Execution, Not Theory",
-      description:
-        "My work is grounded in implementation, alignment, and measurable progress—not recommendations that stay on paper.",
-    },
-    {
-      title: "Enterprise-Grade Thinking",
-      description:
-        "I apply structured thinking shaped by high-scale environments, cross-functional initiatives, and delivery complexity.",
-    },
-    {
-      title: "Built for Growth",
-      description:
-        "I help businesses build the operating clarity and systems needed to scale with greater control and consistency.",
-    },
-  ];
+    .container {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+    }
 
-  const focusAreas = [
-    "Strategy & Decision Structuring",
-    "Execution Leadership",
-    "Operational Clarity",
-    "Growth Systems",
-  ];
+    .section {
+      padding: 80px 0;
+    }
 
-  const caseStudies = [
-    {
-      title: "Enterprise Delivery Leadership",
-      description:
-        "Led coordination and execution across multiple enterprise SaaS systems, creating structure, alignment, and stronger delivery control.",
-    },
-    {
-      title: "0-to-1 Product Execution",
-      description:
-        "Supported the build of high-value applications from concept through production, bridging strategic intent with practical execution.",
-    },
-    {
-      title: "Business Growth Systems",
-      description:
-        "Designed operating structures and growth-oriented systems that help small and mid-sized businesses scale more effectively.",
-    },
-  ];
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
 
-  const engagementModels = [
-    "Strategic advisory for founders, operators, and business leaders",
-    "Business analysis and requirements clarity for initiatives",
-    "Project and execution leadership for cross-functional delivery",
-    "Growth architecture for small and mid-sized businesses",
-  ];
+    h1, h2, h3, p { margin-top: 0; }
 
-  const intensiveOutcomes = [
-    "Diagnose the real problem",
-    "Identify execution gaps and priority issues",
-    "Define a structured path forward",
-  ];
+    h1 {
+      font-size: clamp(2.4rem, 5vw, 4.7rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      margin-bottom: 18px;
+    }
 
-  const idealClients = [
-    "Founders and operators scaling their business",
-    "Teams facing execution friction or alignment issues",
-    "Leaders managing complex, high-stakes initiatives",
-  ];
+    h2 {
+      font-size: clamp(1.9rem, 3vw, 3.2rem);
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+      margin-bottom: 18px;
+    }
 
-  const qualificationQuestions = [
-    "What problem are you trying to solve?",
-    "What stage is your business or initiative in?",
-    "What happens if this problem is not solved?",
-    "What level of support do you need?",
-    "What is your budget range?",
-  ];
+    h3 {
+      font-size: 1.3rem;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
 
-  return (
-    <div className="min-h-screen bg-neutral-950 text-white">
-      <section className="relative overflow-hidden border-b border-white/10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(234,179,8,0.14),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.05),transparent_25%)]" />
-        <div className="relative mx-auto max-w-7xl px-6 py-24 lg:px-10">
-          <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-            <div className="order-2 lg:order-1">
-              <div className="relative mx-auto w-full max-w-md">
-                <div className="absolute inset-6 rounded-[2rem] bg-amber-300/10 blur-3xl" />
-                <img
-                  src="headshot.jpg"
-                  alt="Dillon Noel headshot"
-                  className="relative mx-auto h-[520px] w-full rounded-[2rem] border border-white/10 object-cover object-top shadow-2xl"
-                />
-              </div>
-            </div>
+    .lead {
+      font-size: 1.12rem;
+      color: var(--muted);
+      max-width: 760px;
+    }
 
-            <div className="order-1 lg:order-2">
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.35em] text-amber-300">
-                Dillon Noel
-              </p>
-              <h1 className="max-w-5xl text-5xl font-bold leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
-                Strategy, execution, and growth architecture for leaders solving complex business problems.
-              </h1>
-              <p className="mt-6 max-w-3xl text-lg leading-8 text-neutral-300 sm:text-xl">
-                I help organizations clarify priorities, align stakeholders, and build execution systems that turn strategy into measurable progress.
-              </p>
-              <div className="mt-6 text-sm font-medium text-neutral-400">
-                Managed 7 enterprise SaaS applications • Built 2 applications from concept to production
-              </div>
-              <div className="mt-6 flex flex-wrap gap-3 text-sm text-neutral-300">
-                <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Business Analysis</span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Strategy Consulting</span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Execution Leadership</span>
-              </div>
-              <div className="mt-6 flex flex-wrap gap-3 text-xs text-amber-300">
-                {certifications.map((c) => (
-                  <span key={c} className="rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1.5 font-semibold">
-                    {c}
-                  </span>
-                ))}
-              </div>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <a
-                  href="#intensive"
-                  className="rounded-2xl bg-amber-400 px-6 py-3 text-sm font-semibold text-neutral-950 shadow-lg transition hover:scale-[1.02]"
-                >
-                  Apply for Strategy Intensive
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/dillon-noel/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-2xl border border-white/15 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/5"
-                >
-                  LinkedIn Profile
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    .muted { color: var(--muted); }
 
-      <section className="mx-auto max-w-7xl px-6 py-14 lg:px-10">
-        <div className="grid gap-4 rounded-[2rem] border border-white/10 bg-white/5 p-6 md:grid-cols-3">
-          {proofPoints.map((item) => (
-            <div key={item.label} className="rounded-2xl border border-white/10 bg-black/20 p-6">
-              <div className="text-4xl font-bold text-amber-300">{item.stat}</div>
-              <p className="mt-3 text-neutral-300">{item.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(14px);
+      background: rgba(5,5,5,0.8);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
 
-      <section id="about" className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-        <div className="grid gap-12 lg:grid-cols-[1.02fr_0.98fr]">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-300">
-              Executive Profile
-            </p>
-            <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
-              Clarity in complexity. Structure in execution.
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-neutral-300">
-              Dillon Noel is a strategy and execution professional who helps leaders navigate complex initiatives, strengthen delivery, and build systems that scale.
-            </p>
-            <p className="mt-4 text-lg leading-8 text-neutral-300">
-              His work bridges business analysis, product thinking, and operational execution—bringing structure to ambiguity and turning ideas into actionable outcomes.
-            </p>
-          </div>
+    .nav {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
 
-          <div className="rounded-[2rem] border border-white/10 bg-white/5 p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-300">
-              Why Leaders Work With Me
-            </p>
-            <div className="mt-6 space-y-4">
-              {differentiators.map((item) => (
-                <div key={item.title} className="rounded-2xl border border-white/10 bg-black/20 p-5">
-                  <h4 className="text-lg font-semibold text-white">{item.title}</h4>
-                  <p className="mt-2 text-neutral-300">{item.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+    .brand {
+      color: var(--gold);
+      font-weight: 800;
+      font-size: 1.08rem;
+      letter-spacing: 0.02em;
+    }
 
-      <section className="border-y border-white/10 bg-white/[0.03]">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-          <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr]">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-300">
-                Advisory Focus
-              </p>
-              <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Where I create value</h2>
-              <p className="mt-6 text-lg leading-8 text-neutral-300">
-                I help businesses and teams move from ambiguity to execution by creating clarity across strategy, operations, delivery, and growth.
-              </p>
-            </div>
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              {focusAreas.map((pillar) => (
-                <div
-                  key={pillar}
-                  className="rounded-[1.75rem] border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur"
-                >
-                  <p className="text-sm uppercase tracking-[0.25em] text-amber-300">
-                    Focus Area
-                  </p>
-                  <h3 className="mt-3 text-2xl font-semibold leading-tight">{pillar}</h3>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+    .nav-links a:hover { color: var(--text); }
 
-      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-        <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-300">
-            Selected Impact
-          </p>
-          <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Representative outcomes</h2>
-        </div>
-        <div className="mt-10 grid gap-6 lg:grid-cols-3">
-          {caseStudies.map((item) => (
-            <div key={item.title} className="rounded-[2rem] border border-white/10 bg-neutral-900 p-8 shadow-xl">
-              <h3 className="text-2xl font-semibold">{item.title}</h3>
-              <p className="mt-4 leading-7 text-neutral-300">{item.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 22px;
+      border-radius: 16px;
+      font-weight: 700;
+      transition: 0.2s ease;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
 
-      <section id="services" className="border-y border-white/10 bg-white/[0.03]">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-          <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr]">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-300">
-                Engagement Models
-              </p>
-              <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">How I support organizations</h2>
-              <p className="mt-6 text-lg leading-8 text-neutral-300">
-                I work with leaders, teams, and businesses that need better structure, sharper thinking, and stronger execution.
-              </p>
-              <div className="mt-8 space-y-3">
-                {engagementModels.map((item) => (
-                  <div key={item} className="rounded-2xl border border-white/10 bg-black/20 px-4 py-4 text-neutral-200">
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
+    .btn:hover { transform: translateY(-1px); }
 
-            <div>
-              <div className="max-w-2xl">
-                <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-300">
-                  Core Capabilities
-                </p>
-                <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Advisory and execution capabilities</h2>
-              </div>
-              <div className="mt-10 grid gap-6 md:grid-cols-2">
-                {services.map((service) => (
-                  <div key={service.title} className="rounded-[2rem] border border-white/10 bg-neutral-900 p-8 shadow-xl">
-                    <h3 className="text-2xl font-semibold">{service.title}</h3>
-                    <p className="mt-4 leading-7 text-neutral-300">{service.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    .btn-primary {
+      background: var(--gold);
+      color: #0b0b0b;
+      box-shadow: var(--shadow);
+    }
 
-      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-        <div className="grid gap-8 rounded-[2.25rem] border border-amber-300/20 bg-gradient-to-br from-amber-300/10 via-transparent to-white/5 p-10 lg:grid-cols-[1.12fr_0.88fr]">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-300">
-              Strategic Positioning
-            </p>
-            <blockquote className="mt-6 max-w-4xl text-3xl font-semibold leading-tight text-white sm:text-4xl lg:text-5xl">
-              “For leaders who need more than ideas—clarity, structure, and execution that moves the business forward.”
-            </blockquote>
-          </div>
-          <div className="rounded-[2rem] border border-white/10 bg-black/20 p-6">
-            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-amber-300">Best Fit</p>
-            <div className="mt-4 space-y-3 text-neutral-300">
-              <p>Leaders navigating complex initiatives or cross-functional delivery.</p>
-              <p>Businesses that need clearer operating structure to scale effectively.</p>
-              <p>Teams that need stronger alignment between strategy and execution.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+    .btn-secondary {
+      border-color: var(--line);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+    }
 
-      <section id="intensive" className="border-y border-white/10 bg-white/[0.03]">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-          <div className="grid gap-12 lg:grid-cols-[1.02fr_0.98fr]">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-300">
-                Strategy Intensive
-              </p>
-              <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Start with a focused strategy session</h2>
-              <p className="mt-6 text-lg leading-8 text-neutral-300">
-                A structured session designed for leaders who need clarity on a complex business, execution, or growth challenge.
-              </p>
+    .hero {
+      padding: 72px 0 34px;
+    }
 
-              <div className="mt-8 space-y-4 text-neutral-300">
-                {intensiveOutcomes.map((item) => (
-                  <p key={item}>• {item}</p>
-                ))}
-              </div>
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 48px;
+      align-items: center;
+    }
 
-              <div className="mt-8 flex flex-wrap gap-4">
-                <a
-                  href="https://form.typeform.com/to/your-typeform-id"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-2xl bg-amber-400 px-6 py-3 font-semibold text-neutral-950 transition hover:scale-[1.02]"
-                >
-                  Apply for Strategy Call
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/dillon-noel/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-2xl border border-white/10 px-6 py-3 font-semibold text-white transition hover:bg-white/5"
-                >
-                  Message on LinkedIn
-                </a>
-              </div>
+    .hero-photo-wrap {
+      position: relative;
+      max-width: 420px;
+    }
 
-              <p className="mt-5 max-w-2xl text-sm text-neutral-400">
-                Most clients come in with unclear problems. They leave with structured clarity and a path forward.
-              </p>
-            </div>
+    .hero-glow {
+      position: absolute;
+      inset: 8% 2% -2% 8%;
+      background: radial-gradient(circle, rgba(212,175,55,0.2), transparent 62%);
+      filter: blur(34px);
+      z-index: 0;
+    }
 
-            <div className="rounded-[2rem] border border-white/10 bg-black/20 p-8">
-              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-amber-300">
-                Ideal Clients
-              </p>
-              <div className="mt-4 space-y-3 text-neutral-300">
-                {idealClients.map((item) => (
-                  <p key={item}>• {item}</p>
-                ))}
-              </div>
+    .hero-photo {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 540px;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 30px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      background: #101010;
+    }
 
-              <p className="mt-8 text-sm font-semibold uppercase tracking-[0.25em] text-amber-300">
-                Pre-Call Qualification
-              </p>
-              <div className="mt-4 space-y-3 text-sm text-neutral-300">
-                {qualificationQuestions.map((item, index) => (
-                  <p key={item}>{index + 1}. {item}</p>
-                ))}
-              </div>
+    .authority-line {
+      margin-top: 18px;
+      color: #cfcfcf;
+      font-size: 0.96rem;
+    }
 
-              <p className="mt-4 text-xs text-neutral-500">
-                Replace the current link with your Typeform link to activate the qualification funnel.
-              </p>
+    .pill-row,
+    .cert-row,
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
 
-              <p className="mt-8 text-sm font-semibold uppercase tracking-[0.25em] text-amber-300">
-                Engagement Flow
-              </p>
-              <div className="mt-4 space-y-3 text-neutral-300">
-                <p>1. Strategy call application</p>
-                <p>2. Problem diagnosis + opportunity mapping</p>
-                <p>3. Advisory or execution engagement</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    .pill-row { margin-top: 22px; }
+    .cert-row { margin-top: 14px; }
+    .hero-actions { margin-top: 28px; gap: 14px; }
 
-      <section id="contact" className="border-t border-white/10 bg-neutral-900/70">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-          <div className="grid gap-8 lg:grid-cols-[1fr_0.9fr]">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-300">
-                Contact
-              </p>
-              <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Let’s discuss your next initiative</h2>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-neutral-300">
-                Reach out for consulting, strategic advisory, project leadership, or business growth conversations.
-              </p>
-            </div>
+    .pill,
+    .cert {
+      border-radius: 999px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      font-size: 0.9rem;
+    }
 
-            <div className="rounded-[2rem] border border-white/10 bg-white/5 p-8">
-              <div className="grid gap-4">
-                <div className="rounded-2xl border border-white/10 bg-black/20 px-4 py-4">
-                  <p className="text-sm uppercase tracking-[0.2em] text-amber-300">Email</p>
-                  <a className="mt-2 block text-neutral-200" href="mailto:dillon1.noel@outlook.com">dillon1.noel@outlook.com</a>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-black/20 px-4 py-4">
-                  <p className="text-sm uppercase tracking-[0.2em] text-amber-300">LinkedIn</p>
-                  <a
-                    className="mt-2 block text-neutral-200"
-                    href="https://www.linkedin.com/in/dillon-noel/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Connect on LinkedIn
-                  </a>
-                </div>
-                <a
-                  href="#intensive"
-                  className="inline-flex items-center justify-center rounded-2xl bg-amber-400 px-6 py-3 font-semibold text-neutral-950 transition hover:scale-[1.01]"
-                >
-                  Start with Strategy Intensive
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    .cert {
+      color: var(--gold);
+      border-color: rgba(212,175,55,0.26);
+      background: var(--gold-soft);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .proof-bar {
+      margin-top: 24px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      border-radius: 26px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .proof-item,
+    .card,
+    .mini-card {
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .proof-item {
+      background: var(--panel-2);
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .proof-stat {
+      color: var(--gold);
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .grid-2-alt {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 30px;
+    }
+
+    .stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .mini-card {
+      background: var(--panel-2);
+      border-radius: 18px;
+      padding: 18px 20px;
+    }
+
+    .focus-grid,
+    .service-grid,
+    .case-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .focus-grid,
+    .service-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .case-grid {
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 24px;
+    }
+
+    .list-clean {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .list-clean li {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--panel-2);
+    }
+
+    .positioning {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 24px;
+      padding: 34px;
+      border: 1px solid rgba(212,175,55,0.22);
+      border-radius: 30px;
+      background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(255,255,255,0.03));
+      box-shadow: var(--shadow);
+    }
+
+    blockquote {
+      margin: 0;
+      font-size: clamp(1.65rem, 3vw, 2.9rem);
+      line-height: 1.12;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .band {
+      background: rgba(255,255,255,0.03);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 0.9fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .footer {
+      padding: 34px 0 56px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    @media (max-width: 1100px) {
+      .hero-grid,
+      .grid-2,
+      .grid-2-alt,
+      .positioning,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .case-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-photo-wrap {
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14px 0;
+      }
+
+      .proof-bar,
+      .focus-grid,
+      .service-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section { padding: 60px 0; }
+      .hero { padding: 48px 0 26px; }
+
+      .card,
+      .positioning {
+        padding: 22px;
+      }
+
+      .hero-photo {
+        height: 460px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container nav">
+      <div class="brand">Dillon Noel</div>
+      <div class="nav-links">
+        <a href="#about">Executive Profile</a>
+        <a href="#impact">Selected Impact</a>
+        <a href="#services">Advisory Focus</a>
+        <a href="#intensive">Strategy Intensive</a>
+        <a href="#contact">Contact</a>
+      </div>
     </div>
-  );
-}
+  </div>
+
+  <header class="hero container">
+    <div class="hero-grid">
+      <div class="hero-photo-wrap">
+        <div class="hero-glow"></div>
+        <img class="hero-photo" src="headshot.jpg" alt="Dillon Noel headshot" />
+      </div>
+
+      <div>
+        <p class="eyebrow">Dillon Noel</p>
+        <h1>Strategy, execution, and growth architecture for leaders solving complex business problems.</h1>
+        <p class="lead">
+          I help organizations clarify priorities, align stakeholders, and build execution systems that turn strategy into measurable progress.
+        </p>
+
+        <div class="authority-line">
+          Managed 7 enterprise SaaS applications • Built 2 applications from concept to production
+        </div>
+
+        <div class="pill-row">
+          <span class="pill">Business Analysis</span>
+          <span class="pill">Strategy Consulting</span>
+          <span class="pill">Execution Leadership</span>
+        </div>
+
+        <div class="cert-row">
+          <span class="cert">CBAP®</span>
+          <span class="cert">PSPO</span>
+          <span class="cert">PSM</span>
+        </div>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#intensive">Apply for Strategy Intensive</a>
+          <a class="btn btn-secondary" href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">LinkedIn Profile</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="proof-bar">
+      <div class="proof-item">
+        <div class="proof-stat">7</div>
+        <p class="muted">Enterprise SaaS applications managed</p>
+      </div>
+      <div class="proof-item">
+        <div class="proof-stat">2</div>
+        <p class="muted">Applications built from concept to production</p>
+      </div>
+      <div class="proof-item">
+        <div class="proof-stat">SMB</div>
+        <p class="muted">Growth systems designed for scaling businesses</p>
+      </div>
+    </div>
+  </header>
+
+  <section id="about" class="section">
+    <div class="container grid-2">
+      <div>
+        <p class="eyebrow">Executive Profile</p>
+        <h2>Clarity in complexity. Structure in execution.</h2>
+        <p class="lead">
+          Dillon Noel is a strategy and execution professional who helps leaders navigate complex initiatives, strengthen delivery, and build systems that scale.
+        </p>
+        <p class="muted">
+          His work bridges business analysis, product thinking, and operational execution—bringing structure to ambiguity and turning ideas into actionable outcomes.
+        </p>
+      </div>
+
+      <div class="card">
+        <p class="eyebrow">Why Leaders Work With Me</p>
+        <div class="stack">
+          <div class="mini-card">
+            <h3>Clarity Over Confusion</h3>
+            <p class="muted">Breaks complex business problems into structured, actionable paths leaders and teams can execute with confidence.</p>
+          </div>
+          <div class="mini-card">
+            <h3>Execution, Not Theory</h3>
+            <p class="muted">Focuses on implementation, alignment, and measurable progress—not recommendations that stay on paper.</p>
+          </div>
+          <div class="mini-card">
+            <h3>Enterprise-Grade Thinking</h3>
+            <p class="muted">Applies structured thinking shaped by high-scale environments and delivery complexity.</p>
+          </div>
+          <div class="mini-card">
+            <h3>Built for Growth</h3>
+            <p class="muted">Designs systems that support stronger operating clarity, better execution, and scalable growth.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="container grid-2-alt">
+      <div>
+        <p class="eyebrow">Advisory Focus</p>
+        <h2>Where I create value</h2>
+        <p class="lead">
+          I help businesses and teams move from ambiguity to execution by creating clarity across strategy, operations, delivery, and growth.
+        </p>
+      </div>
+
+      <div class="focus-grid">
+        <div class="card">
+          <p class="eyebrow">Focus Area</p>
+          <h3>Strategy & Decision Structuring</h3>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Focus Area</p>
+          <h3>Execution Leadership</h3>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Focus Area</p>
+          <h3>Operational Clarity</h3>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Focus Area</p>
+          <h3>Growth Systems</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="impact" class="section">
+    <div class="container">
+      <p class="eyebrow">Selected Impact</p>
+      <h2>Representative outcomes</h2>
+
+      <div class="case-grid">
+        <div class="card">
+          <h3>Enterprise Delivery Leadership</h3>
+          <p class="muted">Led coordination and execution across multiple enterprise SaaS systems, creating structure, alignment, and stronger delivery control.</p>
+        </div>
+
+        <div class="card">
+          <h3>0-to-1 Product Execution</h3>
+          <p class="muted">Supported the build of high-value applications from concept through production, bridging strategic intent with practical execution.</p>
+        </div>
+
+        <div class="card">
+          <h3>Business Growth Systems</h3>
+          <p class="muted">Designed operating structures and growth-oriented systems that help small and mid-sized businesses scale more effectively.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="section band">
+    <div class="container grid-2-alt">
+      <div>
+        <p class="eyebrow">Engagement Models</p>
+        <h2>How I support organizations</h2>
+        <p class="lead">
+          I work with leaders, teams, and businesses that need better structure, sharper thinking, and stronger execution.
+        </p>
+
+        <ul class="list-clean">
+          <li>Strategic advisory for founders, operators, and business leaders</li>
+          <li>Business analysis and requirements clarity for initiatives</li>
+          <li>Project and execution leadership for cross-functional delivery</li>
+          <li>Growth architecture for small and mid-sized businesses</li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="eyebrow">Core Capabilities</p>
+        <h2>Advisory and execution capabilities</h2>
+
+        <div class="service-grid">
+          <div class="card">
+            <h3>Business Analysis</h3>
+            <p class="muted">Clarify business needs, sharpen requirements, and translate complexity into executable decisions and solutions.</p>
+          </div>
+          <div class="card">
+            <h3>Project & Execution Leadership</h3>
+            <p class="muted">Bring structure, stakeholder alignment, and delivery discipline to high-value initiatives that need forward momentum.</p>
+          </div>
+          <div class="card">
+            <h3>Strategy Consulting</h3>
+            <p class="muted">Support leaders with decision framing, priority setting, execution planning, and strategic problem solving.</p>
+          </div>
+          <div class="card">
+            <h3>Management Consulting</h3>
+            <p class="muted">Improve operating clarity, identify performance gaps, and strengthen how teams and initiatives execute.</p>
+          </div>
+          <div class="card">
+            <h3>Growth Systems Architecture</h3>
+            <p class="muted">Design scalable systems, frameworks, and operating structures that support sustainable business growth.</p>
+          </div>
+          <div class="card">
+            <h3>Strategic Partnering</h3>
+            <p class="muted">Support leaders who need a trusted thinking partner for high-value business, execution, and growth decisions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container positioning">
+      <div>
+        <p class="eyebrow">Strategic Positioning</p>
+        <blockquote>
+          “For leaders who need more than ideas—clarity, structure, and execution that moves the business forward.”
+        </blockquote>
+      </div>
+
+      <div class="card" style="background: var(--panel-2);">
+        <p class="eyebrow">Best Fit</p>
+        <div class="stack">
+          <div class="mini-card"><p>Leaders navigating complex initiatives or cross-functional delivery.</p></div>
+          <div class="mini-card"><p>Businesses that need clearer operating structure to scale effectively.</p></div>
+          <div class="mini-card"><p>Teams that need stronger alignment between strategy and execution.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="intensive" class="section band">
+    <div class="container grid-2">
+      <div>
+        <p class="eyebrow">Strategy Intensive</p>
+        <h2>Start with a focused strategy session</h2>
+        <p class="lead">
+          A structured session designed for leaders who need clarity on a complex business, execution, or growth challenge.
+        </p>
+
+        <ul class="list-clean" style="margin-top: 26px;">
+          <li>Diagnose the real problem</li>
+          <li>Identify execution gaps and priority issues</li>
+          <li>Define a structured path forward</li>
+        </ul>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://form.typeform.com/to/your-typeform-id" target="_blank" rel="noreferrer">Apply for Strategy Call</a>
+          <a class="btn btn-secondary" href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">Message on LinkedIn</a>
+        </div>
+
+        <p class="muted" style="margin-top: 18px;">
+          Most clients come in with unclear problems. They leave with structured clarity and a path forward.
+        </p>
+      </div>
+
+      <div class="card" style="background: var(--panel-2);">
+        <p class="eyebrow">Ideal Clients</p>
+        <div class="stack">
+          <div class="mini-card"><p>Founders and operators scaling their business</p></div>
+          <div class="mini-card"><p>Teams facing execution friction or alignment issues</p></div>
+          <div class="mini-card"><p>Leaders managing complex, high-stakes initiatives</p></div>
+        </div>
+
+        <p class="eyebrow" style="margin-top: 28px;">Pre-Call Qualification</p>
+        <div class="stack">
+          <div class="mini-card"><p>1. What problem are you trying to solve?</p></div>
+          <div class="mini-card"><p>2. What stage is your business or initiative in?</p></div>
+          <div class="mini-card"><p>3. What happens if this problem is not solved?</p></div>
+          <div class="mini-card"><p>4. What level of support do you need?</p></div>
+          <div class="mini-card"><p>5. What is your budget range?</p></div>
+        </div>
+
+        <p class="muted" style="font-size: 0.86rem; margin-top: 14px;">
+          Replace the current button link with your real Typeform link.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <div class="container contact-grid">
+      <div>
+        <p class="eyebrow">Contact</p>
+        <h2>Let’s discuss your next initiative</h2>
+        <p class="lead">
+          Reach out for consulting, strategic advisory, project leadership, or business growth conversations.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="stack">
+          <div class="mini-card">
+            <h3>Email</h3>
+            <p class="muted"><a href="mailto:dillon1.noel@outlook.com">dillon1.noel@outlook.com</a></p>
+          </div>
+
+          <div class="mini-card">
+            <h3>LinkedIn</h3>
+            <p class="muted"><a href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">Connect on LinkedIn</a></p>
+          </div>
+
+          <a class="btn btn-primary" href="#intensive">Start with Strategy Intensive</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      Dillon Noel © 2026. Strategy. Execution. Growth.
+    </div>
+  </footer>
+</body>
+</html>
