@@ -489,11 +489,68 @@
       font-weight: 700;
     }
 
+
+    .availability-pill {
+      margin-top: 22px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(201,162,39,0.24);
+      background: linear-gradient(180deg, rgba(201,162,39,0.16), rgba(201,162,39,0.08));
+      color: #f6df95;
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      box-shadow:
+        0 12px 30px rgba(0,0,0,0.28),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+      width: fit-content;
+    }
+
+    .availability-pill::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #6ef3a5;
+      box-shadow: 0 0 0 5px rgba(110,243,165,0.12), 0 0 18px rgba(110,243,165,0.28);
+      flex: 0 0 auto;
+      animation: availabilityPulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes availabilityPulse {
+      0%, 100% { transform: scale(1); opacity: 0.92; }
+      50% { transform: scale(1.18); opacity: 1; }
+    }
+
     .proof-bar {
-      margin-top: 28px;
+      margin-top: 34px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 18px;
+      position: relative;
+      padding: 22px;
+      border-radius: 30px;
+      border: 1px solid rgba(201,162,39,0.16);
+      background:
+        radial-gradient(circle at top center, rgba(201,162,39,0.14), transparent 52%),
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      box-shadow:
+        0 26px 60px rgba(0,0,0,0.36),
+        inset 0 1px 0 rgba(255,255,255,0.04);
+      overflow: hidden;
+    }
+
+    .proof-bar::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, transparent, rgba(224,188,74,0.08), transparent),
+        radial-gradient(circle at 20% 10%, rgba(201,162,39,0.08), transparent 28%);
+      pointer-events: none;
     }
 
     .proof-item,
@@ -506,12 +563,13 @@
 
     .proof-item {
       background:
-        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025));
-      border-radius: 22px;
+        linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.025));
+      border-radius: 24px;
       padding: 24px;
       position: relative;
       overflow: hidden;
-      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+      min-height: 172px;
+      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
     }
 
     .proof-item::before {
@@ -532,10 +590,17 @@
 
     .proof-stat {
       color: var(--gold-2);
-      font-size: 2.7rem;
+      font-size: clamp(2.6rem, 4vw, 3.4rem);
       font-weight: 800;
-      line-height: 1;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
       margin-bottom: 10px;
+      text-shadow: 0 0 18px rgba(224,188,74,0.12);
+    }
+
+    .proof-item .muted {
+      max-width: 22ch;
+      font-size: 0.96rem;
     }
 
     .grid-2 {
@@ -943,9 +1008,124 @@
     }
 
     .footer {
-      padding: 36px 0 56px;
+      padding: 26px 0 68px;
       color: var(--muted);
       font-size: 0.94rem;
+    }
+
+    .footer-shell {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(201,162,39,0.14);
+      border-radius: 34px;
+      padding: 34px;
+      background:
+        radial-gradient(circle at top left, rgba(201,162,39,0.14), transparent 26%),
+        linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.02));
+      box-shadow: var(--shadow);
+    }
+
+    .footer-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 85% 15%, rgba(201,162,39,0.14), transparent 20%),
+        linear-gradient(90deg, transparent, rgba(255,255,255,0.02), transparent);
+    }
+
+    .footer-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 0.8fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .footer-title {
+      font-size: 1.28rem;
+      margin-bottom: 10px;
+    }
+
+    .footer-copy {
+      max-width: 42ch;
+      margin-bottom: 18px;
+    }
+
+    .footer-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      color: #e5d9a5;
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    .footer-kicker::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--gold-2);
+      box-shadow: 0 0 12px rgba(224,188,74,0.38);
+      flex: 0 0 auto;
+    }
+
+    .footer-heading {
+      color: var(--text);
+      font-size: 0.98rem;
+      font-weight: 700;
+      margin: 0 0 14px;
+    }
+
+    .footer-links {
+      display: grid;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      transition: color 0.2s ease, transform 0.2s ease;
+      width: fit-content;
+    }
+
+    .footer-links a:hover {
+      color: var(--gold-2);
+      transform: translateX(2px);
+    }
+
+    .footer-cta {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-cta-copy {
+      max-width: 42ch;
+    }
+
+    .footer-bottom {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      font-size: 0.85rem;
+      color: #9b9b9b;
+      position: relative;
+      z-index: 1;
     }
 
     .back-to-top {
@@ -1216,6 +1396,21 @@
         min-height: 320px;
       }
     }
+
+    @media (max-width: 900px) {
+      .footer-grid,
+      .footer-cta,
+      .footer-bottom {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .proof-bar {
+        grid-template-columns: 1fr;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1323,8 +1518,8 @@
                 </svg>
               </span>
             </div>
-            <div class="proof-stat">SMB</div>
-            <p class="muted">Growth systems designed for scaling businesses</p>
+            <div class="proof-stat counter has-suffix" data-target="100" data-suffix="+">0</div>
+            <p class="muted">Stakeholders aligned across delivery, product, and execution</p>
           </div>
         </div>
       </div>
@@ -2061,7 +2256,51 @@
 
     <footer class="footer reveal">
       <div class="container">
-        Dillon Noel © 2026. Strategy. Execution. Growth.
+        <div class="footer-shell">
+          <div class="footer-grid">
+            <div>
+              <p class="eyebrow">Final Word</p>
+              <h3 class="footer-title">Strategy without execution is noise. Execution without strategy is drift.</h3>
+              <p class="footer-copy">
+                Dillon Noel helps leaders bring clarity to complexity, tighten execution, and build systems that scale with confidence.
+              </p>
+              <div class="footer-kicker">Selective availability for advisory and strategy-intensive engagements</div>
+            </div>
+
+            <div>
+              <p class="footer-heading">Explore</p>
+              <div class="footer-links">
+                <a href="#top">Home</a>
+                <a href="#about">Executive Profile</a>
+                <a href="#impact">Selected Impact</a>
+                <a href="#intensive">Strategy Intensive</a>
+                <a href="#contact">Contact</a>
+              </div>
+            </div>
+
+            <div>
+              <p class="footer-heading">Connect</p>
+              <div class="footer-links">
+                <a href="mailto:dillon1.noel@outlook.com">dillon1.noel@outlook.com</a>
+                <a href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">LinkedIn</a>
+                <a href="#intensive">Apply for Strategy Intensive</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-cta">
+            <div class="footer-cta-copy">
+              <p class="footer-heading" style="margin-bottom: 8px;">Ready to solve the next bottleneck?</p>
+              <p class="muted" style="margin: 0;">Start with a focused strategy conversation and move from ambiguity to an executable path forward.</p>
+            </div>
+            <a class="btn btn-primary" href="#intensive">Book a Strategy Call</a>
+          </div>
+
+          <div class="footer-bottom">
+            <span>Dillon Noel © 2026. Strategy. Execution. Growth.</span>
+            <span>Built to signal premium clarity and trusted execution.</span>
+          </div>
+        </div>
       </div>
     </footer>
   </div>
