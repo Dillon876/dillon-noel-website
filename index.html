@@ -39,8 +39,6 @@
       background: #080807;
       line-height: 1.65;
       overflow-x: hidden;
-      opacity: 0;
-      animation: pageFadeIn 0.9s ease forwards;
     }
 
     /* ─── PAGE BACKGROUND ─── */
@@ -1140,14 +1138,19 @@
     }
 
     /* ─── REVEAL ANIMATIONS ─── */
-    .reveal {
+    /* Elements are visible by default. JS adds .js-reveal-ready to <body>
+       only after confirming IntersectionObserver works, preventing a blank
+       page if the observer never fires (e.g. Vercel + some mobile browsers). */
+    .reveal { opacity: 1; transform: none; }
+
+    body.js-reveal-ready .reveal {
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(28px);
       transition: opacity 0.75s ease, transform 0.75s ease;
       will-change: opacity, transform;
     }
 
-    .reveal.in-view {
+    body.js-reveal-ready .reveal.in-view {
       opacity: 1;
       transform: translateY(0);
     }
@@ -1997,6 +2000,9 @@
                   <label class="qual-label" for="qual-q5">5. What is your budget range?</label>
                   <input id="qual-q5" class="qual-input" type="text" placeholder="Your answer..." />
                 </div>
+                <p id="qualError" style="display:none; color:#e07070; font-size:0.88rem; margin:0; text-align:center;">
+                  Please fill in at least your problem description and business stage before submitting.
+                </p>
                 <button type="button" class="btn btn-primary" style="margin-top:6px; width:100%;" id="qualSubmit" onclick="handleQualSubmit()">
                   Apply for Strategy Intensive
                 </button>
@@ -2030,7 +2036,7 @@
                     </span>
                     <div>
                       <h3>Email</h3>
-                      <p class="muted"><a href="mailto:dillon1.noel@outlook.com" style="color:var(--gold-2);">dillon1.noel@outlook.com</a></p>
+                      <p class="muted"><a href="/cdn-cgi/l/email-protection#80e4e9ececefeeb1aeeeefe5ecc0eff5f4ecefefebaee3efed" style="color:var(--gold-2);"><span class="__cf_email__" data-cfemail="62060b0e0e0d0c534c0c0d070e220d17160e0d0d094c010d0f">[email&#160;protected]</span></a></p>
                     </div>
                   </div>
                 </div>
@@ -2061,7 +2067,10 @@
                 <div class="qual-group">
                   <textarea class="qual-textarea" placeholder="What would you like to discuss?" style="min-height:120px;" id="contact-message"></textarea>
                 </div>
-                <button type="button" class="btn btn-primary" style="width:100%;" onclick="handleContactSubmit()">Send Message</button>
+                <p id="contactError" style="display:none; color:#e07070; font-size:0.88rem; margin:0; text-align:center;">
+                  Please fill in all fields before sending.
+                </p>
+                <button type="button" class="btn btn-primary" style="width:100%;" id="contactSubmitBtn" onclick="handleContactSubmit()">Send Message</button>
                 <p id="contactSuccess" style="display:none; color:var(--gold-2); font-weight:600; text-align:center; margin:0;">
                   ✓ Message sent — I'll respond within 1–2 business days.
                 </p>
@@ -2083,7 +2092,7 @@
         </div>
         <div class="hero-actions" style="margin-top:0; justify-content:flex-end;">
           <a class="btn btn-primary" href="#intensive">Apply for Strategy Intensive</a>
-          <a class="btn btn-secondary" href="mailto:dillon1.noel@outlook.com">Send an Email</a>
+          <a class="btn btn-secondary" href="/cdn-cgi/l/email-protection#46222f2a2a292877682829232a062933322a29292d6825292b">Send an Email</a>
         </div>
       </div>
     </section>
@@ -2121,7 +2130,7 @@
           <div>
             <p class="eyebrow" style="margin-bottom:18px;">Get in touch</p>
             <div class="footer-list">
-              <a href="mailto:dillon1.noel@outlook.com">dillon1.noel@outlook.com</a>
+              <a href="/cdn-cgi/l/email-protection#1b7f72777774752a3575747e775b746e6f7774747035787476"><span class="__cf_email__" data-cfemail="74101d18181b1a455a1a1b1118341b0100181b1b1f5a171b19">[email&#160;protected]</span></a>
               <a href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">LinkedIn Profile</a>
             </div>
             <p class="eyebrow" style="margin:24px 0 14px;">Specialties</p>
@@ -2149,7 +2158,7 @@
     </svg>
   </button>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     /* ─── ELEMENTS ─── */
     const backToTopBtn  = document.getElementById("backToTop");
     const heroSection   = document.querySelector(".hero");
@@ -2240,9 +2249,18 @@
     }
 
     /* ─── REVEAL ─── */
+    /* Safety net: only hide elements for animation AFTER we confirm the
+       observer fires correctly. This prevents a blank page on Vercel. */
+    let revealReady = false;
+
     const revealObserver = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
+          /* First time an element is observed, mark body as ready */
+          if (!revealReady) {
+            revealReady = true;
+            document.body.classList.add("js-reveal-ready");
+          }
           e.target.classList.add("in-view");
           e.target.querySelectorAll("h1.has-shimmer, h2.has-shimmer").forEach(h => {
             h.classList.remove("shimmer-pass");
@@ -2251,7 +2269,7 @@
           });
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.08, rootMargin: "0px 0px -20px 0px" });
 
     const counterObserver = new IntersectionObserver(entries => {
       entries.forEach(e => {
@@ -2353,43 +2371,123 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
-    /* ─── FORM HANDLERS ─── */
-    function handleQualSubmit() {
-      const btn = document.getElementById("qualSubmit");
-      const success = document.getElementById("qualSuccess");
-      btn.textContent = "Submitting...";
-      btn.style.opacity = "0.7";
-      setTimeout(() => {
-        btn.style.display = "none";
-        success.style.display = "block";
-      }, 800);
+    /* ─── FORM HELPERS ─── */
+    const FORMSPREE = "https://formspree.io/f/xqeggdlz";
+
+    function flashError(fields) {
+      fields.forEach(f => {
+        if (!f.value.trim()) {
+          f.style.borderColor = "rgba(220,80,80,0.55)";
+          f.style.boxShadow   = "0 0 0 3px rgba(220,80,80,0.10)";
+          setTimeout(() => { f.style.borderColor = ""; f.style.boxShadow = ""; }, 2400);
+        }
+      });
     }
 
-    function handleContactSubmit() {
-      const name    = document.getElementById("contact-name");
-      const email   = document.getElementById("contact-email");
-      const msg     = document.getElementById("contact-message");
-      const success = document.getElementById("contactSuccess");
+    async function postToFormspree(data) {
+      const res = await fetch(FORMSPREE, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(data)
+      });
+      if (!res.ok) throw new Error("Network error");
+    }
 
-      if (!name.value.trim() || !email.value.trim() || !msg.value.trim()) {
-        [name, email, msg].forEach(f => {
-          if (!f.value.trim()) {
-            f.style.borderColor = "rgba(220,80,80,0.55)";
-            f.style.boxShadow = "0 0 0 3px rgba(220,80,80,0.10)";
-            setTimeout(() => {
-              f.style.borderColor = "";
-              f.style.boxShadow = "";
-            }, 2200);
-          }
-        });
+    /* ─── QUAL FORM ─── */
+    async function handleQualSubmit() {
+      const q1  = document.getElementById("qual-q1");
+      const q2  = document.getElementById("qual-q2");
+      const q3  = document.getElementById("qual-q3");
+      const q4  = document.getElementById("qual-q4");
+      const q5  = document.getElementById("qual-q5");
+      const btn = document.getElementById("qualSubmit");
+      const err = document.getElementById("qualError");
+      const success = document.getElementById("qualSuccess");
+
+      /* Require at least q1 (the most important field) AND q2 */
+      const required = [q1, q2];
+      const anyEmpty = required.some(f => !f.value.trim());
+      if (anyEmpty) {
+        flashError(required);
+        err.style.display = "block";
+        setTimeout(() => { err.style.display = "none"; }, 3000);
         return;
       }
 
-      // Build mailto
-      const subject = encodeURIComponent("Website Inquiry — " + name.value.trim());
-      const body    = encodeURIComponent(`From: ${name.value.trim()}\nEmail: ${email.value.trim()}\n\n${msg.value.trim()}`);
-      window.location.href = `mailto:dillon1.noel@outlook.com?subject=${subject}&body=${body}`;
-      success.style.display = "block";
+      btn.textContent   = "Submitting…";
+      btn.style.opacity = "0.65";
+      btn.disabled      = true;
+
+      try {
+        await postToFormspree({
+          _subject:        "New Strategy Intensive Application — Dillon Noel Website",
+          "Problem":       q1.value.trim(),
+          "Business Stage": q2.value.trim(),
+          "If Not Solved": q3.value.trim(),
+          "Support Level": q4.value.trim(),
+          "Budget Range":  q5.value.trim()
+        });
+        btn.style.display     = "none";
+        success.style.display = "block";
+        [q1,q2,q3,q4,q5].forEach(f => f.value = "");
+      } catch(e) {
+        btn.textContent   = "Apply for Strategy Intensive";
+        btn.style.opacity = "1";
+        btn.disabled      = false;
+        err.textContent   = "Something went wrong — please email me directly at dillon1.noel@outlook.com";
+        err.style.display = "block";
+      }
+    }
+
+    /* ─── CONTACT FORM ─── */
+    async function handleContactSubmit() {
+      const name    = document.getElementById("contact-name");
+      const email   = document.getElementById("contact-email");
+      const msg     = document.getElementById("contact-message");
+      const btn     = document.getElementById("contactSubmitBtn");
+      const err     = document.getElementById("contactError");
+      const success = document.getElementById("contactSuccess");
+
+      const required = [name, email, msg];
+      const anyEmpty = required.some(f => !f.value.trim());
+      if (anyEmpty) {
+        flashError(required);
+        err.style.display = "block";
+        setTimeout(() => { err.style.display = "none"; }, 3000);
+        return;
+      }
+
+      /* Basic email format check */
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+        email.style.borderColor = "rgba(220,80,80,0.55)";
+        email.style.boxShadow   = "0 0 0 3px rgba(220,80,80,0.10)";
+        err.textContent         = "Please enter a valid email address.";
+        err.style.display       = "block";
+        setTimeout(() => { email.style.borderColor=""; email.style.boxShadow=""; err.style.display="none"; }, 2800);
+        return;
+      }
+
+      btn.textContent   = "Sending…";
+      btn.style.opacity = "0.65";
+      btn.disabled      = true;
+
+      try {
+        await postToFormspree({
+          _subject: "Website Message from " + name.value.trim(),
+          "Name":    name.value.trim(),
+          "Email":   email.value.trim(),
+          "Message": msg.value.trim()
+        });
+        btn.style.display     = "none";
+        success.style.display = "block";
+        [name, email, msg].forEach(f => f.value = "");
+      } catch(e) {
+        btn.textContent   = "Send Message";
+        btn.style.opacity = "1";
+        btn.disabled      = false;
+        err.textContent   = "Something went wrong — please email me directly at dillon1.noel@outlook.com";
+        err.style.display = "block";
+      }
     }
 
     /* ─── SCROLL HANDLER ─── */
@@ -2401,11 +2499,23 @@
     }
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", () => { updateNavOffset(); toggleBackToTop(); setActiveNavLink(); updateScrollProgress(); });
+    window.addEventListener("resize", () => {
+      updateNavOffset();
+      toggleBackToTop();
+      setActiveNavLink();
+      updateScrollProgress();
+    });
 
     /* ─── INIT ─── */
     reveals.forEach(el => revealObserver.observe(el));
     counters.forEach(el => counterObserver.observe(el));
+
+    /* Hard fallback: if observer has not fired after 600ms, show everything */
+    setTimeout(() => {
+      if (!revealReady) {
+        reveals.forEach(el => el.classList.add("in-view"));
+      }
+    }, 600);
 
     window.addEventListener("load", () => {
       updateNavOffset();
@@ -2415,6 +2525,13 @@
       updateParallax();
       showTestimonial(0);
       startTestimonialRotation();
+
+      /* Trigger pills/certs on load if hero is already visible */
+      const heroCopyEl = document.querySelector(".hero-copy");
+      if (heroCopyEl) {
+        const rect = heroCopyEl.getBoundingClientRect();
+        if (rect.top < window.innerHeight) animatePillsAndCerts();
+      }
     });
   </script>
 </body>
