@@ -1460,6 +1460,169 @@
       }
     }
 
+    /* --- text visibility / clipping fixes --- */
+    .hero-grid,
+    .grid-2,
+    .grid-2-alt,
+    .section-head-split,
+    .proof-bar,
+    .case-grid,
+    .service-grid,
+    .focus-grid,
+    .contact-grid,
+    .contact-cta-grid,
+    .footer-grid,
+    .positioning {
+      min-width: 0;
+    }
+
+    .hero-grid > *,
+    .grid-2 > *,
+    .grid-2-alt > *,
+    .section-head-split > *,
+    .proof-bar > *,
+    .case-grid > *,
+    .service-grid > *,
+    .focus-grid > *,
+    .contact-grid > *,
+    .contact-cta-grid > *,
+    .footer-grid > *,
+    .positioning > * {
+      min-width: 0;
+    }
+
+    .icon-row {
+      align-items: flex-start;
+    }
+
+    .icon-row h3,
+    .card h3,
+    .proof-item h3,
+    .section-shell h2,
+    .hero-copy h1,
+    .lead,
+    .muted,
+    .authority-line,
+    p,
+    li,
+    a {
+      min-width: 0;
+      max-width: 100%;
+      overflow-wrap: break-word;
+      word-break: normal;
+    }
+
+    .section-shell,
+    .card,
+    .proof-item,
+    .mini-card,
+    .contact-form-card {
+      min-width: 0;
+    }
+
+    .focus-grid .card,
+    .case-grid .card,
+    .service-grid .card {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .focus-grid .card h3,
+    .case-grid .card h3,
+    .service-grid .card h3 {
+      font-size: clamp(1.55rem, 2vw, 2rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .focus-grid .card .eyebrow,
+    .case-grid .card .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .hero-copy {
+      min-width: 0;
+    }
+
+    .hero-copy h1 {
+      font-size: clamp(2.9rem, 6vw, 5.8rem);
+      line-height: 0.95;
+      max-width: 10ch;
+    }
+
+    .hero-copy .lead,
+    .hero-copy .authority-line {
+      max-width: 760px;
+    }
+
+    .proof-item .muted {
+      max-width: none;
+    }
+
+    @media (max-width: 1280px) {
+      .hero-grid {
+        grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+        gap: 40px;
+      }
+
+      .hero-copy h1 {
+        font-size: clamp(2.6rem, 5vw, 4.8rem);
+        max-width: 11ch;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .grid-2,
+      .grid-2-alt,
+      .section-head-split,
+      .contact-grid,
+      .contact-cta-grid,
+      .footer-grid,
+      .positioning {
+        grid-template-columns: 1fr !important;
+      }
+
+      .proof-bar,
+      .case-grid,
+      .service-grid,
+      .focus-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      .hero-copy h1 {
+        max-width: 100%;
+      }
+
+      .hero-photo-wrap {
+        max-width: 480px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .section-shell {
+        padding: 24px;
+      }
+
+      .card,
+      .proof-item {
+        padding: 22px;
+      }
+
+      .hero-copy h1 {
+        font-size: clamp(2.3rem, 11vw, 4rem);
+        line-height: 0.97;
+      }
+
+      .focus-grid .card h3,
+      .case-grid .card h3,
+      .service-grid .card h3 {
+        font-size: 1.35rem;
+      }
+    }
+
   </style>
 </head>
 <body>
