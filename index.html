@@ -1981,6 +1981,14 @@
 
               <div class="qual-form" id="qualForm">
                 <div class="qual-group">
+                  <label class="qual-label" for="qual-name">Your name</label>
+                  <input id="qual-name" class="qual-input" type="text" placeholder="First and last name" />
+                </div>
+                <div class="qual-group">
+                  <label class="qual-label" for="qual-email">Your email</label>
+                  <input id="qual-email" class="qual-input" type="email" placeholder="you@example.com" />
+                </div>
+                <div class="qual-group">
                   <label class="qual-label" for="qual-q1">1. What problem are you trying to solve?</label>
                   <textarea id="qual-q1" class="qual-textarea" placeholder="Your answer..."></textarea>
                 </div>
@@ -2036,7 +2044,7 @@
                     </span>
                     <div>
                       <h3>Email</h3>
-                      <p class="muted"><a href="/cdn-cgi/l/email-protection#80e4e9ececefeeb1aeeeefe5ecc0eff5f4ecefefebaee3efed" style="color:var(--gold-2);"><span class="__cf_email__" data-cfemail="62060b0e0e0d0c534c0c0d070e220d17160e0d0d094c010d0f">[email&#160;protected]</span></a></p>
+                      <p class="muted"><a href="mailto:dillon1.noel@outlook.com" style="color:var(--gold-2);">dillon1&#46;noel&#64;outlook&#46;com</a></p>
                     </div>
                   </div>
                 </div>
@@ -2092,7 +2100,7 @@
         </div>
         <div class="hero-actions" style="margin-top:0; justify-content:flex-end;">
           <a class="btn btn-primary" href="#intensive">Apply for Strategy Intensive</a>
-          <a class="btn btn-secondary" href="/cdn-cgi/l/email-protection#46222f2a2a292877682829232a062933322a29292d6825292b">Send an Email</a>
+          <a class="btn btn-secondary" href="mailto:dillon1.noel@outlook.com">Send an Email</a>
         </div>
       </div>
     </section>
@@ -2130,7 +2138,7 @@
           <div>
             <p class="eyebrow" style="margin-bottom:18px;">Get in touch</p>
             <div class="footer-list">
-              <a href="/cdn-cgi/l/email-protection#1b7f72777774752a3575747e775b746e6f7774747035787476"><span class="__cf_email__" data-cfemail="74101d18181b1a455a1a1b1118341b0100181b1b1f5a171b19">[email&#160;protected]</span></a>
+              <a href="mailto:dillon1.noel@outlook.com" style="color:inherit;">dillon1&#46;noel&#64;outlook&#46;com</a>
               <a href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">LinkedIn Profile</a>
             </div>
             <p class="eyebrow" style="margin:24px 0 14px;">Specialties</p>
@@ -2158,7 +2166,7 @@
     </svg>
   </button>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     /* ─── ELEMENTS ─── */
     const backToTopBtn  = document.getElementById("backToTop");
     const heroSection   = document.querySelector(".hero");
@@ -2395,6 +2403,8 @@
 
     /* ─── QUAL FORM ─── */
     async function handleQualSubmit() {
+      const qName = document.getElementById("qual-name");
+      const qEmail= document.getElementById("qual-email");
       const q1  = document.getElementById("qual-q1");
       const q2  = document.getElementById("qual-q2");
       const q3  = document.getElementById("qual-q3");
@@ -2404,13 +2414,24 @@
       const err = document.getElementById("qualError");
       const success = document.getElementById("qualSuccess");
 
-      /* Require at least q1 (the most important field) AND q2 */
-      const required = [q1, q2];
+      /* Require name, email, and at least q1 */
+      const required = [qName, qEmail, q1];
       const anyEmpty = required.some(f => !f.value.trim());
       if (anyEmpty) {
         flashError(required);
+        err.textContent   = "Please enter your name, email, and problem description before submitting.";
         err.style.display = "block";
-        setTimeout(() => { err.style.display = "none"; }, 3000);
+        setTimeout(() => { err.style.display = "none"; }, 3500);
+        return;
+      }
+
+      /* Basic email format check */
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(qEmail.value.trim())) {
+        qEmail.style.borderColor = "rgba(220,80,80,0.55)";
+        qEmail.style.boxShadow   = "0 0 0 3px rgba(220,80,80,0.10)";
+        err.textContent   = "Please enter a valid email address.";
+        err.style.display = "block";
+        setTimeout(() => { qEmail.style.borderColor=""; qEmail.style.boxShadow=""; err.style.display="none"; }, 2800);
         return;
       }
 
@@ -2420,16 +2441,19 @@
 
       try {
         await postToFormspree({
-          _subject:        "New Strategy Intensive Application — Dillon Noel Website",
-          "Problem":       q1.value.trim(),
+          _subject:         "New Strategy Intensive Application — Dillon Noel Website",
+          _replyto:         qEmail.value.trim(),
+          "Name":           qName.value.trim(),
+          "Email":          qEmail.value.trim(),
+          "Problem":        q1.value.trim(),
           "Business Stage": q2.value.trim(),
-          "If Not Solved": q3.value.trim(),
-          "Support Level": q4.value.trim(),
-          "Budget Range":  q5.value.trim()
+          "If Not Solved":  q3.value.trim(),
+          "Support Level":  q4.value.trim(),
+          "Budget Range":   q5.value.trim()
         });
         btn.style.display     = "none";
         success.style.display = "block";
-        [q1,q2,q3,q4,q5].forEach(f => f.value = "");
+        [qName,qEmail,q1,q2,q3,q4,q5].forEach(f => f.value = "");
       } catch(e) {
         btn.textContent   = "Apply for Strategy Intensive";
         btn.style.opacity = "1";
