@@ -10,23 +10,23 @@
   />
   <style>
     :root {
-      --bg: #060606;
-      --bg-2: #0b0b0b;
-      --bg-3: #111111;
-      --panel: rgba(255,255,255,0.05);
-      --panel-2: rgba(255,255,255,0.035);
-      --line: rgba(255,255,255,0.09);
-      --line-soft: rgba(255,255,255,0.05);
-      --text: #f7f7f7;
-      --muted: #b7b7b7;
-      --gold: #c9a227;
-      --gold-2: #e0bc4a;
-      --gold-soft: rgba(201,162,39,0.12);
-      --gold-glow: rgba(201,162,39,0.18);
-      --focus-ring: rgba(224,188,74,0.42);
+      --bg: #0a0a07;
+      --bg-2: #0f0f0b;
+      --bg-3: #14130e;
+      --panel: rgba(255,255,255,0.045);
+      --panel-2: rgba(255,255,255,0.028);
+      --line: rgba(201,162,39,0.16);
+      --line-soft: rgba(201,162,39,0.10);
+      --text: #f4f1e8;
+      --muted: #b6ab88;
+      --gold: #c7b15d;
+      --gold-2: #ddca86;
+      --gold-soft: rgba(199,177,93,0.12);
+      --gold-glow: rgba(199,177,93,0.22);
+      --focus-ring: rgba(221,202,134,0.42);
       --max: 1180px;
       --radius: 26px;
-      --shadow: 0 24px 60px rgba(0,0,0,0.35);
+      --shadow: 0 24px 60px rgba(0,0,0,0.38);
       --nav-offset: 96px;
     }
 
@@ -38,10 +38,9 @@
       font-family: Arial, Helvetica, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 10% 10%, rgba(201,162,39,0.10), transparent 22%),
-        radial-gradient(circle at 90% 8%, rgba(201,162,39,0.08), transparent 18%),
-        radial-gradient(circle at 80% 40%, rgba(255,255,255,0.03), transparent 20%),
-        linear-gradient(180deg, #080808 0%, #050505 100%);
+        radial-gradient(circle at 18% 14%, rgba(199,177,93,0.10), transparent 24%),
+        radial-gradient(circle at 82% 10%, rgba(199,177,93,0.07), transparent 19%),
+        linear-gradient(180deg, #0c0c08 0%, #090905 48%, #070704 100%);
       line-height: 1.6;
       overflow-x: hidden;
       opacity: 0;
@@ -56,15 +55,15 @@
     body::before {
       content: "";
       position: fixed;
-      inset: 0;
+      inset: -30%;
       pointer-events: none;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-      background-size: 64px 64px;
-      mask-image: radial-gradient(circle at center, black 35%, transparent 90%);
-      opacity: 0.22;
-      z-index: 0;
+      opacity: 0.032;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 220px 220px;
+      animation: grain 8s steps(1) infinite;
+      z-index: 9999;
     }
 
     body::after {
@@ -73,39 +72,10 @@
       inset: 0;
       pointer-events: none;
       background:
-        radial-gradient(circle at 20% 20%, rgba(201,162,39,0.06), transparent 20%),
-        radial-gradient(circle at 80% 70%, rgba(201,162,39,0.05), transparent 18%);
-      filter: blur(20px);
+        radial-gradient(circle at 18% 14%, rgba(199,177,93,0.08), transparent 18%),
+        radial-gradient(circle at 76% 72%, rgba(199,177,93,0.06), transparent 16%);
+      filter: blur(24px);
       z-index: 0;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; }
-
-
-
-    .site.has-grain {
-      position: relative;
-      z-index: 1;
-      isolation: isolate;
-    }
-
-    .grain-overlay {
-      position: fixed;
-      inset: -30%;
-      width: 160%;
-      height: 160%;
-      left: -30%;
-      top: -30%;
-      z-index: 9999;
-      pointer-events: none;
-      opacity: 0.032;
-      mix-blend-mode: overlay;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-      background-repeat: repeat;
-      background-size: 220px 220px;
-      animation: grain 8s steps(1) infinite;
-      will-change: transform;
     }
 
     @keyframes grain {
@@ -121,6 +91,9 @@
       90% { transform: translate(-2%, 2%); }
       100% { transform: translate(0, 0); }
     }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
 
     .site {
       position: relative;
@@ -184,6 +157,276 @@
       100% { background-position: 220% center; }
     }
 
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(199,177,93,0.26);
+      background: linear-gradient(180deg, rgba(199,177,93,0.10), rgba(199,177,93,0.04));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+      letter-spacing: 0.12em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: radial-gradient(circle, var(--gold-2) 0%, var(--gold) 70%, rgba(199,177,93,0) 100%);
+      box-shadow: 0 0 10px rgba(221,202,134,0.35);
+      flex: 0 0 auto;
+    }
+
+    .heading-glow-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .heading-glow-wrap::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 54%;
+      width: min(720px, 130%);
+      height: 150%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(199,177,93,0.16) 0%, rgba(199,177,93,0.08) 30%, rgba(199,177,93,0.03) 54%, transparent 72%);
+      filter: blur(28px);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    h1, h2 {
+      position: relative;
+      overflow: hidden;
+    }
+
+    h1.has-shimmer::after,
+    h2.has-shimmer::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 55%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 18%, rgba(255,245,210,0.38) 50%, rgba(255,255,255,0.04) 82%, transparent 100%);
+      transform: skewX(-24deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    h1.has-shimmer.shimmer-pass::after,
+    h2.has-shimmer.shimmer-pass::after {
+      opacity: 1;
+      animation: headingSweep 1.35s ease forwards;
+    }
+
+    @keyframes headingSweep {
+      0% { left: -120%; opacity: 0; }
+      16% { opacity: 0.95; }
+      100% { left: 130%; opacity: 0; }
+    }
+
+    .section-shell {
+      border-radius: 30px;
+      background: linear-gradient(180deg, rgba(18,18,12,0.96), rgba(11,11,8,0.96));
+      border: 1px solid rgba(199,177,93,0.10);
+    }
+
+    .section-shell.accent-shell,
+    .band .section-shell {
+      background:
+        radial-gradient(circle at 24% 18%, rgba(199,177,93,0.08), transparent 26%),
+        linear-gradient(180deg, rgba(20,19,13,0.96), rgba(11,11,8,0.96));
+    }
+
+    .hero .section-shell {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 20px 0 0;
+    }
+
+    .hero .section-shell::before { display: none; }
+
+    .hero-grid {
+      grid-template-columns: 430px 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .hero-status {
+      position: absolute;
+      top: -12px;
+      left: -6px;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(16,16,12,0.9);
+      border: 1px solid rgba(199,177,93,0.20);
+      color: #d6c483;
+      font-size: 0.74rem;
+      font-weight: 700;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.26);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-status::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #77d17b;
+      box-shadow: 0 0 10px rgba(119,209,123,0.4);
+    }
+
+    .hero-photo { height: 520px; }
+
+    .hero-badge {
+      right: -10px;
+      bottom: -14px;
+      border-radius: 18px;
+      padding: 12px 14px;
+      min-width: 168px;
+      justify-content: center;
+      color: #f2eee1;
+      background: linear-gradient(180deg, rgba(18,18,12,0.92), rgba(14,14,10,0.94));
+    }
+
+    .hero-badge strong { display: block; }
+
+    .authority-line {
+      color: var(--muted);
+      margin-top: 20px;
+      font-size: 1rem;
+    }
+
+    .proof-bar {
+      margin-top: 34px;
+      gap: 20px;
+    }
+
+    .proof-item {
+      min-height: 238px;
+      padding: 26px 22px 24px;
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(199,177,93,0.12), transparent 50%),
+        linear-gradient(180deg, rgba(22,22,15,0.98), rgba(14,14,10,0.98));
+      border: 1px solid rgba(199,177,93,0.16);
+    }
+
+    .proof-item .muted {
+      color: #cbc09d;
+      max-width: 270px;
+      font-size: 0.98rem;
+    }
+
+    .proof-stat {
+      font-size: 3.1rem;
+      letter-spacing: -0.04em;
+      margin-top: 14px;
+    }
+
+    .proof-stat.tight { letter-spacing: -0.06em; }
+
+    #about .grid-2,
+    #services .grid-2,
+    #contact .contact-grid {
+      align-items: start;
+    }
+
+    .section-head-split {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: start;
+      margin-bottom: 28px;
+    }
+
+    .section-head-split .lead {
+      max-width: 430px;
+      margin-left: auto;
+    }
+
+    .focus-grid { grid-template-columns: repeat(2, 1fr); }
+
+    #impact .case-grid .card,
+    #services .focus-grid .card,
+    #about .card,
+    #contact .card {
+      background: linear-gradient(180deg, rgba(15,15,11,0.96), rgba(7,7,5,0.98));
+    }
+
+    .contact-panel {
+      display: grid;
+      gap: 14px;
+    }
+
+    .contact-form-card {
+      padding: 22px;
+    }
+
+    .contact-cta-band {
+      margin-top: 28px;
+      padding: 34px 28px;
+      border-top: 1px solid rgba(199,177,93,0.14);
+      border-bottom: 1px solid rgba(199,177,93,0.14);
+      background: linear-gradient(90deg, rgba(20,19,13,0.90), rgba(15,14,10,0.88));
+    }
+
+    .contact-cta-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .footer {
+      padding: 48px 0 20px;
+      border-top: 1px solid rgba(199,177,93,0.10);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr 1.05fr;
+      gap: 34px;
+      align-items: start;
+      padding-bottom: 26px;
+    }
+
+    .footer-title {
+      font-size: 1.8rem;
+      line-height: 1.1;
+      margin-bottom: 12px;
+      color: var(--gold-2);
+      font-weight: 800;
+    }
+
+    .footer-list {
+      display: grid;
+      gap: 10px;
+      color: var(--muted);
+    }
+
+    .footer-note {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(199,177,93,0.10);
+      color: #8d845f;
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+    }
+
     h1, h2, h3, h4, p { margin-top: 0; }
 
     h1 {
@@ -199,30 +442,6 @@
       line-height: 1.05;
       letter-spacing: -0.035em;
       margin-bottom: 18px;
-    }
-
-
-    .hero h1,
-    .section-shell > h2 {
-      position: relative;
-      display: inline-block;
-      isolation: isolate;
-      z-index: 1;
-    }
-
-    .hero h1::before,
-    .section-shell > h2::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: min(720px, 135%);
-      height: 165%;
-      transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(201,162,39,0.18) 0%, rgba(201,162,39,0.10) 28%, rgba(201,162,39,0.04) 52%, transparent 74%);
-      filter: blur(28px);
-      z-index: -1;
-      pointer-events: none;
     }
 
     h3 {
@@ -489,68 +708,11 @@
       font-weight: 700;
     }
 
-
-    .availability-pill {
-      margin-top: 22px;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(201,162,39,0.24);
-      background: linear-gradient(180deg, rgba(201,162,39,0.16), rgba(201,162,39,0.08));
-      color: #f6df95;
-      font-size: 0.84rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      box-shadow:
-        0 12px 30px rgba(0,0,0,0.28),
-        inset 0 1px 0 rgba(255,255,255,0.06);
-      width: fit-content;
-    }
-
-    .availability-pill::before {
-      content: "";
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #6ef3a5;
-      box-shadow: 0 0 0 5px rgba(110,243,165,0.12), 0 0 18px rgba(110,243,165,0.28);
-      flex: 0 0 auto;
-      animation: availabilityPulse 2.4s ease-in-out infinite;
-    }
-
-    @keyframes availabilityPulse {
-      0%, 100% { transform: scale(1); opacity: 0.92; }
-      50% { transform: scale(1.18); opacity: 1; }
-    }
-
     .proof-bar {
-      margin-top: 34px;
+      margin-top: 28px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 18px;
-      position: relative;
-      padding: 22px;
-      border-radius: 30px;
-      border: 1px solid rgba(201,162,39,0.16);
-      background:
-        radial-gradient(circle at top center, rgba(201,162,39,0.14), transparent 52%),
-        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-      box-shadow:
-        0 26px 60px rgba(0,0,0,0.36),
-        inset 0 1px 0 rgba(255,255,255,0.04);
-      overflow: hidden;
-    }
-
-    .proof-bar::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(90deg, transparent, rgba(224,188,74,0.08), transparent),
-        radial-gradient(circle at 20% 10%, rgba(201,162,39,0.08), transparent 28%);
-      pointer-events: none;
     }
 
     .proof-item,
@@ -563,13 +725,12 @@
 
     .proof-item {
       background:
-        linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.025));
-      border-radius: 24px;
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025));
+      border-radius: 22px;
       padding: 24px;
       position: relative;
       overflow: hidden;
-      min-height: 172px;
-      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
     }
 
     .proof-item::before {
@@ -590,17 +751,10 @@
 
     .proof-stat {
       color: var(--gold-2);
-      font-size: clamp(2.6rem, 4vw, 3.4rem);
+      font-size: 2.7rem;
       font-weight: 800;
-      line-height: 0.95;
-      letter-spacing: -0.04em;
+      line-height: 1;
       margin-bottom: 10px;
-      text-shadow: 0 0 18px rgba(224,188,74,0.12);
-    }
-
-    .proof-item .muted {
-      max-width: 22ch;
-      font-size: 0.96rem;
     }
 
     .grid-2 {
@@ -1008,124 +1162,9 @@
     }
 
     .footer {
-      padding: 26px 0 68px;
+      padding: 36px 0 56px;
       color: var(--muted);
       font-size: 0.94rem;
-    }
-
-    .footer-shell {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(201,162,39,0.14);
-      border-radius: 34px;
-      padding: 34px;
-      background:
-        radial-gradient(circle at top left, rgba(201,162,39,0.14), transparent 26%),
-        linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.02));
-      box-shadow: var(--shadow);
-    }
-
-    .footer-shell::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 85% 15%, rgba(201,162,39,0.14), transparent 20%),
-        linear-gradient(90deg, transparent, rgba(255,255,255,0.02), transparent);
-    }
-
-    .footer-grid {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr 0.8fr;
-      gap: 28px;
-      align-items: start;
-    }
-
-    .footer-title {
-      font-size: 1.28rem;
-      margin-bottom: 10px;
-    }
-
-    .footer-copy {
-      max-width: 42ch;
-      margin-bottom: 18px;
-    }
-
-    .footer-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.07);
-      color: #e5d9a5;
-      font-size: 0.84rem;
-      font-weight: 700;
-    }
-
-    .footer-kicker::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--gold-2);
-      box-shadow: 0 0 12px rgba(224,188,74,0.38);
-      flex: 0 0 auto;
-    }
-
-    .footer-heading {
-      color: var(--text);
-      font-size: 0.98rem;
-      font-weight: 700;
-      margin: 0 0 14px;
-    }
-
-    .footer-links {
-      display: grid;
-      gap: 10px;
-    }
-
-    .footer-links a {
-      color: var(--muted);
-      transition: color 0.2s ease, transform 0.2s ease;
-      width: fit-content;
-    }
-
-    .footer-links a:hover {
-      color: var(--gold-2);
-      transform: translateX(2px);
-    }
-
-    .footer-cta {
-      margin-top: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      padding-top: 22px;
-      border-top: 1px solid rgba(255,255,255,0.07);
-      position: relative;
-      z-index: 1;
-    }
-
-    .footer-cta-copy {
-      max-width: 42ch;
-    }
-
-    .footer-bottom {
-      margin-top: 18px;
-      display: flex;
-      justify-content: space-between;
-      gap: 18px;
-      align-items: center;
-      font-size: 0.85rem;
-      color: #9b9b9b;
-      position: relative;
-      z-index: 1;
     }
 
     .back-to-top {
@@ -1397,17 +1436,27 @@
       }
     }
 
-    @media (max-width: 900px) {
-      .footer-grid,
-      .footer-cta,
-      .footer-bottom {
+    @media (max-width: 980px) {
+      .hero-grid,
+      .section-head-split,
+      .contact-cta-grid,
+      .footer-grid {
         grid-template-columns: 1fr;
-        flex-direction: column;
-        align-items: flex-start;
       }
 
-      .proof-bar {
+      .section-head-split .lead {
+        margin-left: 0;
+      }
+
+      .proof-bar,
+      .focus-grid,
+      .case-grid,
+      .process-grid {
         grid-template-columns: 1fr;
+      }
+
+      .proof-item {
+        min-height: 0;
       }
     }
 
@@ -1416,8 +1465,7 @@
 <body>
   <div class="progress-bar" id="scrollProgress"></div>
 
-  <div class="site has-grain">
-    <div class="grain-overlay" aria-hidden="true"></div>
+  <div class="site">
     <div class="topbar">
       <div class="container nav">
         <div class="brand">Dillon Noel</div>
@@ -1437,6 +1485,7 @@
       <div class="section-shell">
         <div class="hero-grid">
           <div class="hero-photo-wrap reveal delay-1" id="heroPhotoWrap">
+            <div class="hero-status">Available for engagements</div>
             <div class="hero-glow" id="heroGlow"></div>
             <div class="hero-ring"></div>
             <img class="hero-photo" src="Headshot.jpg" alt="Dillon Noel headshot" />
@@ -1445,13 +1494,13 @@
                 <path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"></path>
                 <path d="M9.5 12.5l1.7 1.7 3.3-3.7"></path>
               </svg>
-              CBAP® Certified
+              <strong>CBAP® Certified</strong><span style="font-size:0.68rem;color:#bcae7e;display:block;">Business Analysis</span>
             </div>
           </div>
 
           <div class="reveal delay-2">
             <p class="eyebrow">Dillon Noel</p>
-            <h1>Strategy, execution, and growth architecture for leaders solving complex business problems.</h1>
+            <div class="heading-glow-wrap"><h1 class="has-shimmer">Strategy, execution, and growth architecture for leaders solving <span style="color:var(--gold-2);">complex business problems.</span></h1></div>
             <p class="lead">
               I help organizations clarify priorities, align stakeholders, and build execution systems that turn strategy into measurable progress.
             </p>
@@ -1518,8 +1567,8 @@
                 </svg>
               </span>
             </div>
-            <div class="proof-stat counter has-suffix" data-target="100" data-suffix="+">0</div>
-            <p class="muted">Stakeholders aligned across delivery, product, and execution</p>
+            <div class="proof-stat counter has-suffix tight" data-target="100" data-suffix="+">0</div>
+            <p class="muted">Stakeholders aligned across initiatives, delivery, and operating decisions</p>
           </div>
         </div>
       </div>
@@ -1531,7 +1580,7 @@
           <div class="grid-2">
             <div class="reveal delay-1">
               <p class="eyebrow">Executive Profile</p>
-              <h2>Clarity in complexity. Structure in execution.</h2>
+              <div class="heading-glow-wrap"><h2 class="has-shimmer">Clarity in complexity.<br>Structure in execution.</h2></div>
               <p class="lead">
                 Dillon Noel is a strategy and execution professional who helps leaders navigate complex initiatives, strengthen delivery, and build systems that scale.
               </p>
@@ -1604,11 +1653,13 @@
     <section id="process" class="section reveal">
       <div class="container">
         <div class="section-shell">
-          <p class="eyebrow">How I Work</p>
-          <h2>From ambiguity to structured execution</h2>
-          <p class="lead">
-            My engagements are designed to reduce noise, create clarity, and move important work forward with structure.
-          </p>
+          <div class="section-head-split">
+            <div>
+              <p class="eyebrow">Process</p>
+              <div class="heading-glow-wrap"><h2 class="has-shimmer">How I work with clients</h2></div>
+            </div>
+            <p class="lead">A structured, repeatable process that turns complex challenges into clear execution — every time.</p>
+          </div>
 
           <div class="process-wrap">
             <div class="process-line"></div>
@@ -1618,15 +1669,15 @@
                 <div class="card process-card">
                   <div class="icon-row">
                     <span class="process-number">1</span>
-                    <h3>Diagnose</h3>
+                    <h3>Understand the real problem</h3>
                   </div>
                   <p class="muted">
-                    Clarify the real problem, identify friction points, and surface the business, delivery, or growth constraints that matter most.
+                    Most organizations are solving the wrong problem. I start by asking the right questions — mapping the actual challenge, not the surface symptoms. This phase produces a clear problem statement and shared understanding.
                   </p>
                   <div class="process-tags">
-                    <span class="process-tag">Discovery</span>
-                    <span class="process-tag">Problem Framing</span>
-                    <span class="process-tag">Context Mapping</span>
+                    <span class="process-tag">Discovery sessions</span>
+                    <span class="process-tag">Stakeholder interviews</span>
+                    <span class="process-tag">Problem framing</span>
                   </div>
                 </div>
               </div>
@@ -1635,15 +1686,15 @@
                 <div class="card process-card">
                   <div class="icon-row">
                     <span class="process-number">2</span>
-                    <h3>Structure</h3>
+                    <h3>Build the execution architecture</h3>
                   </div>
                   <p class="muted">
-                    Turn complexity into a clear plan with priorities, requirements, operating structure, and an execution-ready path forward.
+                    With clarity on the problem, I design the structure: priorities, decision frameworks, ownership models, and execution plans. This is where ambiguity becomes a concrete path forward.
                   </p>
                   <div class="process-tags">
-                    <span class="process-tag">Priorities</span>
-                    <span class="process-tag">Requirements</span>
-                    <span class="process-tag">Operating Model</span>
+                    <span class="process-tag">Strategic roadmap</span>
+                    <span class="process-tag">Priority framework</span>
+                    <span class="process-tag">Ownership design</span>
                   </div>
                 </div>
               </div>
@@ -1652,10 +1703,10 @@
                 <div class="card process-card">
                   <div class="icon-row">
                     <span class="process-number">3</span>
-                    <h3>Execute</h3>
+                    <h3>Drive measurable progress</h3>
                   </div>
                   <p class="muted">
-                    Support leaders and teams through aligned action, stronger accountability, and disciplined movement toward measurable outcomes.
+                    Strategy without execution is just a document. I stay engaged through delivery — aligning stakeholders, removing blockers, and ensuring the plan translates into real, measurable outcomes.
                   </p>
                   <div class="process-tags">
                     <span class="process-tag">Delivery</span>
@@ -1672,7 +1723,7 @@
               <strong>Need a structured partner for a complex initiative?</strong>
               <div class="muted">Start with the Strategy Intensive and we’ll map the right path forward.</div>
             </div>
-            <a class="btn btn-primary" href="#intensive">Start with Strategy Intensive</a>
+            
           </div>
         </div>
       </div>
@@ -2214,14 +2265,12 @@
           <div class="contact-grid">
             <div class="reveal delay-1">
               <p class="eyebrow">Contact</p>
-              <h2>Let’s discuss your next initiative</h2>
+              <div class="heading-glow-wrap"><h2 class="has-shimmer">Let's discuss your next initiative</h2></div>
               <p class="lead">
                 Reach out for consulting, strategic advisory, project leadership, or business growth conversations.
               </p>
-            </div>
 
-            <div class="card reveal delay-2">
-              <div class="stack">
+              <div class="stack" style="margin-top:28px; max-width:420px;">
                 <div class="mini-card">
                   <div class="icon-row">
                     <span class="icon-badge" aria-hidden="true">
@@ -2245,61 +2294,86 @@
                     </div>
                   </div>
                 </div>
-
-                <a class="btn btn-primary" href="#intensive">Start with Strategy Intensive</a>
               </div>
+            </div>
+
+            <div class="card contact-form-card reveal delay-2">
+              <form class="qual-form">
+                <div class="qual-group">
+                  <input class="qual-input" type="text" placeholder="Your name" />
+                </div>
+                <div class="qual-group">
+                  <input class="qual-input" type="email" placeholder="Your email" />
+                </div>
+                <div class="qual-group">
+                  <textarea class="qual-textarea" placeholder="What would you like to discuss?" style="min-height:120px;"></textarea>
+                </div>
+                <button type="button" class="btn btn-primary" style="width:100%;">Send Message</button>
+              </form>
             </div>
           </div>
         </div>
       </div>
     </section>
 
+    <section class="contact-cta-band reveal">
+      <div class="container contact-cta-grid">
+        <div>
+          <div class="heading-glow-wrap"><h2 class="has-shimmer" style="font-size:2.2rem; margin-bottom:8px;">Ready to move forward?</h2></div>
+          <p class="muted" style="margin:0;">Let's talk about your next initiative — strategy, execution, or growth.</p>
+        </div>
+        <div class="hero-actions" style="margin-top:0; justify-content:flex-end;">
+          <a class="btn btn-primary" href="#intensive">Apply for Strategy Intensive</a>
+          <a class="btn btn-secondary" href="mailto:dillon1.noel@outlook.com">Send an Email</a>
+        </div>
+      </div>
+    </section>
+
     <footer class="footer reveal">
       <div class="container">
-        <div class="footer-shell">
-          <div class="footer-grid">
-            <div>
-              <p class="eyebrow">Final Word</p>
-              <h3 class="footer-title">Strategy without execution is noise. Execution without strategy is drift.</h3>
-              <p class="footer-copy">
-                Dillon Noel helps leaders bring clarity to complexity, tighten execution, and build systems that scale with confidence.
-              </p>
-              <div class="footer-kicker">Selective availability for advisory and strategy-intensive engagements</div>
-            </div>
-
-            <div>
-              <p class="footer-heading">Explore</p>
-              <div class="footer-links">
-                <a href="#top">Home</a>
-                <a href="#about">Executive Profile</a>
-                <a href="#impact">Selected Impact</a>
-                <a href="#intensive">Strategy Intensive</a>
-                <a href="#contact">Contact</a>
-              </div>
-            </div>
-
-            <div>
-              <p class="footer-heading">Connect</p>
-              <div class="footer-links">
-                <a href="mailto:dillon1.noel@outlook.com">dillon1.noel@outlook.com</a>
-                <a href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">LinkedIn</a>
-                <a href="#intensive">Apply for Strategy Intensive</a>
-              </div>
+        <div class="footer-grid">
+          <div>
+            <div class="footer-title">Dillon Noel</div>
+            <p class="muted" style="max-width:320px;">Strategy and execution professional helping leaders navigate complex initiatives, strengthen delivery, and build systems that scale.</p>
+            <div class="hero-status" style="position:static; margin-top:18px; display:inline-flex;">Currently accepting new engagements</div>
+            <div class="cert-row" style="margin-top:14px;">
+              <span class="cert">CBAP®</span>
+              <span class="cert">PSPO</span>
+              <span class="cert">PSM</span>
             </div>
           </div>
 
-          <div class="footer-cta">
-            <div class="footer-cta-copy">
-              <p class="footer-heading" style="margin-bottom: 8px;">Ready to solve the next bottleneck?</p>
-              <p class="muted" style="margin: 0;">Start with a focused strategy conversation and move from ambiguity to an executable path forward.</p>
+          <div>
+            <p class="eyebrow" style="margin-bottom:18px;">Navigation</p>
+            <div class="footer-list">
+              <a href="#about">Executive Profile</a>
+              <a href="#impact">Selected Impact</a>
+              <a href="#services">Advisory Focus</a>
+              <a href="#process">How I Work</a>
+              <a href="#intensive">Strategy Intensive</a>
+              <a href="#contact">Contact</a>
             </div>
-            <a class="btn btn-primary" href="#intensive">Book a Strategy Call</a>
           </div>
 
-          <div class="footer-bottom">
-            <span>Dillon Noel © 2026. Strategy. Execution. Growth.</span>
-            <span>Built to signal premium clarity and trusted execution.</span>
+          <div>
+            <p class="eyebrow" style="margin-bottom:18px;">Get in touch</p>
+            <div class="footer-list">
+              <a href="mailto:dillon1.noel@outlook.com">dillon1.noel@outlook.com</a>
+              <a href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">LinkedIn Profile</a>
+            </div>
+            <p class="eyebrow" style="margin:24px 0 14px;">Specialties</p>
+            <div class="pill-row">
+              <span class="pill">Business Analysis</span>
+              <span class="pill">Strategy</span>
+              <span class="pill">Execution</span>
+              <span class="pill">Growth Systems</span>
+            </div>
           </div>
+        </div>
+
+        <div class="footer-note">
+          <span>© 2026 Dillon Noel. Strategy. Execution. Growth.</span>
+          <span>Available globally • Remote &amp; On-site</span>
         </div>
       </div>
     </footer>
@@ -2429,6 +2503,11 @@
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("in-view");
+          entry.target.querySelectorAll("h1.has-shimmer, h2.has-shimmer").forEach((heading) => {
+            heading.classList.remove("shimmer-pass");
+            void heading.offsetWidth;
+            heading.classList.add("shimmer-pass");
+          });
         }
       });
     }, {
