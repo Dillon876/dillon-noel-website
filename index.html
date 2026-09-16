@@ -1,2562 +1,483 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dillon Noel | Strategy, Execution, and Growth Architecture</title>
-  <meta name="description" content="Dillon Noel helps leaders solve complex business problems through strategy, execution, and growth-focused operating structure." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #080807;
-      --bg-2: #0d0d0a;
-      --bg-3: #121210;
-      --panel: rgba(255,255,255,0.042);
-      --line: rgba(201,162,39,0.18);
-      --line-soft: rgba(201,162,39,0.10);
-      --text: #f0ece0;
-      --muted: #a89e7a;
-      --gold: #c9a84c;
-      --gold-2: #e0c470;
-      --gold-soft: rgba(199,177,93,0.13);
-      --gold-glow: rgba(199,177,93,0.20);
-      --focus-ring: rgba(224,196,112,0.44);
-      --max: 1200px;
-      --radius: 24px;
-      --shadow: 0 28px 64px rgba(0,0,0,0.42);
-      --nav-offset: 88px;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      font-family: 'DM Sans', Arial, sans-serif;
-      color: var(--text);
-      background: #080807;
-      line-height: 1.65;
-      overflow-x: hidden;
-    }
-
-    /* ─── PAGE BACKGROUND ─── */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 70% 50% at 12% 8%, rgba(199,168,76,0.13) 0%, transparent 55%),
-        radial-gradient(ellipse 50% 40% at 88% 14%, rgba(199,168,76,0.08) 0%, transparent 45%),
-        radial-gradient(ellipse 60% 60% at 60% 90%, rgba(199,168,76,0.06) 0%, transparent 50%),
-        linear-gradient(180deg, #0b0b08 0%, #070705 55%, #060604 100%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* grain overlay */
-    body::after {
-      content: "";
-      position: fixed;
-      inset: -50%;
-      pointer-events: none;
-      opacity: 0.026;
-      mix-blend-mode: overlay;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-repeat: repeat;
-      background-size: 200px 200px;
-      animation: grain 10s steps(1) infinite;
-      z-index: 9999;
-    }
-
-    @keyframes grain {
-      0%   { transform: translate(0,0); }
-      10%  { transform: translate(-2%,-3%); }
-      20%  { transform: translate(3%,2%); }
-      30%  { transform: translate(-4%,1%); }
-      40%  { transform: translate(2%,-2%); }
-      50%  { transform: translate(-3%,3%); }
-      60%  { transform: translate(4%,-1%); }
-      70%  { transform: translate(-1%,-4%); }
-      80%  { transform: translate(3%,4%); }
-      90%  { transform: translate(-2%,2%); }
-      100% { transform: translate(0,0); }
-    }
-
-    @keyframes pageFadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-
-    a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; }
-
-    .site { position: relative; z-index: 1; }
-
-    .container {
-      width: min(var(--max), calc(100% - 40px));
-      margin: 0 auto;
-    }
-
-    /* ─── SCROLL PROGRESS ─── */
-    .progress-bar {
-      position: fixed;
-      top: 0; left: 0;
-      width: 0%;
-      height: 2px;
-      z-index: 1000;
-      background: linear-gradient(90deg, var(--gold), var(--gold-2), var(--gold));
-      background-size: 200% auto;
-      animation: progressShimmer 3s linear infinite;
-      box-shadow: 0 0 14px rgba(224,196,112,0.45);
-      transition: width 0.08s linear;
-    }
-    @keyframes progressShimmer {
-      0%   { background-position: 0% center; }
-      100% { background-position: 200% center; }
-    }
-
-    /* ─── TOPBAR ─── */
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(20px) saturate(1.6);
-      -webkit-backdrop-filter: blur(20px) saturate(1.6);
-      background: rgba(8,8,7,0.78);
-      border-bottom: 1px solid rgba(199,168,76,0.10);
-    }
-
-    .nav {
-      min-height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .brand {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-size: 1.15rem;
-      letter-spacing: 0.01em;
-      color: var(--gold-2);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 22px;
-      flex-wrap: wrap;
-      color: var(--muted);
-      font-size: 0.88rem;
-      font-weight: 500;
-      letter-spacing: 0.01em;
-    }
-
-    .nav-links a {
-      position: relative;
-      transition: color 0.22s ease;
-      padding-bottom: 2px;
-    }
-
-    .nav-links a::after {
-      content: "";
-      position: absolute;
-      left: 0; bottom: -4px;
-      width: 100%;
-      height: 1.5px;
-      background: linear-gradient(90deg, var(--gold), var(--gold-2));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.24s ease;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active { color: var(--gold-2); }
-
-    .nav-links a.active::after,
-    .nav-links a:hover::after { transform: scaleX(1); }
-
-    /* ─── SECTIONS ─── */
-    .section {
-      padding: 90px 0;
-      position: relative;
-    }
-
-    section[id], div[id], header[id] {
-      scroll-margin-top: var(--nav-offset);
-    }
-
-    .section-shell {
-      position: relative;
-      border: 1px solid rgba(199,168,76,0.10);
-      border-radius: 32px;
-      background: linear-gradient(160deg, rgba(18,17,13,0.96), rgba(10,10,8,0.97));
-      padding: 40px;
-      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.03);
-      overflow: hidden;
-    }
-
-    .section-shell::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 92% 6%, rgba(201,162,39,0.07), transparent 28%),
-        radial-gradient(circle at 4% 88%, rgba(255,255,255,0.025), transparent 20%);
-      pointer-events: none;
-    }
-
-    /* ─── EYEBROW ─── */
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin: 0 0 16px;
-      padding: 7px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(199,168,76,0.30);
-      background: rgba(199,168,76,0.10);
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      /* FIX: explicit gold text color so it's visible on dark bg */
-      color: var(--gold-2);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 7px; height: 7px;
-      border-radius: 999px;
-      background: radial-gradient(circle, var(--gold-2) 0%, var(--gold) 70%, transparent 100%);
-      box-shadow: 0 0 8px rgba(224,196,112,0.5);
-      flex: 0 0 auto;
-    }
-
-    /* shimmer sweep on eyebrow */
-    .eyebrow::after {
-      content: "";
-      position: absolute;
-      top: 0; left: -120%; width: 60%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,245,210,0.22), transparent);
-      animation: eyebrowSweep 5s ease-in-out infinite;
-      pointer-events: none;
-    }
-
-    @keyframes eyebrowSweep {
-      0%,55%  { left: -120%; opacity: 0; }
-      60%     { opacity: 1; }
-      100%    { left: 130%; opacity: 0; }
-    }
-
-    /* ─── TYPOGRAPHY ─── */
-    h1, h2, h3, h4, p { margin-top: 0; }
-
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.8rem, 5.5vw, 5.4rem);
-      line-height: 0.96;
-      letter-spacing: -0.03em;
-      margin-bottom: 20px;
-      color: var(--text);
-    }
-
-    h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 3.2vw, 3.2rem);
-      line-height: 1.05;
-      letter-spacing: -0.025em;
-      margin-bottom: 18px;
-      color: var(--text);
-    }
-
-    h3 {
-      font-size: 1.18rem;
-      font-weight: 700;
-      line-height: 1.25;
-      margin-bottom: 10px;
-    }
-
-    h4 { font-size: 1rem; margin-bottom: 8px; }
-
-    .lead {
-      font-size: 1.08rem;
-      color: var(--muted);
-      max-width: 680px;
-      line-height: 1.75;
-    }
-
-    .muted { color: var(--muted); }
-
-    /* ─── HEADING GLOW ─── */
-    .heading-glow-wrap {
-      position: relative;
-      display: inline-block;
-    }
-
-    .heading-glow-wrap::before {
-      content: "";
-      position: absolute;
-      left: 50%; top: 54%;
-      width: min(700px, 130%);
-      height: 160%;
-      transform: translate(-50%,-50%);
-      background: radial-gradient(circle, rgba(199,168,76,0.14) 0%, rgba(199,168,76,0.06) 38%, transparent 66%);
-      filter: blur(30px);
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    /* heading shimmer */
-    h1.has-shimmer, h2.has-shimmer { position: relative; overflow: hidden; }
-
-    h1.has-shimmer::after, h2.has-shimmer::after {
-      content: "";
-      position: absolute;
-      top: 0; left: -130%;
-      width: 55%; height: 100%;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,245,210,0.07) 20%, rgba(255,240,190,0.44) 50%, rgba(255,245,210,0.07) 80%, transparent 100%);
-      transform: skewX(-22deg);
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    h1.has-shimmer.shimmer-pass::after,
-    h2.has-shimmer.shimmer-pass::after {
-      opacity: 1;
-      animation: headingSweep 1.4s ease forwards;
-    }
-
-    @keyframes headingSweep {
-      0%   { left: -130%; opacity: 0; }
-      15%  { opacity: 0.95; }
-      100% { left: 130%; opacity: 0; }
-    }
-
-    /* ─── BUTTONS ─── */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 14px 24px;
-      border-radius: 14px;
-      font-weight: 700;
-      font-size: 0.93rem;
-      font-family: inherit;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
-      border: 1px solid transparent;
-      cursor: pointer;
-      outline: none;
-      letter-spacing: 0.01em;
-    }
-
-    .btn:hover { transform: translateY(-2px); }
-
-    .btn:focus-visible {
-      box-shadow: 0 0 0 3px rgba(0,0,0,0.5), 0 0 0 6px var(--focus-ring);
-    }
-
-    .btn-primary {
-      background: linear-gradient(170deg, var(--gold-2), var(--gold));
-      color: #0f0d08;
-      box-shadow: 0 14px 36px rgba(201,162,39,0.22), 0 2px 0 rgba(255,255,255,0.08) inset;
-    }
-
-    .btn-primary:hover {
-      box-shadow: 0 20px 44px rgba(201,162,39,0.32), 0 0 28px rgba(224,196,112,0.18);
-      filter: brightness(1.04);
-    }
-
-    .btn-secondary {
-      border-color: rgba(199,168,76,0.24);
-      background: rgba(255,255,255,0.032);
-      color: var(--text);
-    }
-
-    .btn-secondary:hover {
-      border-color: rgba(199,168,76,0.38);
-      background: rgba(255,255,255,0.054);
-    }
-
-    /* ─── HERO ─── */
-    .hero {
-      padding: 72px 0 36px;
-      position: relative;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 400px 1fr;
-      gap: 56px;
-      align-items: center;
-    }
-
-    .hero-photo-wrap {
-      position: relative;
-      max-width: 400px;
-      will-change: transform;
-    }
-
-    .hero-glow {
-      position: absolute;
-      inset: 6% 0% -4% 6%;
-      background: radial-gradient(circle, rgba(201,162,39,0.26), transparent 58%);
-      filter: blur(38px);
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .hero-ring {
-      position: absolute;
-      inset: -16px;
-      border: 1px solid rgba(201,162,39,0.14);
-      border-radius: 36px;
-      z-index: 0;
-    }
-
-    .hero-ring-2 {
-      position: absolute;
-      inset: -32px;
-      border: 1px solid rgba(201,162,39,0.06);
-      border-radius: 44px;
-      z-index: 0;
-    }
-
-    .hero-photo {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      height: 540px;
-      object-fit: cover;
-      object-position: center top;
-      border-radius: 28px;
-      border: 1px solid rgba(199,168,76,0.16);
-      box-shadow: var(--shadow);
-      background: #111;
-    }
-
-    .hero-status {
-      position: absolute;
-      top: -14px; left: -4px;
-      z-index: 3;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      border-radius: 999px;
-      background: rgba(14,14,11,0.92);
-      border: 1px solid rgba(199,168,76,0.22);
-      color: var(--gold-2);
-      font-size: 0.74rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      box-shadow: 0 10px 28px rgba(0,0,0,0.3);
-      backdrop-filter: blur(12px);
-    }
-
-    .hero-status-dot {
-      width: 7px; height: 7px;
-      border-radius: 999px;
-      background: #5dde65;
-      box-shadow: 0 0 8px rgba(93,222,101,0.6);
-      animation: statusPulse 2.4s ease-in-out infinite;
-    }
-
-    @keyframes statusPulse {
-      0%,100% { box-shadow: 0 0 8px rgba(93,222,101,0.6); }
-      50%     { box-shadow: 0 0 14px rgba(93,222,101,0.9); }
-    }
-
-    .hero-badge {
-      position: absolute;
-      right: -16px;
-      bottom: 22px;
-      z-index: 2;
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      padding: 10px 16px;
-      border-radius: 999px;
-      background: rgba(10,10,8,0.88);
-      border: 1px solid rgba(201,162,39,0.26);
-      color: var(--gold-2);
-      font-size: 0.82rem;
-      font-weight: 700;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.32);
-      backdrop-filter: blur(14px);
-    }
-
-    .hero-badge svg {
-      width: 15px; height: 15px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* hero copy */
-    .hero-copy { min-width: 0; }
-
-    .hero-copy h1 {
-      font-size: clamp(3rem, 5.8vw, 5.8rem);
-      line-height: 0.95;
-      max-width: 11ch;
-    }
-
-    .authority-line {
-      margin-top: 18px;
-      color: #c8bfa0;
-      font-size: 0.94rem;
-      max-width: 620px;
-    }
-
-    /* ─── PILL ROW & CERT ROW (animated) ─── */
-    .pill-row, .cert-row, .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .pill-row { margin-top: 22px; }
-    .cert-row { margin-top: 12px; }
-    .hero-actions { margin-top: 28px; gap: 14px; }
-
-    .pill {
-      border-radius: 999px;
-      padding: 9px 16px;
-      border: 1px solid rgba(199,168,76,0.18);
-      background: rgba(255,255,255,0.038);
-      font-size: 0.88rem;
-      font-weight: 500;
-      color: var(--text);
-      opacity: 0;
-      transform: translateY(10px);
-      transition: border-color 0.22s ease, background 0.22s ease, transform 0.22s ease;
-    }
-
-    .pill:hover {
-      border-color: rgba(199,168,76,0.32);
-      background: rgba(255,255,255,0.06);
-      transform: translateY(-1px) !important;
-    }
-
-    .pill.animate-in {
-      animation: pillFadeUp 0.5s ease forwards;
-    }
-
-    @keyframes pillFadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .cert {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      border-radius: 999px;
-      padding: 8px 14px;
-      border: 1px solid rgba(201,162,39,0.30);
-      background: rgba(201,162,39,0.10);
-      color: var(--gold-2);
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: border-color 0.22s ease, background 0.22s ease, transform 0.22s ease;
-    }
-
-    .cert::before {
-      content: "";
-      width: 6px; height: 6px;
-      border-radius: 999px;
-      background: var(--gold);
-      box-shadow: 0 0 6px rgba(201,162,39,0.6);
-    }
-
-    .cert:hover {
-      background: rgba(201,162,39,0.18);
-      transform: translateY(-1px) !important;
-    }
-
-    .cert.animate-in {
-      animation: pillFadeUp 0.5s ease forwards;
-    }
-
-    /* ─── PROOF BAR ─── */
-    .proof-bar {
-      margin-top: 32px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .proof-item {
-      background: linear-gradient(160deg, rgba(22,21,15,0.98), rgba(12,12,9,0.98));
-      border: 1px solid rgba(199,168,76,0.14);
-      border-radius: 22px;
-      padding: 24px;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
-    }
-
-    .proof-item::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top right, rgba(201,162,39,0.09), transparent 30%);
-      pointer-events: none;
-    }
-
-    .proof-item:hover {
-      transform: translateY(-5px);
-      border-color: rgba(201,162,39,0.30);
-      box-shadow: 0 28px 64px rgba(0,0,0,0.44), inset 3px 0 0 rgba(201,162,39,0.75);
-    }
-
-    .proof-stat {
-      color: var(--gold-2);
-      font-family: 'Playfair Display', serif;
-      font-size: 3rem;
-      font-weight: 700;
-      line-height: 1;
-      margin-bottom: 10px;
-    }
-
-    /* ─── GRID LAYOUTS ─── */
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 28px;
-      align-items: start;
-    }
-
-    .grid-2-alt {
-      display: grid;
-      grid-template-columns: 0.92fr 1.08fr;
-      gap: 28px;
-      align-items: start;
-    }
-
-    .section-head-split {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 28px;
-      align-items: start;
-      margin-bottom: 32px;
-    }
-
-    /* ─── CARDS ─── */
-    .card {
-      background: linear-gradient(160deg, rgba(16,16,11,0.97), rgba(8,8,6,0.98));
-      border: 1px solid rgba(199,168,76,0.12);
-      border-radius: var(--radius);
-      padding: 28px;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top right, rgba(201,162,39,0.07), transparent 24%);
-      pointer-events: none;
-    }
-
-    .card::after {
-      content: "";
-      position: absolute;
-      left: 0; top: 18px; bottom: 18px;
-      width: 0;
-      background: linear-gradient(180deg, var(--gold-2), var(--gold));
-      border-radius: 999px;
-      transition: width 0.24s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(201,162,39,0.28);
-      box-shadow: 0 32px 72px rgba(0,0,0,0.44);
-    }
-
-    .card:hover::after { width: 3px; }
-
-    .mini-card {
-      background: rgba(255,255,255,0.022);
-      border: 1px solid rgba(199,168,76,0.10);
-      border-radius: 18px;
-      padding: 18px 20px;
-      transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
-    }
-
-    .mini-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(201,162,39,0.22);
-      background: rgba(255,255,255,0.038);
-    }
-
-    .stack { display: grid; gap: 14px; }
-
-    /* ─── ICON BADGE ─── */
-    .icon-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .icon-badge, .process-number {
-      width: 38px; height: 38px;
-      border-radius: 11px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(201,162,39,0.09);
-      border: 1px solid rgba(201,162,39,0.18);
-      color: var(--gold-2);
-      flex-shrink: 0;
-      font-weight: 800;
-      transition: transform 0.24s ease, box-shadow 0.24s ease, background 0.24s ease;
-    }
-
-    .icon-badge svg {
-      width: 18px; height: 18px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .card:hover .icon-badge,
-    .mini-card:hover .icon-badge,
-    .proof-item:hover .icon-badge,
-    .process-step:hover .process-number {
-      transform: translateY(-1px) scale(1.05);
-      box-shadow: 0 0 18px rgba(201,162,39,0.20);
-      background: rgba(201,162,39,0.16);
-    }
-
-    /* ─── GRIDS ─── */
-    .focus-grid, .service-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-
-    .case-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-top: 24px;
-    }
-
-    /* ─── LIST ─── */
-    .list-clean {
-      list-style: none;
-      padding: 0; margin: 0;
-      display: grid;
-      gap: 10px;
-    }
-
-    .list-clean li {
-      padding: 13px 16px;
-      border: 1px solid rgba(199,168,76,0.11);
-      border-radius: 14px;
-      background: rgba(255,255,255,0.022);
-      transition: transform 0.24s ease, border-color 0.24s ease;
-    }
-
-    .list-clean li:hover {
-      transform: translateY(-2px);
-      border-color: rgba(201,162,39,0.22);
-    }
-
-    .list-item-with-icon {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .list-item-icon {
-      width: 17px; height: 17px;
-      color: var(--gold-2);
-      flex-shrink: 0;
-    }
-
-    .list-item-icon svg {
-      width: 17px; height: 17px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* ─── PROCESS ─── */
-    .process-wrap {
-      position: relative;
-      margin-top: 30px;
-    }
-
-    .process-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .process-line {
-      position: absolute;
-      top: 26px;
-      left: 17%; right: 17%;
-      height: 1.5px;
-      background: linear-gradient(90deg, rgba(201,162,39,0.08), rgba(224,188,74,0.55), rgba(201,162,39,0.08));
-      z-index: 0;
-    }
-
-    .process-step { padding-top: 6px; }
-
-    .process-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 14px;
-    }
-
-    .process-tag {
-      font-size: 0.76rem;
-      color: var(--gold-2);
-      border: 1px solid rgba(201,162,39,0.22);
-      background: rgba(201,162,39,0.07);
-      border-radius: 999px;
-      padding: 6px 12px;
-    }
-
-    .process-cta-strip {
-      margin-top: 28px;
-      padding: 18px 22px;
-      border-radius: 18px;
-      border: 1px solid rgba(201,162,39,0.16);
-      background: linear-gradient(135deg, rgba(201,162,39,0.09), rgba(255,255,255,0.018));
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    /* ─── BAND ─── */
-    .band { position: relative; }
-
-    .band::before {
-      content: "";
-      position: absolute;
-      inset: 28px 0;
-      background: linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.010));
-      border-top: 1px solid rgba(199,168,76,0.08);
-      border-bottom: 1px solid rgba(199,168,76,0.08);
-      pointer-events: none;
-    }
-
-    /* ─── TESTIMONIALS ─── */
-    .testimonials-stage {
-      position: relative;
-      min-height: 250px;
-      margin-top: 22px;
-    }
-
-    .testimonial-slide {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 0.55s ease, transform 0.55s ease;
-      pointer-events: none;
-    }
-
-    .testimonial-slide.active {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    .quote-mark {
-      font-family: 'Playfair Display', serif;
-      font-size: 4.5rem;
-      line-height: 0.9;
-      color: rgba(224,196,112,0.22);
-      margin-bottom: 8px;
-    }
-
-    .testimonial-quote {
-      font-size: 1.12rem;
-      line-height: 1.72;
-      color: var(--text);
-      max-width: 840px;
-    }
-
-    .testimonial-meta { margin-top: 18px; }
-
-    .testimonial-name { font-weight: 700; color: var(--text); }
-
-    .testimonial-role { font-size: 0.9rem; color: var(--muted); }
-
-    .testimonial-controls {
-      margin-top: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .testimonial-dots { display: flex; gap: 8px; }
-
-    .testimonial-dot {
-      width: 9px; height: 9px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      background: rgba(255,255,255,0.16);
-      transition: transform 0.2s, background 0.2s, width 0.25s;
-    }
-
-    .testimonial-dot.active {
-      background: linear-gradient(180deg, var(--gold-2), var(--gold));
-      width: 24px;
-      box-shadow: 0 0 10px rgba(224,196,112,0.28);
-    }
-
-    .testimonial-grid {
-      margin-top: 24px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-
-    .testimonial-mini {
-      background: rgba(255,255,255,0.020);
-      border: 1px solid rgba(199,168,76,0.10);
-      border-radius: 16px;
-      padding: 16px;
-      cursor: pointer;
-      transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
-    }
-
-    .testimonial-mini:hover,
-    .testimonial-mini.active {
-      transform: translateY(-3px);
-      border-color: rgba(201,162,39,0.26);
-      background: rgba(255,255,255,0.038);
-    }
-
-    .testimonial-mini p { margin: 0; color: var(--muted); font-size: 0.88rem; }
-
-    /* ─── POSITIONING QUOTE ─── */
-    .positioning {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 26px;
-      padding: 40px;
-      border: 1px solid rgba(201,162,39,0.18);
-      border-radius: 32px;
-      background: linear-gradient(135deg, rgba(201,162,39,0.09), rgba(255,255,255,0.015));
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .positioning::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top right, rgba(201,162,39,0.09), transparent 30%);
-      pointer-events: none;
-    }
-
-    blockquote {
-      margin: 0;
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.65rem, 2.8vw, 2.8rem);
-      line-height: 1.15;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      position: relative;
-      z-index: 1;
-      color: var(--text);
-    }
-
-    /* ─── CONTACT ─── */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 0.88fr;
-      gap: 28px;
-      align-items: start;
-    }
-
-    /* ─── FORMS ─── */
-    .qual-form {
-      margin-top: 14px;
-      display: grid;
-      gap: 14px;
-    }
-
-    .qual-group { display: grid; gap: 6px; }
-
-    .qual-label { font-size: 0.9rem; color: var(--text); font-weight: 500; }
-
-    .qual-input, .qual-textarea {
-      width: 100%;
-      border: 1px solid rgba(199,168,76,0.16);
-      background: rgba(255,255,255,0.022);
-      color: var(--text);
-      border-radius: 12px;
-      padding: 13px 14px;
-      font: inherit;
-      font-size: 0.92rem;
-      outline: none;
-      transition: border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
-    }
-
-    .qual-input::placeholder, .qual-textarea::placeholder { color: #5e5a4a; }
-
-    .qual-input:focus, .qual-textarea:focus {
-      border-color: rgba(201,162,39,0.46);
-      box-shadow: 0 0 0 3px rgba(201,162,39,0.10);
-      background: rgba(255,255,255,0.034);
-    }
-
-    .qual-textarea { min-height: 90px; resize: vertical; }
-
-    /* ─── CTA BAND ─── */
-    .contact-cta-band {
-      margin-top: 26px;
-      padding: 38px 28px;
-      border-top: 1px solid rgba(199,168,76,0.12);
-      border-bottom: 1px solid rgba(199,168,76,0.12);
-      background: linear-gradient(90deg, rgba(18,17,12,0.92), rgba(12,12,9,0.90));
-    }
-
-    .contact-cta-grid {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 20px;
-      align-items: center;
-    }
-
-    /* ─── FOOTER ─── */
-    .footer {
-      padding: 48px 0 56px;
-      border-top: 1px solid rgba(199,168,76,0.08);
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1.25fr 1fr 1.05fr;
-      gap: 36px;
-      align-items: start;
-      padding-bottom: 28px;
-    }
-
-    .footer-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.9rem;
-      line-height: 1.1;
-      margin-bottom: 12px;
-      color: var(--gold-2);
-    }
-
-    .footer-list {
-      display: grid;
-      gap: 10px;
-      color: var(--muted);
-    }
-
-    .footer-list a:hover { color: var(--gold-2); }
-
-    .footer-note {
-      display: flex;
-      justify-content: space-between;
-      gap: 18px;
-      padding-top: 20px;
-      border-top: 1px solid rgba(199,168,76,0.08);
-      color: #6e6852;
-      font-size: 0.88rem;
-      flex-wrap: wrap;
-    }
-
-    /* ─── BACK TO TOP ─── */
-    .back-to-top {
-      position: fixed;
-      right: 22px; bottom: 22px;
-      z-index: 100;
-      width: 52px; height: 52px;
-      border: none;
-      border-radius: 999px;
-      background: linear-gradient(170deg, var(--gold-2), var(--gold));
-      color: #0f0d08;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(16px);
-      transition: opacity 0.28s, transform 0.28s, visibility 0.28s, box-shadow 0.22s;
-      box-shadow: 0 14px 32px rgba(201,162,39,0.24);
-    }
-
-    .back-to-top.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-
-    .back-to-top:hover {
-      box-shadow: 0 18px 44px rgba(201,162,39,0.36), 0 0 22px rgba(224,196,112,0.24);
-      transform: translateY(-2px);
-    }
-
-    .back-to-top svg {
-      width: 20px; height: 20px;
-      stroke: #0f0d08;
-      stroke-width: 2.8;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* ─── REVEAL ANIMATIONS ─── */
-    /* Elements are visible by default. JS adds .js-reveal-ready to <body>
-       only after confirming IntersectionObserver works, preventing a blank
-       page if the observer never fires (e.g. Vercel + some mobile browsers). */
-    .reveal { opacity: 1; transform: none; }
-
-    body.js-reveal-ready .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.75s ease, transform 0.75s ease;
-      will-change: opacity, transform;
-    }
-
-    body.js-reveal-ready .reveal.in-view {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .delay-1 { transition-delay: 0.08s; }
-    .delay-2 { transition-delay: 0.16s; }
-    .delay-3 { transition-delay: 0.24s; }
-
-    /* ─── CURSOR GLOW (desktop) ─── */
-    .cursor-glow {
-      pointer-events: none;
-      position: fixed;
-      z-index: 9998;
-      width: 380px; height: 380px;
-      border-radius: 999px;
-      background: radial-gradient(circle, rgba(199,168,76,0.055), transparent 65%);
-      transform: translate(-50%,-50%);
-      transition: transform 0.08s linear, opacity 0.5s ease;
-      opacity: 0;
-    }
-
-    /* ─── MAGNETIC BUTTON EFFECT ─── */
-    .btn-primary { will-change: transform; }
-
-    /* ─── REDUCED MOTION ─── */
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      body { animation: none; opacity: 1; }
-      .reveal, .reveal.in-view,
-      .back-to-top, .card, .proof-item,
-      .mini-card, .list-clean li,
-      .testimonial-slide, .eyebrow,
-      .pill, .cert, .cursor-glow {
-        transition: none !important;
-        animation: none !important;
-        transform: none !important;
-        opacity: 1 !important;
-      }
-    }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 1100px) {
-      .hero-grid,
-      .grid-2, .grid-2-alt,
-      .positioning, .contact-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .case-grid, .testimonial-grid, .process-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-photo-wrap { margin: 0 auto; }
-      .process-line { display: none; }
-    }
-
-    @media (max-width: 980px) {
-      .hero-grid,
-      .section-head-split,
-      .contact-cta-grid,
-      .footer-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .section-head-split .lead { margin-left: 0; }
-
-      .proof-bar, .focus-grid, .case-grid, .process-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-photo-wrap { max-width: 440px; }
-    }
-
-    @media (max-width: 760px) {
-      :root { --nav-offset: 112px; }
-
-      .nav {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 14px 0;
-      }
-
-      .proof-bar, .focus-grid, .service-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .section { padding: 64px 0; }
-      .hero { padding: 38px 0 20px; }
-
-      .section-shell, .card, .positioning {
-        padding: 22px;
-        border-radius: 22px;
-      }
-
-      .hero-photo {
-        height: 380px;
-        border-radius: 22px;
-      }
-
-      .hero-ring { inset: -10px; border-radius: 28px; }
-      .hero-ring-2 { inset: -22px; border-radius: 34px; }
-
-      .hero-badge {
-        right: 8px; bottom: 10px;
-        font-size: 0.74rem;
-        padding: 8px 12px;
-      }
-
-      .hero-copy h1 { max-width: 100%; }
-      .testimonials-stage { min-height: 310px; }
-      .testimonial-grid { grid-template-columns: 1fr 1fr; }
-
-      .back-to-top { right: 14px; bottom: 14px; width: 46px; height: 46px; }
-    }
-
-    @media (max-width: 640px) {
-      .section-shell, .card { padding: 20px; }
-      .hero-copy h1 { font-size: clamp(2.4rem, 12vw, 4rem); }
-      .focus-grid, .case-grid, .service-grid { grid-template-columns: 1fr !important; }
-      .testimonial-grid { grid-template-columns: 1fr; }
-    }
-
-    /* min-width overflow prevention */
-    .hero-grid, .grid-2, .grid-2-alt, .section-head-split,
-    .proof-bar, .case-grid, .service-grid, .focus-grid,
-    .contact-grid, .contact-cta-grid, .footer-grid, .positioning {
-      min-width: 0;
-    }
-
-    .hero-grid > *, .grid-2 > *, .grid-2-alt > *,
-    .section-head-split > *, .proof-bar > *, .case-grid > *,
-    .service-grid > *, .focus-grid > *, .contact-grid > *,
-    .contact-cta-grid > *, .footer-grid > *, .positioning > * {
-      min-width: 0;
-    }
-
-    h1, h2, h3, h4, p, a, li, .lead, .muted, .authority-line {
-      overflow-wrap: break-word;
-      word-break: normal;
-    }
-
-    /* ─── FOCUS STATES ─── */
-    .btn:focus-visible,
-    input:focus-visible,
-    textarea:focus-visible,
-    a:focus-visible {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(0,0,0,0.5), 0 0 0 5px var(--focus-ring);
-      border-radius: 12px;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O's Sweets 4 Sweets International — Government Contract Food Service</title>
+<meta name="description" content="Minority-owned culinary catering firm serving federal, state and local contracts. Large-event catering, on-site cooking crews, daily facility meal service. Florida and wherever the contract is.">
+<meta property="og:title" content="O's Sweets 4 Sweets International">
+<meta property="og:description" content="Government contract food service, large-event catering and daily facility meal service.">
+<meta property="og:image" content="hero-team.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ossweets4sweets.com">
+<link rel="canonical" href="https://ossweets4sweets.com">
+<script src="./support.js"></script>
 </head>
 <body>
-  <!-- Cursor glow -->
-  <div class="cursor-glow" id="cursorGlow"></div>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; scroll-padding-top: 78px; }
+  body { margin: 0; background: #E9E7E0; color: #000000; font-family: "Newsreader", Georgia, serif; -webkit-font-smoothing: antialiased; }
+  [data-nav] a { position: relative; transition: color .18s ease; }
+  [data-nav] a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -8px; height: 2px; background: #A81111; transform: scaleX(0); transform-origin: left center; transition: transform .3s cubic-bezier(.3,.9,.2,1); }
+  [data-nav] a[data-active] { color: #E9E7E0 !important; }
+  [data-nav] a[data-active]::after { transform: scaleX(1); }
+  [data-nav]::-webkit-scrollbar { display: none; }
+  [data-progress] { transform: scaleX(0); transform-origin: left center; }
+  * { box-sizing: border-box; }
+  a { color: #A81111; text-decoration: none; }
+  a:hover { color: #000000; }
+  :focus-visible { outline: 2px solid #A81111; outline-offset: 3px; }
+  img, image-slot { display: block; }
+  @keyframes rise { from { opacity: 0; transform: translateY(0.24em); } to { opacity: 1; transform: none; } }
+  @keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  [data-line] { animation: rise .7s cubic-bezier(.2,.8,.2,1) both; }
+  [data-line="2"] { animation-delay: .1s; }
+  [data-line="3"] { animation-delay: .2s; }
+  [data-rule] { transform-origin: left center; animation: draw .8s cubic-bezier(.3,.9,.2,1) .42s both; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } [data-line], [data-rule] { animation: none; } [data-nav] a::after { transition: none; } }
+  @media (max-width: 1040px) {
+    header { flex-wrap: wrap; padding-left: 22px !important; }
+    [data-nav] { order: 3; flex: 0 0 100% !important; justify-content: flex-start !important; gap: 22px !important; padding: 0 22px 0 0 !important; margin: 0 -22px 0 0; overflow-x: auto; scrollbar-width: none; border-top: 1px solid #2A2A2A; }
+    [data-nav] a { padding: 13px 0 14px; white-space: nowrap; }
+    [data-nav] a::after { bottom: 0; }
+    [data-split] { grid-template-columns: minmax(0,1fr) !important; }
+    [data-media] { min-height: 400px !important; }
+    #story [data-media] { min-height: 0 !important; aspect-ratio: 4 / 5; }
+    [data-spec] { grid-template-columns: minmax(0,1fr) !important; }
+    [data-spec] > * { grid-column: span 1 !important; }
+    [data-svcrow] { grid-template-columns: minmax(0,1fr) !important; }
+    [data-svcrow] > [data-svcphoto] { height: auto !important; min-height: 0 !important; aspect-ratio: 16 / 9; border-right: 0 !important; border-bottom: 1px solid #000000 !important; }
+  }
+  @media (max-width: 760px) {
+    #top { min-height: 78vh !important; }
+    #top img { object-position: 62% center !important; }
+    [data-spec] { grid-template-columns: minmax(0,1fr) !important; }
+    [data-spec] > * { grid-column: span 1 !important; }
+    [data-gallery] { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
+    [data-pad] { padding-left: 22px !important; padding-right: 22px !important; }
+    [data-record] [data-rrow] { grid-template-columns: minmax(0,1fr) !important; gap: 4px !important; }
+  }
+</style>
+<script src="./image-slot.js"></script>
+</helmet>
 
-  <div class="progress-bar" id="scrollProgress"></div>
+<div style="width:100%; background:#E9E7E0; overflow-x:clip">
 
-  <div class="site">
-    <!-- ─── NAV ─── -->
-    <div class="topbar">
-      <div class="container nav">
-        <div class="brand">Dillon Noel</div>
-        <div class="nav-links">
-          <a href="#about">Profile</a>
-          <a href="#impact">Impact</a>
-          <a href="#process">Process</a>
-          <a href="#testimonials">Testimonials</a>
-          <a href="#services">Services</a>
-          <a href="#intensive">Strategy Intensive</a>
-          <a href="#contact">Contact</a>
-        </div>
+  <header style="position:sticky; top:0; z-index:40; overflow:visible; display:flex; align-items:center; justify-content:space-between; gap:24px; padding:0 0 0 32px; background:#000000; color:#E9E7E0; border-bottom:1px solid #000000">
+    <a href="#top" style="display:flex; align-items:baseline; gap:10px; padding:16px 0; color:#E9E7E0; font-family:'Archivo',sans-serif; font-weight:800; font-size:17px; letter-spacing:-0.02em">
+      O's Sweets 4 Sweets
+      <span style="font-family:'Newsreader',serif; font-weight:300; font-style:italic; font-size:15px; letter-spacing:0; color:#9A7B2E">International</span>
+    </a>
+    <nav data-nav="" style="display:flex; flex:1 1 auto; align-items:center; justify-content:flex-end; gap:26px; padding-right:26px; font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px">
+      <a href="#capability" style="color:#C9C5BB" style-hover="color:#E9E7E0">Capability</a>
+      <a href="#work" style="color:#C9C5BB" style-hover="color:#E9E7E0">What we cook</a>
+      <a href="#diets" style="color:#C9C5BB" style-hover="color:#E9E7E0">Diets</a>
+      <a href="#record" style="color:#C9C5BB" style-hover="color:#E9E7E0">Past performance</a>
+      <a href="#story" style="color:#C9C5BB" style-hover="color:#E9E7E0">The chef</a>
+    </nav>
+    <a href="#quote" style="display:flex; align-items:center; padding:16px 26px; background:#A81111; color:#FFFFFF; font-family:'Archivo',sans-serif; font-weight:700; font-size:14.5px; white-space:nowrap" style-hover="background:#000000; color:#FFFFFF">Request a quote</a>
+    <div data-progress="" style="position:absolute; left:0; right:0; bottom:-1px; height:2px; background:#A81111"></div>
+  </header>
+
+  <section id="top" style="position:relative; min-height:min(92vh,900px); display:flex; align-items:flex-end; border-bottom:1px solid #000000; overflow:hidden">
+    <img src="hero-team.png" alt="The O's Sweets 4 Sweets crew in a commercial kitchen behind a run of prepared meal trays" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:58% center">
+    <div style="position:absolute; inset:0; pointer-events:none; background:linear-gradient(90deg,rgba(0,0,0,0.86) 0%,rgba(0,0,0,0.62) 34%,rgba(0,0,0,0.12) 68%,rgba(0,0,0,0) 100%),linear-gradient(180deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.22) 30%,rgba(0,0,0,0.62) 66%,rgba(0,0,0,0.95) 100%)"></div>
+    <div data-pad="" style="position:relative; z-index:2; width:100%; padding:0 44px 60px">
+      <h1 style="margin:0; max-width:16ch; font-family:'Archivo',sans-serif; font-weight:800; font-size:clamp(38px,5vw,78px); line-height:0.95; letter-spacing:-0.035em; color:#FFFFFF">
+        <span data-line="1" style="display:block">We cook five-star</span>
+        <span data-line="2" style="display:block">food in places that</span>
+        <span data-line="3" style="display:block">have no restaurant.</span>
+      </h1>
+      <div data-rule="" style="height:3px; width:100%; max-width:420px; margin:32px 0 26px; background:#A81111"></div>
+      <p style="margin:0; max-width:56ch; font-size:20px; line-height:1.6; color:#F1EFE9; text-wrap:pretty">
+        A minority-owned culinary contractor out of Florida, cooking under federal, state and local contracts since 2018 — on land and at sea, in the United States, England and Switzerland.
+      </p>
+      <div style="display:flex; flex-wrap:wrap; gap:0; margin-top:34px">
+        <a href="#quote" style="padding:19px 32px; background:#A81111; color:#FFFFFF; font-family:'Archivo',sans-serif; font-weight:700; font-size:15.5px" style-hover="background:#FFFFFF; color:#000000">Request a quote</a>
+        <a href="#record" style="padding:19px 32px; border:1px solid rgba(255,255,255,0.7); color:#FFFFFF; font-family:'Archivo',sans-serif; font-weight:600; font-size:15.5px" style-hover="background:#FFFFFF; color:#000000">See past performance</a>
       </div>
     </div>
+  </section>
 
-    <!-- ─── HERO ─── -->
-    <header class="hero container reveal" id="top">
-      <div style="background:transparent; border:none; box-shadow:none; padding: 16px 0 0;">
-        <div class="hero-grid">
-          <!-- Photo -->
-          <div class="hero-photo-wrap reveal delay-1" id="heroPhotoWrap">
-            <div class="hero-status">
-              <div class="hero-status-dot"></div>
-              Available for engagements
-            </div>
-            <div class="hero-glow"></div>
-            <div class="hero-ring"></div>
-            <div class="hero-ring-2"></div>
-            <img class="hero-photo" src="Headshot.jpg" alt="Dillon Noel headshot" />
-            <div class="hero-badge">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"></path>
-                <path d="M9.5 12.5l1.7 1.7 3.3-3.7"></path>
-              </svg>
-              CBAP® Certified
-            </div>
-          </div>
-
-          <!-- Copy -->
-          <div class="hero-copy reveal delay-2">
-            <p class="eyebrow" id="heroEyebrow">Dillon Noel</p>
-            <div class="heading-glow-wrap">
-              <h1 class="has-shimmer">Strategy, execution, and growth architecture for leaders solving <span style="color:var(--gold-2);">complex business problems.</span></h1>
-            </div>
-            <p class="lead">
-              I help organizations clarify priorities, align stakeholders, and build execution systems that turn strategy into measurable progress.
-            </p>
-            <p class="authority-line">
-              Managed 7 enterprise SaaS applications &bull; Built 2 applications from concept to production
-            </p>
-
-            <!-- Animated pills -->
-            <div class="pill-row" id="pillRow">
-              <span class="pill">Business Analysis</span>
-              <span class="pill">Strategy Consulting</span>
-              <span class="pill">Execution Leadership</span>
-            </div>
-
-            <!-- Animated certs -->
-            <div class="cert-row" id="certRow">
-              <span class="cert">CBAP®</span>
-              <span class="cert">PSPO</span>
-              <span class="cert">PSM</span>
-            </div>
-
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="#intensive">Apply for Strategy Intensive</a>
-              <a class="btn btn-secondary" href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">LinkedIn Profile</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Proof bar -->
-        <div class="proof-bar">
-          <div class="proof-item reveal delay-1">
-            <div class="icon-row">
-              <span class="icon-badge" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"></path><path d="M9.5 12.5l1.7 1.7 3.3-3.7"></path></svg>
-              </span>
-            </div>
-            <div class="proof-stat counter" data-target="7">0</div>
-            <p class="muted">Enterprise SaaS applications managed</p>
-          </div>
-
-          <div class="proof-item reveal delay-2">
-            <div class="icon-row">
-              <span class="icon-badge" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M4 19h16"></path><path d="M6 16V8"></path><path d="M12 16V5"></path><path d="M18 16v-3"></path></svg>
-              </span>
-            </div>
-            <div class="proof-stat counter" data-target="2">0</div>
-            <p class="muted">Applications built from concept to production</p>
-          </div>
-
-          <div class="proof-item reveal delay-3">
-            <div class="icon-row">
-              <span class="icon-badge" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M12 20v-8"></path><path d="M8 16l4-4 4 4"></path><path d="M6 10c0-3.3 2.7-6 6-6 2.7 0 5 1.8 5.7 4.3A4.5 4.5 0 1 1 18 17H7.5A3.5 3.5 0 0 1 6 10z"></path></svg>
-              </span>
-            </div>
-            <div class="proof-stat counter" data-target="100" data-suffix="+">0</div>
-            <p class="muted">Stakeholders aligned across initiatives, delivery, and operating decisions</p>
-          </div>
-        </div>
+  <section id="capability" style="background:#000000; color:#E9E7E0; border-bottom:1px solid #000000">
+    <div data-pad="" style="padding:64px 44px 34px; border-bottom:1px solid #2A2A2A">
+      <p style="margin:0; max-width:30ch; font-family:'Newsreader',serif; font-style:italic; font-weight:300; font-size:clamp(28px,3.2vw,46px); line-height:1.18; color:#E9E7E0">“Oh sweets 4 sweets can’t be beat — the elite.”</p>
+    </div>
+    <div data-pad="" style="padding:34px 44px 12px">
+      <div style="display:flex; align-items:baseline; justify-content:space-between; gap:28px; flex-wrap:wrap; margin:0 0 30px">
+        <h2 style="margin:0; font-family:'Archivo',sans-serif; font-weight:700; font-size:22px; letter-spacing:-0.01em; color:#9A7B2E">Capability statement</h2>
+        <a href="capability-statement.html" target="_blank" style="padding:14px 24px; background:#A81111; color:#FFFFFF; font-family:'Archivo',sans-serif; font-weight:700; font-size:14.5px" style-hover="background:#E9E7E0; color:#000000">Download the one-page PDF</a>
       </div>
-    </header>
+      <div data-spec="" style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); column-gap:64px">
+        <sc-for list="{{ spec }}" as="s" hint-placeholder-count="8">
+          <div style="display:grid; grid-template-columns:minmax(120px,0.55fr) minmax(0,1fr); gap:20px; padding:18px 0; border-top:1px solid #2A2A2A">
+            <span style="font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px; color:#918C81">{{ s.field }}</span>
+            <span style="font-size:18px; line-height:1.5; color:#E9E7E0">{{ s.value }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <p style="margin:26px 0 0; padding-bottom:56px; max-width:70ch; font-size:16.5px; line-height:1.6; color:#918C81">Registration numbers marked pending are placeholders. Send the SAM.gov UEI and CAGE code and they go in as printed.</p>
+    </div>
+  </section>
 
-    <!-- ─── ABOUT ─── -->
-    <section id="about" class="section reveal">
-      <div class="container">
-        <div class="section-shell">
-          <div class="grid-2">
-            <div class="reveal delay-1">
-              <p class="eyebrow">Executive Profile</p>
-              <div class="heading-glow-wrap"><h2 class="has-shimmer">Clarity in complexity.<br>Structure in execution.</h2></div>
-              <p class="lead">
-                Dillon Noel is a strategy and execution professional who helps leaders navigate complex initiatives, strengthen delivery, and build systems that scale.
-              </p>
-              <p class="muted">
-                His work bridges business analysis, product thinking, and operational execution—bringing structure to ambiguity and turning ideas into actionable outcomes.
-              </p>
-            </div>
-
-            <div class="card reveal delay-2">
-              <p class="eyebrow">Why Leaders Work With Me</p>
-              <div class="stack">
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M3 12h18"></path><path d="M3 6h8"></path><path d="M3 18h13"></path></svg>
-                    </span>
-                    <h3>Clarity Over Confusion</h3>
-                  </div>
-                  <p class="muted">Breaks complex business problems into structured, actionable paths leaders and teams can execute with confidence.</p>
-                </div>
-
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M5 12l4 4 8-8"></path></svg>
-                    </span>
-                    <h3>Execution, Not Theory</h3>
-                  </div>
-                  <p class="muted">Focuses on implementation, alignment, and measurable progress—not recommendations that stay on paper.</p>
-                </div>
-
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"></path></svg>
-                    </span>
-                    <h3>Enterprise-Grade Thinking</h3>
-                  </div>
-                  <p class="muted">Applies structured thinking shaped by high-scale environments and delivery complexity.</p>
-                </div>
-
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path><path d="M5 20h14"></path></svg>
-                    </span>
-                    <h3>Built for Growth</h3>
-                  </div>
-                  <p class="muted">Designs systems that support stronger operating clarity, better execution, and scalable growth.</p>
-                </div>
-              </div>
+  <section id="work" style="border-bottom:1px solid #000000">
+    <div data-pad="" style="padding:72px 44px 36px">
+      <h2 style="margin:0; max-width:24ch; font-family:'Archivo',sans-serif; font-weight:800; font-size:clamp(32px,3.6vw,54px); line-height:1.02; letter-spacing:-0.03em">What you can hire us to cook</h2>
+    </div>
+    <div style="border-top:1px solid #000000">
+      <sc-for list="{{ services }}" as="s" hint-placeholder-count="5">
+        <article data-svcrow="" style="display:grid; grid-template-columns:minmax(0,0.42fr) minmax(0,1fr); border-bottom:1px solid #000000">
+          <div data-svcphoto="" style="position:relative; aspect-ratio:3 / 2; border-right:1px solid #000000; overflow:hidden">
+            <div style="position:absolute; inset:0">
+              <image-slot id="{{ s.slotId }}" src="photos/{{ s.slotId }}.webp" shape="rect" fit="cover" style="object-position:50% 30%" placeholder="{{ s.photo }}"></image-slot>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─── PROCESS ─── -->
-    <section id="process" class="section reveal">
-      <div class="container">
-        <div class="section-shell">
-          <div class="section-head-split">
+          <div data-pad="" style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.25fr); gap:44px; align-items:center; padding:34px 44px 38px">
             <div>
-              <p class="eyebrow">Process</p>
-              <div class="heading-glow-wrap"><h2 class="has-shimmer">How I work with clients</h2></div>
+              <h3 style="margin:0 0 12px; font-family:'Archivo',sans-serif; font-weight:700; font-size:26px; line-height:1.12; letter-spacing:-0.02em">{{ s.title }}</h3>
+              <p style="margin:0; font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px; color:#A81111">{{ s.scale }}</p>
             </div>
-            <p class="lead">A structured, repeatable process that turns complex challenges into clear execution — every time.</p>
+            <p style="margin:0; max-width:62ch; font-size:18px; line-height:1.6; color:#1A1A1A; text-wrap:pretty">{{ s.body }}</p>
           </div>
+        </article>
+      </sc-for>
+    </div>
+  </section>
 
-          <div class="process-wrap">
-            <div class="process-line"></div>
-            <div class="process-grid">
-              <div class="process-step reveal delay-1">
-                <div class="card">
-                  <div class="icon-row">
-                    <span class="process-number">1</span>
-                    <h3>Understand the real problem</h3>
-                  </div>
-                  <p class="muted">Most organizations are solving the wrong problem. I start by asking the right questions — mapping the actual challenge, not the surface symptoms. This phase produces a clear problem statement and shared understanding.</p>
-                  <div class="process-tags">
-                    <span class="process-tag">Discovery sessions</span>
-                    <span class="process-tag">Stakeholder interviews</span>
-                    <span class="process-tag">Problem framing</span>
-                  </div>
-                </div>
-              </div>
+  <section id="diets" style="border-bottom:1px solid #000000; background:#FFFFFF">
+    <img src="diets-run.png" alt="Every diet on the same run: therapeutic and medical, texture modified, allergen and intolerance, religious and cultural, and lifestyle meal trays, each labeled and photographed on a stainless service line. Diabetic, renal, cardiac and low sodium, high protein, clear and full liquid, mechanical soft, ground and minced, puréed, thickened liquids, finger foods, gluten free, nut free, dairy free, egg free, soy free, fish and shellfish free, halal, kosher style, Hindu and Jain vegetarian, Lenten, Caribbean, Southern and Latin, vegetarian, vegan, pescatarian, keto and low carb, whole food, and youth nutrition. If a diet order is not listed, send it with your request." style="display:block; width:100%; height:auto">
+  </section>
 
-              <div class="process-step reveal delay-2">
-                <div class="card">
-                  <div class="icon-row">
-                    <span class="process-number">2</span>
-                    <h3>Build the execution architecture</h3>
-                  </div>
-                  <p class="muted">With clarity on the problem, I design the structure: priorities, decision frameworks, ownership models, and execution plans. This is where ambiguity becomes a concrete path forward.</p>
-                  <div class="process-tags">
-                    <span class="process-tag">Strategic roadmap</span>
-                    <span class="process-tag">Priority framework</span>
-                    <span class="process-tag">Ownership design</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="process-step reveal delay-3">
-                <div class="card">
-                  <div class="icon-row">
-                    <span class="process-number">3</span>
-                    <h3>Drive measurable progress</h3>
-                  </div>
-                  <p class="muted">Strategy without execution is just a document. I stay engaged through delivery — aligning stakeholders, removing blockers, and ensuring the plan translates into real, measurable outcomes.</p>
-                  <div class="process-tags">
-                    <span class="process-tag">Delivery</span>
-                    <span class="process-tag">Alignment</span>
-                    <span class="process-tag">Momentum</span>
-                  </div>
-                </div>
+  <sc-if value="{{ showGallery }}" hint-placeholder-val="{{ true }}">
+    <section style="border-bottom:1px solid #000000">
+      <div data-pad="" style="padding:64px 44px 28px">
+        <h2 style="margin:0; max-width:26ch; font-family:'Archivo',sans-serif; font-weight:800; font-size:clamp(28px,3vw,42px); line-height:1.04; letter-spacing:-0.03em">The kitchens we work out of</h2>
+      </div>
+      <div data-gallery="" data-pad="" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:28px 24px; padding:8px 44px 64px">
+        <sc-for list="{{ gallery }}" as="g" hint-placeholder-count="6">
+          <figure style="margin:0">
+            <div style="position:relative; height:260px; border:1px solid #000000; overflow:hidden">
+              <div style="position:absolute; inset:0">
+                <image-slot id="{{ g.slotId }}" src="photos/{{ g.slotId }}.webp" shape="rect" fit="cover" placeholder="{{ g.photo }}"></image-slot>
               </div>
             </div>
-          </div>
-
-          <div class="process-cta-strip reveal delay-3">
-            <div>
-              <strong>Need a structured partner for a complex initiative?</strong>
-              <div class="muted">Start with the Strategy Intensive and we'll map the right path forward.</div>
-            </div>
-            <a class="btn btn-primary" href="#intensive">Start Here</a>
-          </div>
-        </div>
+            <figcaption style="margin-top:12px; font-size:17px; line-height:1.45; color:#1A1A1A">{{ g.caption }}</figcaption>
+          </figure>
+        </sc-for>
       </div>
     </section>
+  </sc-if>
 
-    <!-- ─── TESTIMONIALS ─── -->
-    <section id="testimonials" class="section band reveal">
-      <div class="container">
-        <div class="section-shell">
-          <p class="eyebrow">Testimonials</p>
-          <h2>What others say about working with me</h2>
-
-          <div class="testimonials-stage">
-            <div class="testimonial-slide active" data-index="0">
-              <div class="quote-mark">"</div>
-              <p class="testimonial-quote">Dillon brings order to complexity. He has a strong ability to break down large, ambiguous initiatives into clear, actionable workstreams that teams can actually execute.</p>
-              <div class="testimonial-meta">
-                <div class="testimonial-name">Rajesh Kantu</div>
-                <div class="testimonial-role">Enterprise Technology / Cross-Functional Programs</div>
-              </div>
-            </div>
-
-            <div class="testimonial-slide" data-index="1">
-              <div class="quote-mark">"</div>
-              <p class="testimonial-quote">What stands out most is his structured thinking. He does not just identify problems — he organizes them, frames decisions clearly, and helps move the work forward.</p>
-              <div class="testimonial-meta">
-                <div class="testimonial-name">Melissa Colner</div>
-                <div class="testimonial-role">Strategy, Product, and Execution</div>
-              </div>
-            </div>
-
-            <div class="testimonial-slide" data-index="2">
-              <div class="quote-mark">"</div>
-              <p class="testimonial-quote">Dillon has a rare mix of business analysis rigor and execution mindset. He asks the right questions, creates clarity fast, and helps teams stay aligned around what matters.</p>
-              <div class="testimonial-meta">
-                <div class="testimonial-name">Anandakrishnan</div>
-                <div class="testimonial-role">Enterprise SaaS / Program Delivery</div>
-              </div>
-            </div>
-
-            <div class="testimonial-slide" data-index="3">
-              <div class="quote-mark">"</div>
-              <p class="testimonial-quote">He is the kind of person you want involved when an initiative feels too complex, too broad, or too messy. He brings structure, confidence, and momentum to the room.</p>
-              <div class="testimonial-meta">
-                <div class="testimonial-name">Munir Fati Hajie</div>
-                <div class="testimonial-role">Software Engineer</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="testimonial-controls">
-            <div class="testimonial-dots" id="testimonialDots">
-              <button class="testimonial-dot active" aria-label="Show testimonial 1" data-index="0"></button>
-              <button class="testimonial-dot" aria-label="Show testimonial 2" data-index="1"></button>
-              <button class="testimonial-dot" aria-label="Show testimonial 3" data-index="2"></button>
-              <button class="testimonial-dot" aria-label="Show testimonial 4" data-index="3"></button>
-            </div>
-          </div>
-
-          <div class="testimonial-grid">
-            <div class="testimonial-mini active" data-index="0" tabindex="0">
-              <div class="icon-row">
-                <span class="icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M9 11H5V7h4v4zm10 0h-4V7h4v4zM9 17H5v-4h4v4zm10 0h-4v-4h4v4z"></path></svg>
-                </span>
-              </div>
-              <p>Structure, clarity, and strong workstream definition.</p>
-            </div>
-
-            <div class="testimonial-mini" data-index="1" tabindex="0">
-              <div class="icon-row">
-                <span class="icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path></svg>
-                </span>
-              </div>
-              <p>Sharp decision framing and organized thinking.</p>
-            </div>
-
-            <div class="testimonial-mini" data-index="2" tabindex="0">
-              <div class="icon-row">
-                <span class="icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h10"></path><path d="M4 17h7"></path></svg>
-                </span>
-              </div>
-              <p>Strong blend of analysis rigor and execution focus.</p>
-            </div>
-
-            <div class="testimonial-mini" data-index="3" tabindex="0">
-              <div class="icon-row">
-                <span class="icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M3 12h18"></path><path d="M12 3v18"></path></svg>
-                </span>
-              </div>
-              <p>Trusted in ambiguity, complexity, and change.</p>
-            </div>
-          </div>
-        </div>
+  <section id="record" data-record="" style="border-bottom:1px solid #000000; background:#12181B; color:#E9E7E0">
+    <div data-pad="" style="padding:68px 44px 30px">
+      <h2 style="margin:0; max-width:24ch; font-family:'Archivo',sans-serif; font-weight:800; font-size:clamp(30px,3.2vw,46px); line-height:1.04; letter-spacing:-0.03em">Past performance</h2>
+      <p style="margin:16px 0 0; max-width:58ch; font-size:18px; line-height:1.6; color:#A7ADB0">Contract values and periods of performance are available on request and can be supplied in the format your solicitation requires.</p>
+    </div>
+    <div data-pad="" style="padding:0 44px 68px">
+      <div data-rrow="" style="display:grid; grid-template-columns:minmax(0,2.2fr) minmax(0,1fr) minmax(0,1fr); gap:24px; padding:0 0 12px; border-bottom:1px solid #9A7B2E; font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px; color:#9A7B2E">
+        <span>Client</span><span>Sector</span><span>Location</span>
       </div>
-    </section>
-
-    <!-- ─── ADVISORY FOCUS ─── -->
-    <section id="advisory" class="section band reveal">
-      <div class="container">
-        <div class="section-shell">
-          <div class="grid-2-alt">
-            <div class="reveal delay-1">
-              <p class="eyebrow">Advisory Focus</p>
-              <div class="heading-glow-wrap"><h2 class="has-shimmer">Where I create value</h2></div>
-              <p class="lead">
-                I help businesses and teams move from ambiguity to execution by creating clarity across strategy, operations, delivery, and growth.
-              </p>
-            </div>
-
-            <div class="focus-grid">
-              <div class="card reveal delay-1">
-                <div class="icon-row">
-                  <span class="icon-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M4 20l6-6"></path><path d="M14 10l6-6"></path><path d="M14 4h6v6"></path><path d="M4 14l6 6"></path></svg>
-                  </span>
-                </div>
-                <p class="eyebrow">Focus Area</p>
-                <h3>Strategy &amp; Decision Structuring</h3>
-              </div>
-
-              <div class="card reveal delay-2">
-                <div class="icon-row">
-                  <span class="icon-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"></path><path d="M4 5h16"></path></svg>
-                  </span>
-                </div>
-                <p class="eyebrow">Focus Area</p>
-                <h3>Execution Leadership</h3>
-              </div>
-
-              <div class="card reveal delay-2">
-                <div class="icon-row">
-                  <span class="icon-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V22a2 2 0 0 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 0 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6 1.7 1.7 0 0 0 10 3.05V3a2 2 0 0 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.2.48.7 1 1.55 1H21a2 2 0 0 1 0 4h-.09c-.85 0-1.35.52-1.51 1z"></path></svg>
-                  </span>
-                </div>
-                <p class="eyebrow">Focus Area</p>
-                <h3>Operational Clarity</h3>
-              </div>
-
-              <div class="card reveal delay-3">
-                <div class="icon-row">
-                  <span class="icon-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path><path d="M5 20h14"></path></svg>
-                  </span>
-                </div>
-                <p class="eyebrow">Focus Area</p>
-                <h3>Growth Systems</h3>
-              </div>
-            </div>
-          </div>
+      <sc-for list="{{ record }}" as="r" hint-placeholder-count="5">
+        <div data-rrow="" style="display:grid; grid-template-columns:minmax(0,2.2fr) minmax(0,1fr) minmax(0,1fr); gap:24px; padding:20px 0; border-bottom:1px solid #2B3236">
+          <span style="font-size:19px; line-height:1.4">{{ r.client }}</span>
+          <span style="font-size:17px; line-height:1.4; color:#A7ADB0">{{ r.sector }}</span>
+          <span style="font-size:17px; line-height:1.4; color:#A7ADB0">{{ r.place }}</span>
         </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="story" data-split="" style="display:grid; grid-template-columns:minmax(0,0.85fr) minmax(0,1.15fr); border-bottom:1px solid #000000">
+    <div data-media="" style="position:relative; min-height:640px; border-right:1px solid #000000; overflow:hidden">
+      <div style="position:absolute; inset:0">
+        <image-slot id="owner-portrait" src="photos/owner-portrait.webp" shape="rect" fit="cover" style="object-position:50% 18%" placeholder="Portrait — the owner in a black chef coat, arms folded, warm pendant light in a dark kitchen behind him, 1100×1400"></image-slot>
       </div>
-    </section>
+    </div>
+    <div data-pad="" style="padding:72px 44px 76px; display:flex; flex-direction:column; justify-content:center">
+      <h2 style="margin:0 0 26px; max-width:22ch; font-family:'Archivo',sans-serif; font-weight:800; font-size:clamp(32px,3.6vw,54px); line-height:1.02; letter-spacing:-0.03em">The recipes came from Manchester, Jamaica</h2>
+      <p style="margin:0 0 20px; max-width:62ch; font-size:19px; line-height:1.66; color:#1A1A1A; text-wrap:pretty">A father, an aunt and a house full of uncles who all cooked. What they taught was not a technique; it was that you cook for a stranger the way you cook for family, and that the job is not finished until the last plate leaves the kitchen.</p>
+      <p style="margin:0 0 36px; max-width:62ch; font-size:19px; line-height:1.66; color:#1A1A1A; text-wrap:pretty">Twenty years of professional kitchens later, that is still how the company is run — one chef accountable for every service, wherever the service happens to be.</p>
+      <ol style="margin:0; padding:0; list-style:none; border-top:1px solid #000000">
+        <sc-for list="{{ path }}" as="p" hint-placeholder-count="4">
+          <li style="display:grid; grid-template-columns:56px minmax(0,1fr); gap:20px; align-items:baseline; padding:18px 0; border-bottom:1px solid #000000">
+            <span style="font-family:'Archivo',sans-serif; font-weight:800; font-size:22px; color:#A81111">{{ p.step }}</span>
+            <span style="font-size:19px; line-height:1.45">{{ p.what }}</span>
+          </li>
+        </sc-for>
+      </ol>
+    </div>
+  </section>
 
-    <!-- ─── IMPACT ─── -->
-    <section id="impact" class="section reveal">
-      <div class="container">
-        <div class="section-shell">
-          <p class="eyebrow">Selected Impact</p>
-          <div class="heading-glow-wrap"><h2 class="has-shimmer">Representative outcomes</h2></div>
-
-          <div class="case-grid">
-            <div class="card reveal delay-1">
-              <div class="icon-row">
-                <span class="icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M3 7h18"></path><path d="M6 12h12"></path><path d="M9 17h6"></path></svg>
-                </span>
-                <h3>Enterprise Delivery Leadership</h3>
-              </div>
-              <p class="muted">Led coordination and execution across multiple enterprise SaaS systems, creating structure, alignment, and stronger delivery control.</p>
-            </div>
-
-            <div class="card reveal delay-2">
-              <div class="icon-row">
-                <span class="icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M5 19l14-14"></path><path d="M8 5h11v11"></path></svg>
-                </span>
-                <h3>0-to-1 Product Execution</h3>
-              </div>
-              <p class="muted">Supported the build of high-value applications from concept through production, bridging strategic intent with practical execution.</p>
-            </div>
-
-            <div class="card reveal delay-3">
-              <div class="icon-row">
-                <span class="icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path><path d="M5 20h14"></path></svg>
-                </span>
-                <h3>Business Growth Systems</h3>
-              </div>
-              <p class="muted">Designed operating structures and growth-oriented systems that help small and mid-sized businesses scale more effectively.</p>
-            </div>
-          </div>
-        </div>
+  <section style="border-bottom:1px solid #000000">
+    <div data-pad="" data-spec="" style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:56px; padding:68px 44px 72px">
+      <div>
+        <h2 style="margin:0 0 24px; font-family:'Archivo',sans-serif; font-weight:700; font-size:24px; letter-spacing:-0.015em">Licenses and certifications</h2>
+        <ul style="margin:0; padding:0; list-style:none; border-top:1px solid #000000">
+          <sc-for list="{{ certifications }}" as="c" hint-placeholder-count="5">
+            <li style="padding:15px 0; border-bottom:1px solid #C8C4BA; font-size:19px; line-height:1.4">{{ c }}</li>
+          </sc-for>
+        </ul>
       </div>
-    </section>
-
-    <!-- ─── SERVICES ─── -->
-    <section id="services" class="section band reveal">
-      <div class="container">
-        <div class="section-shell">
-          <div class="grid-2-alt">
-            <div class="reveal delay-1">
-              <p class="eyebrow">Engagement Models</p>
-              <div class="heading-glow-wrap"><h2 class="has-shimmer">How I support organizations</h2></div>
-              <p class="lead">
-                I work with leaders, teams, and businesses that need better structure, sharper thinking, and stronger execution.
-              </p>
-
-              <ul class="list-clean" style="margin-top:20px;">
-                <li>
-                  <div class="list-item-with-icon">
-                    <span class="list-item-icon"><svg viewBox="0 0 24 24"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg></span>
-                    Strategic advisory for founders, operators, and business leaders
-                  </div>
-                </li>
-                <li>
-                  <div class="list-item-with-icon">
-                    <span class="list-item-icon"><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h10"></path><path d="M4 17h7"></path></svg></span>
-                    Business analysis and requirements clarity for initiatives
-                  </div>
-                </li>
-                <li>
-                  <div class="list-item-with-icon">
-                    <span class="list-item-icon"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"></path></svg></span>
-                    Project and execution leadership for cross-functional delivery
-                  </div>
-                </li>
-                <li>
-                  <div class="list-item-with-icon">
-                    <span class="list-item-icon"><svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path></svg></span>
-                    Growth architecture for small and mid-sized businesses
-                  </div>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <p class="eyebrow reveal delay-1">Core Capabilities</p>
-              <div class="service-grid" style="margin-top:16px;">
-                <div class="card reveal delay-1">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h10"></path><path d="M4 17h7"></path></svg>
-                    </span>
-                    <h3>Business Analysis</h3>
-                  </div>
-                  <p class="muted">Clarify business needs, sharpen requirements, and translate complexity into executable decisions.</p>
-                </div>
-
-                <div class="card reveal delay-2">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"></path><path d="M4 5h16"></path></svg>
-                    </span>
-                    <h3>Execution Leadership</h3>
-                  </div>
-                  <p class="muted">Bring structure, stakeholder alignment, and delivery discipline to high-value initiatives.</p>
-                </div>
-
-                <div class="card reveal delay-2">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M5 19l14-14"></path><path d="M8 5h11v11"></path></svg>
-                    </span>
-                    <h3>Strategy Consulting</h3>
-                  </div>
-                  <p class="muted">Support leaders with decision framing, priority setting, and strategic problem solving.</p>
-                </div>
-
-                <div class="card reveal delay-3">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V22a2 2 0 0 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 0 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6 1.7 1.7 0 0 0 10 3.05V3a2 2 0 0 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.2.48.7 1 1.55 1H21a2 2 0 0 1 0 4h-.09c-.85 0-1.35.52-1.51 1z"></path></svg>
-                    </span>
-                    <h3>Management Consulting</h3>
-                  </div>
-                  <p class="muted">Improve operating clarity, identify performance gaps, and strengthen execution.</p>
-                </div>
-
-                <div class="card reveal delay-3">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path><path d="M5 20h14"></path></svg>
-                    </span>
-                    <h3>Growth Systems</h3>
-                  </div>
-                  <p class="muted">Design scalable systems and operating structures that support sustainable business growth.</p>
-                </div>
-
-                <div class="card reveal delay-3">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M8 12h8"></path><path d="M12 8v8"></path><circle cx="12" cy="12" r="9"></circle></svg>
-                    </span>
-                    <h3>Strategic Partnering</h3>
-                  </div>
-                  <p class="muted">A trusted thinking partner for high-value business, execution, and growth decisions.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div>
+        <h2 style="margin:0 0 24px; font-family:'Archivo',sans-serif; font-weight:700; font-size:24px; letter-spacing:-0.015em">Education</h2>
+        <ul style="margin:0; padding:0; list-style:none; border-top:1px solid #000000">
+          <sc-for list="{{ degrees }}" as="d" hint-placeholder-count="6">
+            <li style="display:grid; grid-template-columns:120px minmax(0,1fr); gap:18px; padding:15px 0; border-bottom:1px solid #C8C4BA">
+              <span style="font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px; color:#6B665D">{{ d.level }}</span>
+              <span style="font-size:19px; line-height:1.4">{{ d.name }}</span>
+            </li>
+          </sc-for>
+        </ul>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ─── POSITIONING ─── -->
-    <section class="section reveal">
-      <div class="container">
-        <div class="positioning">
-          <div class="reveal delay-1">
-            <p class="eyebrow">Strategic Positioning</p>
-            <blockquote>"For leaders who need more than ideas — clarity, structure, and execution that moves the business forward."</blockquote>
-          </div>
-
-          <div class="card reveal delay-2" style="background: rgba(255,255,255,0.025);">
-            <p class="eyebrow">Best Fit</p>
-            <div class="stack">
-              <div class="mini-card">
-                <div class="icon-row">
-                  <span class="icon-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M12 12l8-4-8-4-8 4 8 4z"></path><path d="M4 8v8l8 4 8-4V8"></path></svg>
-                  </span>
-                  <p>Leaders navigating complex initiatives or cross-functional delivery.</p>
-                </div>
-              </div>
-              <div class="mini-card">
-                <div class="icon-row">
-                  <span class="icon-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path></svg>
-                  </span>
-                  <p>Businesses that need clearer operating structure to scale effectively.</p>
-                </div>
-              </div>
-              <div class="mini-card">
-                <div class="icon-row">
-                  <span class="icon-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M3 12h18"></path><path d="M12 3v18"></path></svg>
-                  </span>
-                  <p>Teams that need stronger alignment between strategy and execution.</p>
-                </div>
-              </div>
-            </div>
-          </div>
+  <section id="quote" data-split="" style="display:grid; grid-template-columns:minmax(0,0.8fr) minmax(0,1.2fr); background:#000000; color:#E9E7E0">
+    <div data-pad="" style="padding:72px 44px; border-right:1px solid #2A2A2A">
+      <h2 style="margin:0 0 20px; max-width:16ch; font-family:'Archivo',sans-serif; font-weight:800; font-size:clamp(32px,3.4vw,48px); line-height:1.02; letter-spacing:-0.03em">Request a quote</h2>
+      <p style="margin:0 0 40px; max-width:46ch; font-size:18.5px; line-height:1.6; color:#918C81">Give us the dates, the headcount and the location. If you have a solicitation number, include it and we will respond in the required format.</p>
+      <ul style="margin:0; padding:0; list-style:none; border-top:1px solid #2A2A2A">
+        <li style="display:grid; grid-template-columns:92px minmax(0,1fr); gap:18px; padding:16px 0; border-bottom:1px solid #2A2A2A">
+          <span style="font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px; color:#918C81">Phone</span>
+          <a href="tel:5184879228" style="font-size:19px; color:#E9E7E0" style-hover="color:#9A7B2E">518-487-9228</a>
+        </li>
+        <li style="display:grid; grid-template-columns:92px minmax(0,1fr); gap:18px; padding:16px 0; border-bottom:1px solid #2A2A2A">
+          <span style="font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px; color:#918C81">Email</span>
+          <a href="mailto:ossweets4sweets@gmail.com" style="font-size:19px; color:#E9E7E0; word-break:break-word" style-hover="color:#9A7B2E">ossweets4sweets@gmail.com</a>
+        </li>
+        <li style="display:grid; grid-template-columns:92px minmax(0,1fr); gap:18px; padding:16px 0; border-bottom:1px solid #2A2A2A">
+          <span style="font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px; color:#918C81">Instagram</span>
+          <a href="https://instagram.com/ossweets4sweets" style="font-size:19px; color:#E9E7E0" style-hover="color:#9A7B2E">@ossweets4sweets</a>
+        </li>
+        <li style="display:grid; grid-template-columns:92px minmax(0,1fr); gap:18px; padding:16px 0; border-bottom:1px solid #2A2A2A">
+          <span style="font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px; color:#918C81">Hours</span>
+          <span style="font-size:19px">Someone answers at any hour, any day</span>
+        </li>
+      </ul>
+    </div>
+    <div data-pad="" style="padding:72px 44px">
+      <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:52ch">
+          <h3 style="margin:0 0 18px; font-family:'Archivo',sans-serif; font-weight:800; font-size:34px; letter-spacing:-0.02em; color:#9A7B2E">Quote requested</h3>
+          <p style="margin:0 0 28px; font-size:19px; line-height:1.6; color:#E9E7E0">Your request is in. You will hear back with availability and pricing within one business day, faster if the solicitation has a near deadline.</p>
+          <button type="button" onClick="{{ reset }}" style="padding:16px 28px; background:transparent; border:1px solid #E9E7E0; color:#E9E7E0; font-family:'Archivo',sans-serif; font-weight:600; font-size:15px; cursor:pointer" style-hover="background:#E9E7E0; color:#000000">Send another request</button>
         </div>
-      </div>
-    </section>
-
-    <!-- ─── STRATEGY INTENSIVE ─── -->
-    <section id="intensive" class="section band reveal">
-      <div class="container">
-        <div class="section-shell">
-          <div class="grid-2">
-            <div class="reveal delay-1">
-              <p class="eyebrow">Strategy Intensive</p>
-              <div class="heading-glow-wrap"><h2 class="has-shimmer">Start with a focused strategy session</h2></div>
-              <p class="lead">
-                A structured session designed for leaders who need clarity on a complex business, execution, or growth challenge.
-              </p>
-
-              <ul class="list-clean" style="margin-top:24px;">
-                <li>
-                  <div class="list-item-with-icon">
-                    <span class="list-item-icon"><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"></path></svg></span>
-                    Diagnose the real problem
-                  </div>
-                </li>
-                <li>
-                  <div class="list-item-with-icon">
-                    <span class="list-item-icon"><svg viewBox="0 0 24 24"><path d="M4 12h16"></path><path d="M12 4v16"></path></svg></span>
-                    Identify execution gaps and priority issues
-                  </div>
-                </li>
-                <li>
-                  <div class="list-item-with-icon">
-                    <span class="list-item-icon"><svg viewBox="0 0 24 24"><path d="M5 19l14-14"></path><path d="M8 5h11v11"></path></svg></span>
-                    Define a structured path forward
-                  </div>
-                </li>
-              </ul>
-
-              <div class="hero-actions">
-                <a class="btn btn-primary" href="https://form.typeform.com/to/your-typeform-id" target="_blank" rel="noreferrer">Apply for Strategy Call</a>
-                <a class="btn btn-secondary" href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">Message on LinkedIn</a>
-              </div>
-
-              <p class="muted" style="margin-top:18px;">
-                Most clients come in with unclear problems. They leave with structured clarity and a path forward.
-              </p>
-            </div>
-
-            <div class="card reveal delay-2">
-              <p class="eyebrow">Ideal Clients</p>
-              <div class="stack">
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                    </span>
-                    <p>Founders and operators scaling their business</p>
-                  </div>
-                </div>
-
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M8 10h8"></path><path d="M8 14h5"></path><path d="M21 12c0 4.97-4.03 9-9 9-1.54 0-2.99-.39-4.25-1.08L3 21l1.08-4.75A8.96 8.96 0 0 1 3 12c0-4.97 4.03-9 9-9s9 4.03 9 9z"></path></svg>
-                    </span>
-                    <p>Teams facing execution friction or alignment issues</p>
-                  </div>
-                </div>
-
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"></path></svg>
-                    </span>
-                    <p>Leaders managing complex, high-stakes initiatives</p>
-                  </div>
-                </div>
-              </div>
-
-              <p class="eyebrow" style="margin-top:28px;">Pre-Call Qualification</p>
-
-              <div class="qual-form" id="qualForm">
-                <div class="qual-group">
-                  <label class="qual-label" for="qual-name">Your name</label>
-                  <input id="qual-name" class="qual-input" type="text" placeholder="First and last name" />
-                </div>
-                <div class="qual-group">
-                  <label class="qual-label" for="qual-email">Your email</label>
-                  <input id="qual-email" class="qual-input" type="email" placeholder="you@example.com" />
-                </div>
-                <div class="qual-group">
-                  <label class="qual-label" for="qual-q1">1. What problem are you trying to solve?</label>
-                  <textarea id="qual-q1" class="qual-textarea" placeholder="Your answer..."></textarea>
-                </div>
-                <div class="qual-group">
-                  <label class="qual-label" for="qual-q2">2. What stage is your business or initiative in?</label>
-                  <input id="qual-q2" class="qual-input" type="text" placeholder="Your answer..." />
-                </div>
-                <div class="qual-group">
-                  <label class="qual-label" for="qual-q3">3. What happens if this problem is not solved?</label>
-                  <input id="qual-q3" class="qual-input" type="text" placeholder="Your answer..." />
-                </div>
-                <div class="qual-group">
-                  <label class="qual-label" for="qual-q4">4. What level of support do you need?</label>
-                  <input id="qual-q4" class="qual-input" type="text" placeholder="Your answer..." />
-                </div>
-                <div class="qual-group">
-                  <label class="qual-label" for="qual-q5">5. What is your budget range?</label>
-                  <input id="qual-q5" class="qual-input" type="text" placeholder="Your answer..." />
-                </div>
-                <p id="qualError" style="display:none; color:#e07070; font-size:0.88rem; margin:0; text-align:center;">
-                  Please fill in at least your problem description and business stage before submitting.
-                </p>
-                <button type="button" class="btn btn-primary" style="margin-top:6px; width:100%;" id="qualSubmit" onclick="handleQualSubmit()">
-                  Apply for Strategy Intensive
-                </button>
-                <p id="qualSuccess" style="display:none; color:var(--gold-2); font-weight:600; text-align:center; margin:0;">
-                  ✓ Application received — I'll be in touch within 1–2 business days.
-                </p>
-              </div>
-            </div>
+      </sc-if>
+      <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ submit }}" action="{{ endpoint }}" method="POST" data-spec="" style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:26px 28px">
+          <label style="display:flex; flex-direction:column; gap:9px">
+            <span style="font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px; color:#918C81">Your name</span>
+            <input type="text" name="Name" required="{{ yes }}" style="padding:13px 0; background:transparent; border:0; border-bottom:1px solid #4A4A4A; color:#E9E7E0; font-family:'Newsreader',serif; font-size:19px; outline:none" style-focus="border-bottom-color:#9A7B2E">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:9px">
+            <span style="font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px; color:#918C81">Agency or organization</span>
+            <input type="text" name="Agency" style="padding:13px 0; background:transparent; border:0; border-bottom:1px solid #4A4A4A; color:#E9E7E0; font-family:'Newsreader',serif; font-size:19px; outline:none" style-focus="border-bottom-color:#9A7B2E">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:9px">
+            <span style="font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px; color:#918C81">Email</span>
+            <input type="email" name="email" required="{{ yes }}" style="padding:13px 0; background:transparent; border:0; border-bottom:1px solid #4A4A4A; color:#E9E7E0; font-family:'Newsreader',serif; font-size:19px; outline:none" style-focus="border-bottom-color:#9A7B2E">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:9px">
+            <span style="font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px; color:#918C81">Phone</span>
+            <input type="tel" name="Phone" style="padding:13px 0; background:transparent; border:0; border-bottom:1px solid #4A4A4A; color:#E9E7E0; font-family:'Newsreader',serif; font-size:19px; outline:none" style-focus="border-bottom-color:#9A7B2E">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:9px">
+            <span style="font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px; color:#918C81">What you need cooked</span>
+            <select name="Service" style="padding:13px 0; background:#000000; border:0; border-bottom:1px solid #4A4A4A; color:#E9E7E0; font-family:'Newsreader',serif; font-size:19px; outline:none" style-focus="border-bottom-color:#9A7B2E">
+              <option>Government contract food service</option>
+              <option>Catering for a large event</option>
+              <option>An outdoor event</option>
+              <option>Cooking crew on site or at sea</option>
+              <option>Daily meal service for a facility</option>
+            </select>
+          </label>
+          <label style="display:flex; flex-direction:column; gap:9px">
+            <span style="font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px; color:#918C81">How many people</span>
+            <input type="text" name="Headcount" placeholder="e.g. 250 meals a day" style="padding:13px 0; background:transparent; border:0; border-bottom:1px solid #4A4A4A; color:#E9E7E0; font-family:'Newsreader',serif; font-size:19px; outline:none" style-focus="border-bottom-color:#9A7B2E">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:9px; grid-column:span 2">
+            <span style="font-family:'Archivo',sans-serif; font-weight:500; font-size:14.5px; color:#918C81">Dates, location, dietary requirements, solicitation number</span>
+            <textarea rows="4" name="Details" style="padding:13px 0; background:transparent; border:0; border-bottom:1px solid #4A4A4A; color:#E9E7E0; font-family:'Newsreader',serif; font-size:19px; line-height:1.55; outline:none; resize:vertical" style-focus="border-bottom-color:#9A7B2E"></textarea>
+          </label>
+          <div style="display:flex; flex-direction:column; gap:18px; grid-column:span 2">
+            <sc-if value="{{ hasError }}" hint-placeholder-val="{{ false }}">
+              <p style="margin:0; padding:14px 18px; border-left:2px solid #A81111; background:rgba(168,17,17,0.12); font-size:17px; line-height:1.55; color:#E9E7E0">{{ error }}</p>
+            </sc-if>
+            <button type="submit" disabled="{{ sending }}" style="align-self:flex-start; padding:19px 34px; background:#A81111; border:0; color:#FFFFFF; font-family:'Archivo',sans-serif; font-weight:700; font-size:15.5px; cursor:pointer" style-hover="background:#E9E7E0; color:#000000">{{ buttonLabel }}</button>
           </div>
-        </div>
-      </div>
-    </section>
+        </form>
+      </sc-if>
+    </div>
+  </section>
 
-    <!-- ─── CONTACT ─── -->
-    <section id="contact" class="section reveal">
-      <div class="container">
-        <div class="section-shell">
-          <div class="contact-grid">
-            <div class="reveal delay-1">
-              <p class="eyebrow">Contact</p>
-              <div class="heading-glow-wrap"><h2 class="has-shimmer">Let's discuss your next initiative</h2></div>
-              <p class="lead">
-                Reach out for consulting, strategic advisory, project leadership, or business growth conversations.
-              </p>
+  <footer data-pad="" style="display:flex; align-items:baseline; justify-content:space-between; gap:28px; flex-wrap:wrap; padding:34px 44px; background:#000000; color:#918C81; border-top:1px solid #2A2A2A">
+    <span style="font-family:'Archivo',sans-serif; font-weight:700; font-size:15px; color:#E9E7E0">O's Sweets 4 Sweets International</span>
+    <span style="font-size:17px">Florida, and wherever the contract is</span>
+    <a href="#top" style="display:flex; align-items:baseline; gap:9px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; color:#C9C5BB" style-hover="color:#FFFFFF">Back to top <span style="font-size:13px">&#8593;</span></a>
+  </footer>
+</div>
 
-              <div class="stack" style="margin-top:26px; max-width:400px;">
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"></path><path d="M4 7l8 6 8-6"></path></svg>
-                    </span>
-                    <div>
-                      <h3>Email</h3>
-                      <p class="muted"><a href="mailto:dillon1.noel@outlook.com" style="color:var(--gold-2);">dillon1&#46;noel&#64;outlook&#46;com</a></p>
-                    </div>
-                  </div>
-                </div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;pendingRegistrations&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Contracting&quot;},&quot;uei&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contracting&quot;},&quot;cage&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contracting&quot;},&quot;showGallery&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sections&quot;},&quot;formspreeId&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Quote form&quot;}}">
+class Component extends DCLogic {
+  state = { submitted: false, sending: false, error: "" };
 
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-6a2 2 0 1 0-4 0v6h-4v-12h4v2"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                    </span>
-                    <div>
-                      <h3>LinkedIn</h3>
-                      <p class="muted"><a href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer" style="color:var(--gold-2);">Connect on LinkedIn</a></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+  FORMSPREE_ID = "mrpbzkdr";
 
-            <div class="card reveal delay-2">
-              <p class="eyebrow">Send a Message</p>
-              <div class="qual-form" id="contactForm">
-                <div class="qual-group">
-                  <input class="qual-input" type="text" placeholder="Your name" id="contact-name" />
-                </div>
-                <div class="qual-group">
-                  <input class="qual-input" type="email" placeholder="Your email" id="contact-email" />
-                </div>
-                <div class="qual-group">
-                  <textarea class="qual-textarea" placeholder="What would you like to discuss?" style="min-height:120px;" id="contact-message"></textarea>
-                </div>
-                <p id="contactError" style="display:none; color:#e07070; font-size:0.88rem; margin:0; text-align:center;">
-                  Please fill in all fields before sending.
-                </p>
-                <button type="button" class="btn btn-primary" style="width:100%;" id="contactSubmitBtn" onclick="handleContactSubmit()">Send Message</button>
-                <p id="contactSuccess" style="display:none; color:var(--gold-2); font-weight:600; text-align:center; margin:0;">
-                  ✓ Message sent — I'll respond within 1–2 business days.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+  componentDidMount() {
+    this._tick = () => {
+      if (this._raf) return;
+      this._raf = requestAnimationFrame(() => { this._raf = 0; this._sync(); });
+    };
+    window.addEventListener("scroll", this._tick, { passive: true });
+    window.addEventListener("resize", this._tick);
+    this._sync();
+  }
 
-    <!-- ─── CTA BAND ─── -->
-    <section class="contact-cta-band reveal">
-      <div class="container contact-cta-grid">
-        <div>
-          <div class="heading-glow-wrap">
-            <h2 class="has-shimmer" style="font-size:2.1rem; margin-bottom:8px;">Ready to move forward?</h2>
-          </div>
-          <p class="muted" style="margin:0;">Let's talk about your next initiative — strategy, execution, or growth.</p>
-        </div>
-        <div class="hero-actions" style="margin-top:0; justify-content:flex-end;">
-          <a class="btn btn-primary" href="#intensive">Apply for Strategy Intensive</a>
-          <a class="btn btn-secondary" href="mailto:dillon1.noel@outlook.com">Send an Email</a>
-        </div>
-      </div>
-    </section>
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this._tick);
+    window.removeEventListener("resize", this._tick);
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
 
-    <!-- ─── FOOTER ─── -->
-    <footer class="footer reveal">
-      <div class="container">
-        <div class="footer-grid">
-          <div>
-            <div class="footer-title">Dillon Noel</div>
-            <p class="muted" style="max-width:300px;">Strategy and execution professional helping leaders navigate complex initiatives, strengthen delivery, and build systems that scale.</p>
-            <div style="display:inline-flex; align-items:center; gap:8px; margin-top:18px; padding:8px 16px; border-radius:999px; background:rgba(14,14,11,0.88); border:1px solid rgba(199,168,76,0.20); color:var(--gold-2); font-size:0.74rem; font-weight:700;">
-              <div class="hero-status-dot"></div>
-              Currently accepting new engagements
-            </div>
-            <div class="cert-row" style="margin-top:14px;">
-              <span class="cert" style="opacity:1; transform:none;">CBAP®</span>
-              <span class="cert" style="opacity:1; transform:none;">PSPO</span>
-              <span class="cert" style="opacity:1; transform:none;">PSM</span>
-            </div>
-          </div>
-
-          <div>
-            <p class="eyebrow" style="margin-bottom:18px;">Navigation</p>
-            <div class="footer-list">
-              <a href="#about">Executive Profile</a>
-              <a href="#impact">Selected Impact</a>
-              <a href="#services">Advisory Focus</a>
-              <a href="#process">How I Work</a>
-              <a href="#intensive">Strategy Intensive</a>
-              <a href="#contact">Contact</a>
-            </div>
-          </div>
-
-          <div>
-            <p class="eyebrow" style="margin-bottom:18px;">Get in touch</p>
-            <div class="footer-list">
-              <a href="mailto:dillon1.noel@outlook.com" style="color:inherit;">dillon1&#46;noel&#64;outlook&#46;com</a>
-              <a href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">LinkedIn Profile</a>
-            </div>
-            <p class="eyebrow" style="margin:24px 0 14px;">Specialties</p>
-            <div class="pill-row">
-              <span class="pill" style="opacity:1; transform:none;">Business Analysis</span>
-              <span class="pill" style="opacity:1; transform:none;">Strategy</span>
-              <span class="pill" style="opacity:1; transform:none;">Execution</span>
-              <span class="pill" style="opacity:1; transform:none;">Growth Systems</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="footer-note">
-          <span>&copy; 2026 Dillon Noel. Strategy. Execution. Growth.</span>
-          <span>Available globally &bull; Remote &amp; On-site</span>
-        </div>
-      </div>
-    </footer>
-  </div>
-
-  <!-- Back to top -->
-  <button id="backToTop" class="back-to-top" aria-label="Back to top">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M6 14l6-6 6 6"></path>
-    </svg>
-  </button>
-
-  <script>
-    /* ─── ELEMENTS ─── */
-    const backToTopBtn  = document.getElementById("backToTop");
-    const heroSection   = document.querySelector(".hero");
-    const navbar        = document.querySelector(".topbar");
-    const navLinks      = document.querySelectorAll('.nav-links a[href^="#"]');
-    const sectionsForNav = document.querySelectorAll("section[id]");
-    const reveals       = document.querySelectorAll(".reveal");
-    const counters      = document.querySelectorAll(".counter");
-    const progressBar   = document.getElementById("scrollProgress");
-    const cursorGlow    = document.getElementById("cursorGlow");
-
-    const pillRow  = document.getElementById("pillRow");
-    const certRow  = document.getElementById("certRow");
-
-    const testimonialSlides    = document.querySelectorAll(".testimonial-slide");
-    const testimonialDots      = document.querySelectorAll(".testimonial-dot");
-    const testimonialMiniCards = document.querySelectorAll(".testimonial-mini");
-    let testimonialIndex = 0;
-    let testimonialInterval;
-
-    /* ─── NAV OFFSET ─── */
-    function updateNavOffset() {
-      const h = navbar ? navbar.offsetHeight : 88;
-      document.documentElement.style.setProperty("--nav-offset", `${h + 16}px`);
-      return h;
+  _sync() {
+    const doc = document.documentElement;
+    const header = document.querySelector("header");
+    if (header) {
+      const h = Math.round(header.getBoundingClientRect().height) + 12;
+      if (h !== this._headerH) {
+        this._headerH = h;
+        doc.style.scrollPaddingTop = h + "px";
+        document.querySelectorAll("section[id]").forEach((s) => { s.style.scrollMarginTop = "0px"; });
+      }
     }
-
-    function smoothScrollTo(sel) {
-      const el = document.querySelector(sel);
+    const bar = document.querySelector("[data-progress]");
+    if (bar) {
+      const max = doc.scrollHeight - window.innerHeight;
+      bar.style.transform = "scaleX(" + (max > 0 ? Math.min(1, Math.max(0, doc.scrollTop / max)) : 0) + ")";
+    }
+    const links = Array.prototype.slice.call(document.querySelectorAll("[data-nav] a[href^='#']"));
+    if (!links.length) return;
+    const line = (this._headerH || 78) + 60;
+    let active = null;
+    links.forEach((a) => {
+      const el = document.getElementById(a.getAttribute("href").slice(1));
       if (!el) return;
-      const h = updateNavOffset();
-      window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - h - 10, behavior: "smooth" });
-    }
-
-    /* ─── BACK TO TOP ─── */
-    function toggleBackToTop() {
-      if (!heroSection || !backToTopBtn) return;
-      const h = updateNavOffset();
-      const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
-      backToTopBtn.classList.toggle("show", window.scrollY + h > heroBottom);
-    }
-
-    /* ─── ACTIVE NAV ─── */
-    function setActiveNavLink() {
-      const h = updateNavOffset();
-      let cur = "";
-      sectionsForNav.forEach(s => {
-        const top = s.offsetTop - h - 40;
-        if (window.scrollY >= top && window.scrollY < top + s.offsetHeight) cur = s.id;
-      });
-      navLinks.forEach(a => {
-        a.classList.toggle("active", a.getAttribute("href") === `#${cur}`);
-      });
-    }
-
-    /* ─── COUNTER ─── */
-    function animateCounter(el) {
-      if (el.dataset.animated === "true") return;
-      el.dataset.animated = "true";
-      const target   = parseInt(el.dataset.target, 10);
-      const suffix   = el.dataset.suffix || "";
-      const duration = 1500;
-      const start    = performance.now();
-
-      function tick(now) {
-        const p = Math.min((now - start) / duration, 1);
-        const ease = 1 - Math.pow(1 - p, 3);
-        el.textContent = Math.floor(ease * target) + (p >= 1 ? suffix : "");
-        if (p < 1) requestAnimationFrame(tick);
-      }
-
-      requestAnimationFrame(tick);
-    }
-
-    /* ─── SCROLL PROGRESS ─── */
-    function updateScrollProgress() {
-      const doc = document.documentElement;
-      const pct = (window.scrollY / (doc.scrollHeight - window.innerHeight)) * 100;
-      progressBar.style.width = `${pct}%`;
-    }
-
-    /* ─── PARALLAX (hero photo) ─── */
-    function updateParallax() {
-      const wrap = document.getElementById("heroPhotoWrap");
-      if (!wrap || !heroSection) return;
-      const rect = heroSection.getBoundingClientRect();
-      wrap.style.transform = `translateY(${rect.top * -0.055}px)`;
-    }
-
-    /* ─── REVEAL ─── */
-    /* Safety net: only hide elements for animation AFTER we confirm the
-       observer fires correctly. This prevents a blank page on Vercel. */
-    let revealReady = false;
-
-    const revealObserver = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          /* First time an element is observed, mark body as ready */
-          if (!revealReady) {
-            revealReady = true;
-            document.body.classList.add("js-reveal-ready");
-          }
-          e.target.classList.add("in-view");
-          e.target.querySelectorAll("h1.has-shimmer, h2.has-shimmer").forEach(h => {
-            h.classList.remove("shimmer-pass");
-            void h.offsetWidth;
-            h.classList.add("shimmer-pass");
-          });
-        }
-      });
-    }, { threshold: 0.08, rootMargin: "0px 0px -20px 0px" });
-
-    const counterObserver = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { animateCounter(e.target); counterObserver.unobserve(e.target); }
-      });
-    }, { threshold: 0.5 });
-
-    /* ─── PILLS / CERTS STAGGERED ANIMATION ─── */
-    function animatePillsAndCerts() {
-      if (!pillRow || !certRow) return;
-      const pills = pillRow.querySelectorAll(".pill");
-      const certs = certRow.querySelectorAll(".cert");
-
-      // Pills animate first, certs follow after the last pill
-      const baseDelay = 380; // ms after shimmer lands
-
-      pills.forEach((p, i) => {
-        setTimeout(() => {
-          p.classList.add("animate-in");
-        }, baseDelay + i * 100);
-      });
-
-      const certStart = baseDelay + pills.length * 100 + 60;
-      certs.forEach((c, i) => {
-        setTimeout(() => {
-          c.classList.add("animate-in");
-        }, certStart + i * 90);
-      });
-    }
-
-    /* observe hero copy for pill/cert trigger */
-    const heroCopyObserver = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          animatePillsAndCerts();
-          heroCopyObserver.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.3 });
-
-    const heroCopy = document.querySelector(".hero-copy");
-    if (heroCopy) heroCopyObserver.observe(heroCopy);
-
-    /* ─── TESTIMONIALS ─── */
-    function showTestimonial(idx) {
-      testimonialIndex = idx;
-      testimonialSlides.forEach((s, i) => s.classList.toggle("active", i === idx));
-      testimonialDots.forEach((d, i) => d.classList.toggle("active", i === idx));
-      testimonialMiniCards.forEach((c, i) => c.classList.toggle("active", i === idx));
-    }
-
-    function startTestimonialRotation() {
-      clearInterval(testimonialInterval);
-      testimonialInterval = setInterval(() => {
-        showTestimonial((testimonialIndex + 1) % testimonialSlides.length);
-      }, 5500);
-    }
-
-    testimonialDots.forEach(d => {
-      d.addEventListener("click", () => { showTestimonial(+d.dataset.index); startTestimonialRotation(); });
+      const r = el.getBoundingClientRect();
+      if (r.top <= line && r.bottom > line) active = a;
     });
-
-    testimonialMiniCards.forEach(c => {
-      c.addEventListener("click", () => { showTestimonial(+c.dataset.index); startTestimonialRotation(); });
-      c.addEventListener("keydown", e => {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); showTestimonial(+c.dataset.index); startTestimonialRotation(); }
-      });
+    if (!active && doc.scrollTop + window.innerHeight >= doc.scrollHeight - 4) active = links[links.length - 1];
+    links.forEach((a) => {
+      if (a === active) a.setAttribute("data-active", "");
+      else a.removeAttribute("data-active");
     });
+    if (active && active.parentElement && active.parentElement.scrollWidth > active.parentElement.clientWidth + 4) {
+      const nav = active.parentElement;
+      const target = active.offsetLeft - 22;
+      if (Math.abs(nav.scrollLeft - target) > 8) nav.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
+    }
+  }
 
-    /* ─── CURSOR GLOW ─── */
-    let cursorVisible = false;
-    document.addEventListener("mousemove", e => {
-      if (!cursorGlow) return;
-      cursorGlow.style.left = e.clientX + "px";
-      cursorGlow.style.top  = e.clientY + "px";
-      if (!cursorVisible) {
-        cursorGlow.style.opacity = "1";
-        cursorVisible = true;
-      }
-    });
-
-    document.addEventListener("mouseleave", () => {
-      if (cursorGlow) cursorGlow.style.opacity = "0";
-      cursorVisible = false;
-    });
-
-    /* ─── NAV LINK CLICKS ─── */
-    navLinks.forEach(a => {
-      a.addEventListener("click", function(e) {
-        const href = this.getAttribute("href");
-        if (!href || href === "#") return;
+  renderVals() {
+    const pending = this.props.pendingRegistrations ?? true;
+    const uei = this.props.uei ?? "";
+    const cage = this.props.cage ?? "";
+    return {
+      showGallery: this.props.showGallery ?? true,
+      submitted: this.state.submitted,
+      notSubmitted: !this.state.submitted,
+      yes: true,
+      endpoint: "https://formspree.io/f/" + (this.props.formspreeId || this.FORMSPREE_ID),
+      sending: this.state.sending,
+      error: this.state.error,
+      hasError: !!this.state.error,
+      buttonLabel: this.state.sending ? "Sending\u2026" : "Request a quote",
+      submit: (e) => {
         e.preventDefault();
-        smoothScrollTo(href);
-      });
-    });
+        const form = e.target;
+        const id = this.props.formspreeId || this.FORMSPREE_ID;
+        if (this.state.sending) return;
+        if (!id || id === "REPLACE_WITH_FORM_ID") { this.setState({ submitted: true }); return; }
+        this.setState({ sending: true, error: "" });
+        fetch("https://formspree.io/f/" + id, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: new FormData(form),
+        })
+          .then((r) => { if (!r.ok) throw new Error("bad"); this.setState({ submitted: true, sending: false }); })
+          .catch(() => this.setState({ sending: false, error: "That did not send. Email ossweets4sweets@gmail.com or call and we will pick it up from there." }));
+      },
+      reset: () => this.setState({ submitted: false, error: "" }),
 
-    /* ─── BACK TO TOP ─── */
-    backToTopBtn.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
+      spec: [
+        { field: "Founded", value: "2018, in Florida" },
+        { field: "Business type", value: "Minority-owned small business" },
+        { field: "Experience", value: "20 years in professional kitchens" },
+        { field: "SAM.gov UEI", value: pending || !uei ? "Pending" : uei },
+        { field: "CAGE code", value: pending || !cage ? "Pending" : cage },
+        { field: "NAICS", value: "722320 caterers, 722310 food service contractors, 722513" },
+        { field: "Where we work", value: "United States, England, Switzerland" },
+        { field: "Availability", value: "24 hours a day, every day" },
+        { field: "Credentials", value: "Merchant Marine, TWIC, ServSafe, food service permit" },
+        { field: "Pursuing", value: "Federal, state and local contracts" }
+      ],
 
-    /* ─── FORM HELPERS ─── */
-    const FORMSPREE = "https://formspree.io/f/xqeggdlz";
+      services: [
+        { slotId: "svc-gov", scale: "Our largest line of work", title: "Government contract food service", photo: "Chef serving a hot line to uniformed personnel at a government function, 900×620", body: "Federal, state and local food service run to contract: compliant handling, documented sanitation, staff we can put on site or on a vessel and keep there for the length of the period of performance." },
+        { slotId: "svc-events", scale: "Up to several thousand covers", title: "Catering for large events", photo: "Black chef in a black coat working a long banquet buffet line, 900×620", body: "Menu design through breakdown for banquets, ceremonies and municipal functions. One chef owns the service, so the plate that goes out at cover 900 is the plate that went out at cover one." },
+        { slotId: "svc-outdoor", scale: "Any site, any weather", title: "Outdoor events", photo: "Outdoor catering tent, mixed chef crew plating under Florida daylight, 900×620", body: "Mobile kitchens, generators and open-air service for festivals and coastal events, with temperature control and safe handling documented for whoever is inspecting." },
+        { slotId: "svc-cooking", scale: "National and international travel", title: "Cooking crews on site and at sea", photo: "Two chefs cooking on a stainless range, flame and steam, tight crop, 900×620", body: "Credentialed culinary staff placed in galleys, ships and institutional kitchens. Merchant Marine papers and a TWIC card mean we can get to the work, including secure and maritime sites." },
+        { slotId: "svc-mealprep", scale: "From one shift to thousands a day", title: "Daily meal service for facilities", photo: "Rows of sealed meal-prep trays with gloved chef hands portioning, 900×620", body: "Standing meal programs for schools, hospitals, agencies, correctional facilities, group homes and assisted living, including therapeutic, allergen and religious diets on the same run." }
+      ],
 
-    function flashError(fields) {
-      fields.forEach(f => {
-        if (!f.value.trim()) {
-          f.style.borderColor = "rgba(220,80,80,0.55)";
-          f.style.boxShadow   = "0 0 0 3px rgba(220,80,80,0.10)";
-          setTimeout(() => { f.style.borderColor = ""; f.style.boxShadow = ""; }, 2400);
-        }
-      });
-    }
+      gallery: [
+        { slotId: "field-galley", caption: "Ship galleys, on national and international voyages", photo: "Black chef working a ship's galley line at sea, stainless, low light, 900×780" },
+        { slotId: "field-banquet", caption: "Banquet halls and municipal event spaces", photo: "Mixed chef team plating a 500-seat banquet, wide, warm light, 900×780" },
+        { slotId: "field-hospital", caption: "Hospital tray lines, including therapeutic diets", photo: "Hospital tray line, chef in whites and hairnet portioning meals, 900×780" },
+        { slotId: "field-school", caption: "School kitchens and district lunch programs", photo: "School kitchen, Black woman chef serving students hot lunch, 900×780" },
+        { slotId: "field-outdoor", caption: "Field kitchens under tent at outdoor events", photo: "Outdoor grill station under a catering tent, chef mid-service, 900×780" },
+        { slotId: "field-plating", caption: "Five-star plating, whatever the room", photo: "Macro of a finished five-star plate, tweezers placing garnish, dark surface, 900×780" }
+      ],
 
-    async function postToFormspree(data) {
-      const res = await fetch(FORMSPREE, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify(data)
-      });
-      if (!res.ok) throw new Error("Network error");
-    }
+      record: [
+        { client: "Office of the Mayor, Riviera Beach — Douglas Lawson", sector: "Municipal", place: "Florida" },
+        { client: "City of Vero Beach", sector: "Municipal", place: "Florida" },
+        { client: "Mercy Health, St. Elizabeth Youngstown Hospital", sector: "Healthcare", place: "Ohio" },
+        { client: "Mercy Health, St. Elizabeth Boardman Hospital", sector: "Healthcare", place: "Ohio" },
+        { client: "Mary Immaculate Hospital", sector: "Healthcare", place: "Newport News, Virginia" }
+      ],
 
-    /* ─── QUAL FORM ─── */
-    async function handleQualSubmit() {
-      const qName = document.getElementById("qual-name");
-      const qEmail= document.getElementById("qual-email");
-      const q1  = document.getElementById("qual-q1");
-      const q2  = document.getElementById("qual-q2");
-      const q3  = document.getElementById("qual-q3");
-      const q4  = document.getElementById("qual-q4");
-      const q5  = document.getElementById("qual-q5");
-      const btn = document.getElementById("qualSubmit");
-      const err = document.getElementById("qualError");
-      const success = document.getElementById("qualSuccess");
+      path: [
+        { step: "1", what: "Washing dishes, learning whose station is whose" },
+        { step: "2", what: "Prep cook, then the line" },
+        { step: "3", what: "His own catering company, cooking family recipes for strangers" },
+        { step: "4", what: "Contract kitchens on three continents" }
+      ],
 
-      /* Require name, email, and at least q1 */
-      const required = [qName, qEmail, q1];
-      const anyEmpty = required.some(f => !f.value.trim());
-      if (anyEmpty) {
-        flashError(required);
-        err.textContent   = "Please enter your name, email, and problem description before submitting.";
-        err.style.display = "block";
-        setTimeout(() => { err.style.display = "none"; }, 3500);
-        return;
-      }
+      certifications: [
+        "ServSafe certificate",
+        "Food service permit",
+        "Merchant Marine credentials",
+        "TWIC card",
+        "Culinary arts degree"
+      ],
 
-      /* Basic email format check */
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(qEmail.value.trim())) {
-        qEmail.style.borderColor = "rgba(220,80,80,0.55)";
-        qEmail.style.boxShadow   = "0 0 0 3px rgba(220,80,80,0.10)";
-        err.textContent   = "Please enter a valid email address.";
-        err.style.display = "block";
-        setTimeout(() => { qEmail.style.borderColor=""; qEmail.style.boxShadow=""; err.style.display="none"; }, 2800);
-        return;
-      }
+      degrees: [
+        { level: "Doctorate", name: "Business administration, international business" },
+        { level: "Master's", name: "Hospitality management" },
+        { level: "Master's", name: "Business management" },
+        { level: "Bachelor's", name: "Hospitality management" },
+        { level: "Bachelor's", name: "Business administration" }
+      ]
+    };
+  }
+}
 
-      btn.textContent   = "Submitting…";
-      btn.style.opacity = "0.65";
-      btn.disabled      = true;
-
-      try {
-        await postToFormspree({
-          _subject:         "New Strategy Intensive Application — Dillon Noel Website",
-          _replyto:         qEmail.value.trim(),
-          "Name":           qName.value.trim(),
-          "Email":          qEmail.value.trim(),
-          "Problem":        q1.value.trim(),
-          "Business Stage": q2.value.trim(),
-          "If Not Solved":  q3.value.trim(),
-          "Support Level":  q4.value.trim(),
-          "Budget Range":   q5.value.trim()
-        });
-        btn.style.display     = "none";
-        success.style.display = "block";
-        [qName,qEmail,q1,q2,q3,q4,q5].forEach(f => f.value = "");
-      } catch(e) {
-        btn.textContent   = "Apply for Strategy Intensive";
-        btn.style.opacity = "1";
-        btn.disabled      = false;
-        err.textContent   = "Something went wrong — please email me directly at dillon1.noel@outlook.com";
-        err.style.display = "block";
-      }
-    }
-
-    /* ─── CONTACT FORM ─── */
-    async function handleContactSubmit() {
-      const name    = document.getElementById("contact-name");
-      const email   = document.getElementById("contact-email");
-      const msg     = document.getElementById("contact-message");
-      const btn     = document.getElementById("contactSubmitBtn");
-      const err     = document.getElementById("contactError");
-      const success = document.getElementById("contactSuccess");
-
-      const required = [name, email, msg];
-      const anyEmpty = required.some(f => !f.value.trim());
-      if (anyEmpty) {
-        flashError(required);
-        err.style.display = "block";
-        setTimeout(() => { err.style.display = "none"; }, 3000);
-        return;
-      }
-
-      /* Basic email format check */
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
-        email.style.borderColor = "rgba(220,80,80,0.55)";
-        email.style.boxShadow   = "0 0 0 3px rgba(220,80,80,0.10)";
-        err.textContent         = "Please enter a valid email address.";
-        err.style.display       = "block";
-        setTimeout(() => { email.style.borderColor=""; email.style.boxShadow=""; err.style.display="none"; }, 2800);
-        return;
-      }
-
-      btn.textContent   = "Sending…";
-      btn.style.opacity = "0.65";
-      btn.disabled      = true;
-
-      try {
-        await postToFormspree({
-          _subject: "Website Message from " + name.value.trim(),
-          "Name":    name.value.trim(),
-          "Email":   email.value.trim(),
-          "Message": msg.value.trim()
-        });
-        btn.style.display     = "none";
-        success.style.display = "block";
-        [name, email, msg].forEach(f => f.value = "");
-      } catch(e) {
-        btn.textContent   = "Send Message";
-        btn.style.opacity = "1";
-        btn.disabled      = false;
-        err.textContent   = "Something went wrong — please email me directly at dillon1.noel@outlook.com";
-        err.style.display = "block";
-      }
-    }
-
-    /* ─── SCROLL HANDLER ─── */
-    function onScroll() {
-      toggleBackToTop();
-      setActiveNavLink();
-      updateScrollProgress();
-      updateParallax();
-    }
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", () => {
-      updateNavOffset();
-      toggleBackToTop();
-      setActiveNavLink();
-      updateScrollProgress();
-    });
-
-    /* ─── INIT ─── */
-    reveals.forEach(el => revealObserver.observe(el));
-    counters.forEach(el => counterObserver.observe(el));
-
-    /* Hard fallback: if observer has not fired after 600ms, show everything */
-    setTimeout(() => {
-      if (!revealReady) {
-        reveals.forEach(el => el.classList.add("in-view"));
-      }
-    }, 600);
-
-    window.addEventListener("load", () => {
-      updateNavOffset();
-      toggleBackToTop();
-      setActiveNavLink();
-      updateScrollProgress();
-      updateParallax();
-      showTestimonial(0);
-      startTestimonialRotation();
-
-      /* Trigger pills/certs on load if hero is already visible */
-      const heroCopyEl = document.querySelector(".hero-copy");
-      if (heroCopyEl) {
-        const rect = heroCopyEl.getBoundingClientRect();
-        if (rect.top < window.innerHeight) animatePillsAndCerts();
-      }
-    });
-  </script>
+</script>
 </body>
 </html>
