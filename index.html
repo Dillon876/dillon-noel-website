@@ -1175,8 +1175,194 @@
     /* ─── MAGNETIC BUTTON EFFECT ─── */
     .btn-primary { will-change: transform; }
 
+    /* ─── ISOMETRIC ARCHITECTURE STAGE ─── */
+    .iso-stage {
+      position: relative;
+      height: clamp(540px, 56vw, 680px);
+      border-radius: var(--radius);
+      border: 1px solid rgba(199,168,76,0.14);
+      background:
+        radial-gradient(ellipse 55% 62% at 64% 54%, rgba(199,168,76,0.10), transparent 70%),
+        linear-gradient(180deg, #100f0b 0%, #090908 100%);
+      overflow: hidden;
+      isolation: isolate;
+      outline: none;
+    }
+
+    .iso-stage:focus-visible {
+      box-shadow: 0 0 0 3px rgba(0,0,0,0.5), 0 0 0 5px var(--focus-ring);
+    }
+
+    .iso-viewport { position: absolute; inset: 0; }
+
+    .iso-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+      touch-action: pan-y;
+    }
+
+    .iso-stage.is-dragging .iso-canvas { cursor: grabbing; }
+
+    .iso-fig {
+      position: absolute;
+      top: 26px; right: 30px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .iso-fig strong { color: var(--gold-2); }
+
+    .iso-hint {
+      position: absolute;
+      right: 30px; bottom: 90px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0.75;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+
+    .iso-hint.is-hidden { opacity: 0; }
+
+    .iso-copy {
+      position: absolute;
+      left: 34px; top: 34px;
+      width: min(390px, 40%);
+      z-index: 2;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .iso-copy.is-swapping { opacity: 0; transform: translateY(10px); }
+
+    .iso-kicker {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-2);
+      margin-bottom: 12px;
+    }
+
+    .iso-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.7rem, 2.6vw, 2.35rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+
+    .iso-body { color: var(--muted); margin-bottom: 0; }
+    .iso-copy .process-tags { margin-top: 18px; }
+    .iso-cta { margin-top: 22px; }
+    .iso-cta[hidden] { display: none; }
+
+    .iso-controls {
+      position: absolute;
+      left: 24px; right: 24px; bottom: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 3;
+    }
+
+    .iso-btn,
+    .iso-dot {
+      appearance: none;
+      font-family: inherit;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .iso-btn {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      background: rgba(12,12,9,0.74);
+      border: 1px solid rgba(199,168,76,0.26);
+      border-radius: 999px;
+      padding: 10px 18px;
+      white-space: nowrap;
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
+
+    .iso-btn:hover {
+      border-color: rgba(199,168,76,0.5);
+      background: rgba(199,168,76,0.10);
+      transform: translateY(-1px);
+    }
+
+    .iso-dots {
+      display: flex;
+      gap: 4px;
+      padding: 5px;
+      border-radius: 999px;
+      background: rgba(12,12,9,0.74);
+      border: 1px solid rgba(199,168,76,0.16);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+
+    .iso-dot {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 7px 12px;
+      border-radius: 999px;
+      transition: color 0.2s ease, background 0.2s ease;
+    }
+
+    .iso-dot .num { color: var(--gold); font-variant-numeric: tabular-nums; }
+    .iso-dot:hover:not([aria-current="step"]) { color: var(--text); }
+
+    .iso-dot[aria-current="step"] {
+      background: linear-gradient(170deg, var(--gold-2), var(--gold));
+      color: #0f0d08;
+    }
+
+    .iso-dot[aria-current="step"] .num { color: rgba(15,13,8,0.6); }
+
+    .iso-btn:focus-visible,
+    .iso-dot:focus-visible {
+      box-shadow: 0 0 0 3px rgba(0,0,0,0.5), 0 0 0 5px var(--focus-ring);
+    }
+
+    @media (max-width: 980px) {
+      .iso-dot .label { display: none; }
+    }
+
+    @media (max-width: 760px) {
+      .nav-links .nav-optional { display: none; }
+      .iso-stage { height: auto; display: flex; flex-direction: column; }
+      .iso-viewport { position: relative; inset: auto; height: 340px; }
+      .iso-copy { position: relative; left: auto; top: auto; width: auto; padding: 6px 20px 0; }
+      .iso-controls { position: relative; left: auto; right: auto; bottom: auto; padding: 20px 14px 18px; }
+      .iso-fig { top: 16px; right: 18px; font-size: 0.9rem; }
+      .iso-hint { bottom: 12px; right: 16px; }
+      .iso-btn { padding: 9px 14px; }
+      .iso-dot { padding: 7px 10px; }
+    }
+
     /* ─── REDUCED MOTION ─── */
     @media (prefers-reduced-motion: reduce) {
+      .iso-copy, .iso-btn, .iso-hint { transition: none !important; }
       html { scroll-behavior: auto; }
       body { animation: none; opacity: 1; }
       .reveal, .reveal.in-view,
@@ -1318,6 +1504,7 @@
           <a href="#about">Profile</a>
           <a href="#impact">Impact</a>
           <a href="#process">Process</a>
+          <a href="#architecture" class="nav-optional">Architecture</a>
           <a href="#testimonials">Testimonials</a>
           <a href="#services">Services</a>
           <a href="#intensive">Strategy Intensive</a>
@@ -1551,6 +1738,52 @@
               <div class="muted">Start with the Strategy Intensive and we'll map the right path forward.</div>
             </div>
             <a class="btn btn-primary" href="#intensive">Start Here</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── ARCHITECTURE (interactive isometric city) ─── -->
+    <section id="architecture" class="section reveal">
+      <div class="container">
+        <div class="section-shell">
+          <div class="section-head-split">
+            <div>
+              <p class="eyebrow">Growth Architecture</p>
+              <div class="heading-glow-wrap"><h2 class="has-shimmer">From ambiguity to architecture</h2></div>
+            </div>
+            <p class="lead">An interactive look at how a complex initiative becomes a structure that scales. Step through each stage, or drag the city to look around.</p>
+          </div>
+
+          <div class="iso-stage" id="isoStage" tabindex="0" role="region" aria-roledescription="carousel" aria-label="From ambiguity to architecture, interactive illustration. Use the left and right arrow keys to change stage.">
+            <div class="iso-viewport">
+              <canvas class="iso-canvas" id="isoCanvas" aria-hidden="true"></canvas>
+              <div class="iso-fig" id="isoFig" aria-hidden="true">Fig. <strong>01</strong> / 04</div>
+              <div class="iso-hint" id="isoHint" aria-hidden="true">&harr; Drag to rotate</div>
+            </div>
+
+            <div class="iso-copy" id="isoCopy" aria-live="polite">
+              <p class="iso-kicker" id="isoKicker">Stage 01 · Understand the real problem</p>
+              <h3 class="iso-title" id="isoTitle">Complexity without a map.</h3>
+              <p class="iso-body" id="isoBody">Priorities drift, ownership blurs, and effort scatters. Most organizations are solving the wrong problem, so I start by mapping what is really there, not the surface symptoms.</p>
+              <div class="process-tags" id="isoTags">
+                <span class="process-tag">Discovery sessions</span>
+                <span class="process-tag">Stakeholder interviews</span>
+                <span class="process-tag">Problem framing</span>
+              </div>
+              <a class="btn btn-primary iso-cta" id="isoCta" href="#intensive" hidden>Apply for Strategy Intensive</a>
+            </div>
+
+            <div class="iso-controls">
+              <button type="button" class="iso-btn" id="isoPrev" aria-label="Previous stage">&larr; Prev</button>
+              <div class="iso-dots" role="group" aria-label="Stages">
+                <button type="button" class="iso-dot" data-index="0" aria-current="step"><span class="num">01</span><span class="label">Problem</span></button>
+                <button type="button" class="iso-dot" data-index="1"><span class="num">02</span><span class="label">Blueprint</span></button>
+                <button type="button" class="iso-dot" data-index="2"><span class="num">03</span><span class="label">Momentum</span></button>
+                <button type="button" class="iso-dot" data-index="3"><span class="num">04</span><span class="label">Growth</span></button>
+              </div>
+              <button type="button" class="iso-btn" id="isoNext" aria-label="Next stage">Next &rarr;</button>
+            </div>
           </div>
         </div>
       </div>
@@ -2557,6 +2790,685 @@
         if (rect.top < window.innerHeight) animatePillsAndCerts();
       }
     });
+  </script>
+
+  <script>
+  /* ─── ISOMETRIC ARCHITECTURE STAGE ───
+     A dependency-free isometric city drawn on a 2D canvas. Four scenes share
+     the same 49 city lots; switching scenes tweens every lot to new targets.
+     Scene links: #ambiguity  #blueprint  #momentum  #tower                 */
+  (function () {
+    var stage  = document.getElementById("isoStage");
+    var canvas = document.getElementById("isoCanvas");
+    if (!stage || !canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    var section  = document.getElementById("architecture");
+    var copyEl   = document.getElementById("isoCopy");
+    var kickerEl = document.getElementById("isoKicker");
+    var titleEl  = document.getElementById("isoTitle");
+    var bodyEl   = document.getElementById("isoBody");
+    var tagsEl   = document.getElementById("isoTags");
+    var ctaEl    = document.getElementById("isoCta");
+    var figEl    = document.getElementById("isoFig");
+    var hintEl   = document.getElementById("isoHint");
+    var prevBtn  = document.getElementById("isoPrev");
+    var nextBtn  = document.getElementById("isoNext");
+    var dots     = stage.querySelectorAll(".iso-dot");
+    var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    var SCENES = [
+      { id: "ambiguity", kicker: "Stage 01 · Understand the real problem", title: "Complexity without a map.",
+        body: "Priorities drift, ownership blurs, and effort scatters. Most organizations are solving the wrong problem, so I start by mapping what is really there, not the surface symptoms.",
+        tags: ["Discovery sessions", "Stakeholder interviews", "Problem framing"] },
+      { id: "blueprint", kicker: "Stage 02 · Build the execution architecture", title: "Ambiguity becomes a blueprint.",
+        body: "Priorities, decision frameworks, ownership models, and execution plans, designed and aligned before anything gets built.",
+        tags: ["Strategic roadmap", "Priority framework", "Ownership design"] },
+      { id: "momentum", kicker: "Stage 03 · Drive measurable progress", title: "Structure you can watch move.",
+        body: "Stakeholders aligned, blockers removed, delivery moving in sequence. Strategy stops being a document and starts showing up as measurable outcomes.",
+        tags: ["Delivery", "Alignment", "Momentum"] },
+      { id: "tower", kicker: "Stage 04 · Growth architecture", title: "Built to scale.",
+        body: "When the foundation is right, growth has somewhere to go: operating clarity, stronger execution, and systems that keep scaling.",
+        tags: ["Growth systems", "Operating clarity", "Scale"], cta: true }
+    ];
+
+    /* ── deterministic randomness, so the city is identical on every visit ── */
+    function makeRng(seed) {
+      return function () {
+        seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+        var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    }
+    function hash(a, b, c, d) {
+      var s = Math.sin(a * 12.9898 + b * 78.233 + c * 37.719 + d * 4.581) * 43758.5453;
+      return s - Math.floor(s);
+    }
+    var rand = makeRng(4916);
+
+    /* ── city layout and per-scene targets ── */
+    var N = 7, GAP = 1.45, C = (N - 1) / 2, R = C * GAP + 0.62;
+    var KEYS = ["x", "z", "y0", "w", "d", "h", "ry", "rx", "rz", "solid", "edge", "lit", "tone", "spire"];
+    var lots = [], targets = [[], [], [], []], flat = [];
+
+    for (var i = 0; i < N; i++) {
+      for (var j = 0; j < N; j++) {
+        var k = lots.length;
+        var dist  = Math.hypot(i - C, j - C) / Math.hypot(C, C);
+        var tower = i === C && j === C;
+        var plaza = (i === 1 && j === 5) || (i === 5 && j === 2) || (i === 0 && j === 0);
+        var x = (i - C) * GAP, z = (j - C) * GAP;
+        var w = tower ? 0.98 : plaza ? 1.02 : 0.7 + rand() * 0.26;
+        var d = tower ? 0.98 : plaza ? 1.02 : 0.7 + rand() * 0.26;
+        var H = tower ? 2.4 : plaza ? 0.08 : 0.42 + 2.05 * Math.pow(1 - dist, 1.7) + rand() * 0.6;
+        lots.push({ k: k, dist: dist, tower: tower, plaza: plaza });
+
+        var floating = !tower && rand() < 0.26;
+        targets[0].push({
+          x: x + (rand() - 0.5) * 0.5, z: z + (rand() - 0.5) * 0.5,
+          y0: floating ? 0.5 + rand() * 1.3 : 0,
+          w: 0.4 + rand() * 0.38, d: 0.4 + rand() * 0.38, h: 0.2 + rand() * 1.25,
+          ry: (rand() - 0.5) * 1.4,
+          rx: floating ? (rand() - 0.5) * 0.7 : 0, rz: floating ? (rand() - 0.5) * 0.7 : 0,
+          solid: 1, edge: 0.14, lit: 0, tone: 0, spire: 0
+        });
+        var plan = { x: x, z: z, y0: 0, w: w, d: d, h: H, ry: 0, rx: 0, rz: 0, solid: 0, edge: 0.95, lit: 0, tone: 1, spire: 0 };
+        targets[1].push(plan);
+        targets[2].push(Object.assign({}, plan, {
+          h: tower ? 1.5 : plaza ? 0.08 : H * (0.55 + 0.35 * rand()),
+          solid: 1, edge: 0.22, lit: plaza ? 0 : 0.6
+        }));
+        targets[3].push(Object.assign({}, plan, {
+          h: tower ? 5.2 : H, solid: 1, edge: 0.28, lit: plaza ? 0 : 1, spire: tower ? 1 : 0
+        }));
+        flat.push(Object.assign({}, plan, { h: 0.02, solid: 1, edge: 0.18, tone: 0.5 }));
+      }
+    }
+
+    var GLOBALS = [
+      { grid: 0.06, fog: 0.6, spot: 1, traffic: 0,   beacon: 0, dust: 0, zoom: 1.0,  pitch: 0.58, lift: 0.3 },
+      { grid: 1,    fog: 0,   spot: 0, traffic: 0,   beacon: 0, dust: 0, zoom: 1.02, pitch: 0.66, lift: 0.4 },
+      { grid: 0.22, fog: 0,   spot: 0, traffic: 1,   beacon: 0, dust: 0, zoom: 1.0,  pitch: 0.58, lift: 0.5 },
+      { grid: 0.14, fog: 0,   spot: 0, traffic: 0.7, beacon: 1, dust: 1, zoom: 0.84, pitch: 0.5,  lift: 1.9 }
+    ];
+    var GKEYS = Object.keys(GLOBALS[0]);
+
+    function copyState(s) { var o = {}; for (var key in s) o[key] = s[key]; return o; }
+
+    var cur = flat.map(copyState);
+    var gCur = copyState(GLOBALS[0]);
+    var anims = new Array(lots.length).fill(null);
+    var gAnim = null;
+    var current = 0;
+
+    function sceneFromHash() {
+      var id = (window.location.hash || "").slice(1);
+      for (var s = 0; s < SCENES.length; s++) if (SCENES[s].id === id) return s;
+      return -1;
+    }
+
+    function ease(p) { return p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; }
+
+    function startTween(idx, forward) {
+      var now = performance.now();
+      for (var k = 0; k < lots.length; k++) {
+        var delay = reduceMotion ? 0 : (forward ? lots[k].dist : 1 - lots[k].dist) * 520;
+        anims[k] = { from: copyState(cur[k]), to: targets[idx][k], start: now + delay, dur: reduceMotion ? 1 : 1100 };
+      }
+      gAnim = { from: copyState(gCur), to: GLOBALS[idx], start: now, dur: reduceMotion ? 1 : 1200 };
+    }
+
+    function stepTweens(now) {
+      var busy = false;
+      for (var k = 0; k < lots.length; k++) {
+        var a = anims[k];
+        if (!a) continue;
+        var p = Math.min(Math.max((now - a.start) / a.dur, 0), 1), e = ease(p);
+        for (var n = 0; n < KEYS.length; n++) {
+          var key = KEYS[n];
+          cur[k][key] = a.from[key] + (a.to[key] - a.from[key]) * e;
+        }
+        if (p >= 1) anims[k] = null; else busy = true;
+      }
+      if (gAnim) {
+        var gp = Math.min(Math.max((now - gAnim.start) / gAnim.dur, 0), 1), ge = ease(gp);
+        for (var g = 0; g < GKEYS.length; g++) {
+          var gk = GKEYS[g];
+          gCur[gk] = gAnim.from[gk] + (gAnim.to[gk] - gAnim.from[gk]) * ge;
+        }
+        if (gp >= 1) gAnim = null; else busy = true;
+      }
+      return busy;
+    }
+
+    /* ── camera and projection ── */
+    var W = 0, Hh = 0, dpr = 1, s = 40, cx = 0, cy = 0, wide = true;
+    var sinT, cosT, sinP, cosP, VC = [0, 0, 0];
+    var LIGHT = (function () { var v = [-0.45, 1, 0.3], l = Math.hypot(v[0], v[1], v[2]); return [v[0] / l, v[1] / l, v[2] / l]; })();
+    var BG = [10, 10, 8];
+    var yawUser = 0, yawVel = 0, dragging = false, lastX = 0, lastDx = 0, hasDragged = false;
+
+    function setCamera(now) {
+      var drift = reduceMotion ? 0 : 0.2 * Math.sin(now * 0.00011);
+      var yaw = Math.PI / 4 + drift + yawUser;
+      var pitch = gCur.pitch;
+      sinT = Math.sin(yaw); cosT = Math.cos(yaw);
+      sinP = Math.sin(pitch); cosP = Math.cos(pitch);
+      VC[0] = sinT * cosP; VC[1] = sinP; VC[2] = cosT * cosP;
+
+      var availW = wide ? W * (W < 1000 ? 0.56 : 0.6) : W;
+      var fitW = availW * 0.94 / (2.83 * R);
+      var fitH = Hh * 0.8 / (2.83 * R * sinP + 3.4 * cosP);
+      s = Math.min(fitW, fitH) * gCur.zoom;
+      cx = wide ? W * (W < 1000 ? 0.67 : 0.635) : W * 0.5;
+      cy = Hh * (wide ? 0.56 : 0.58) + gCur.lift * cosP * s;
+    }
+
+    function proj(x, y, z, out) {
+      var xr = x * cosT - z * sinT;
+      var zr = x * sinT + z * cosT;
+      var up = y * cosP - zr * sinP;
+      out[0] = cx + xr * s;
+      out[1] = cy - up * s;
+      return out;
+    }
+
+    /* ── box drawing ── */
+    var FACES = [
+      { v: [0, 1, 2, 3] },                                // bottom
+      { v: [4, 7, 6, 5], top: true },                     // top
+      { v: [0, 4, 5, 1], bl: 0, br: 1, tl: 4, wd: "w" },  // z-
+      { v: [3, 2, 6, 7], bl: 3, br: 2, tl: 7, wd: "w" },  // z+
+      { v: [0, 3, 7, 4], bl: 0, br: 3, tl: 4, wd: "d" },  // x-
+      { v: [1, 5, 6, 2], bl: 1, br: 2, tl: 5, wd: "d" }   // x+
+    ];
+    var EDGES = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+    var wv = [], sv = [];
+    for (var q = 0; q < 8; q++) { wv.push([0, 0, 0]); sv.push([0, 0]); }
+
+    function mix(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; }
+    function rgba(c, a) { return "rgba(" + (c[0] | 0) + "," + (c[1] | 0) + "," + (c[2] | 0) + "," + a.toFixed(3) + ")"; }
+
+    function drawBox(b, st) {
+      var hw = b.w / 2, hd = b.d / 2, h = Math.max(b.h, 0.001);
+      var tilted = Math.abs(b.rx) > 1e-3 || Math.abs(b.rz) > 1e-3;
+      var cry = Math.cos(b.ry), sry = Math.sin(b.ry);
+      var crx = Math.cos(b.rx), srx = Math.sin(b.rx), crz = Math.cos(b.rz), srz = Math.sin(b.rz);
+      for (var v = 0; v < 8; v++) {
+        var lx = (v === 1 || v === 2 || v === 5 || v === 6) ? hw : -hw;
+        var lz = (v === 2 || v === 3 || v === 6 || v === 7) ? hd : -hd;
+        var ly = v >= 4 ? h : 0;
+        if (tilted) {
+          ly -= h / 2;
+          var y1 = ly * crx - lz * srx, z1 = ly * srx + lz * crx;
+          var x2 = lx * crz - y1 * srz, y2 = lx * srz + y1 * crz;
+          lx = x2; ly = y2 + h / 2; lz = z1;
+        }
+        var wx = lx * cry + lz * sry, wz = -lx * sry + lz * cry;
+        wv[v][0] = b.x + wx; wv[v][1] = b.y0 + ly; wv[v][2] = b.z + wz;
+        proj(wv[v][0], wv[v][1], wv[v][2], sv[v]);
+      }
+
+      var fog = st.fog || 0;
+      var base = mix([66, 66, 68], [70, 61, 43], st.tone);
+      var edgeA = st.edge * (1 - fog * 0.75);
+      var visible = [];
+
+      for (var f = 0; f < 6; f++) {
+        var F = FACES[f], a0 = wv[F.v[0]], a1 = wv[F.v[1]], a2 = wv[F.v[2]];
+        var ux = a1[0] - a0[0], uy = a1[1] - a0[1], uz = a1[2] - a0[2];
+        var vx = a2[0] - a0[0], vy = a2[1] - a0[1], vz = a2[2] - a0[2];
+        var nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx;
+        var nl = Math.hypot(nx, ny, nz) || 1;
+        nx /= nl; ny /= nl; nz /= nl;
+        var facing = nx * VC[0] + ny * VC[1] + nz * VC[2];
+        if (facing > 1e-4) visible.push({ F: F, f: f, lum: Math.max(0, nx * LIGHT[0] + ny * LIGHT[1] + nz * LIGHT[2]) });
+        else if (st.solid < 0.6 && edgeA > 0.05) {
+          // hidden faces of see-through boxes: faint dashed outline (blueprint look)
+          ctx.setLineDash([3, 4]);
+          ctx.strokeStyle = "rgba(224,196,112," + (edgeA * (1 - st.solid) * 0.3).toFixed(3) + ")";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          for (var e = 0; e < 4; e++) {
+            var p = sv[F.v[e]];
+            if (e === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]);
+          }
+          ctx.closePath();
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+      }
+
+      for (var m = 0; m < visible.length; m++) {
+        var vis = visible[m], FF = vis.F;
+        ctx.beginPath();
+        for (var c = 0; c < 4; c++) {
+          var pt = sv[FF.v[c]];
+          if (c === 0) ctx.moveTo(pt[0], pt[1]); else ctx.lineTo(pt[0], pt[1]);
+        }
+        ctx.closePath();
+
+        if (st.solid > 0.02) {
+          var lum = FF.top ? 1.18 : 0.5 + 0.62 * vis.lum;
+          var col = mix([base[0] * lum, base[1] * lum, base[2] * lum], BG, fog * (0.2 + 0.55 * st.depthFar));
+          if (st.ground) col = FF.top ? [20, 19, 15] : [13, 12, 10];
+          ctx.fillStyle = rgba(col, st.solid);
+          ctx.fill();
+        }
+        if (st.solid < 0.98) {
+          ctx.fillStyle = "rgba(201,168,76," + ((1 - st.solid) * (FF.top ? 0.09 : 0.05)).toFixed(3) + ")";
+          ctx.fill();
+        }
+
+        if (st.lit > 0.02 && FF.bl !== undefined && st.solid > 0.5 && h > 0.3) drawWindows(st, b, vis.f, FF, h);
+
+        if (edgeA > 0.01) {
+          ctx.strokeStyle = "rgba(224,196,112," + edgeA.toFixed(3) + ")";
+          ctx.lineWidth = FF.top ? 1.2 : 1;
+          ctx.stroke();
+        }
+      }
+      return visible.length;
+    }
+
+    var WIN_LEVELS = 4;
+    function drawWindows(st, b, fi, F, h) {
+      var BL = sv[F.bl], BR = sv[F.br], TL = sv[F.tl];
+      var faceW = F.wd === "w" ? b.w : b.d;
+      var cols = Math.max(2, Math.floor(faceW / 0.2));
+      var rows = Math.floor((h - 0.12) / 0.22);
+      var ex = BR[0] - BL[0], ey = BR[1] - BL[1], fx = TL[0] - BL[0], fy = TL[1] - BL[1];
+      var paths = [];
+      for (var l = 0; l < WIN_LEVELS; l++) paths.push(null);
+      for (var r = 0; r < rows; r++) {
+        var v0 = (0.12 + r * 0.22) / h, v1 = v0 + 0.11 / h;
+        for (var c = 0; c < cols; c++) {
+          if (hash(st.k + st.part * 101, fi, r, c) > 0.5) continue;
+          var level = Math.min(WIN_LEVELS - 1, Math.floor(hash(st.k, fi, c, r) * WIN_LEVELS));
+          var u0 = (c + 0.26) / cols, u1 = (c + 0.74) / cols;
+          var path = paths[level] || (paths[level] = new Path2D());
+          path.moveTo(BL[0] + ex * u0 + fx * v0, BL[1] + ey * u0 + fy * v0);
+          path.lineTo(BL[0] + ex * u1 + fx * v0, BL[1] + ey * u1 + fy * v0);
+          path.lineTo(BL[0] + ex * u1 + fx * v1, BL[1] + ey * u1 + fy * v1);
+          path.lineTo(BL[0] + ex * u0 + fx * v1, BL[1] + ey * u0 + fy * v1);
+          path.closePath();
+        }
+      }
+      for (var lv = 0; lv < WIN_LEVELS; lv++) {
+        if (!paths[lv]) continue;
+        var alpha = st.lit * (0.32 + 0.68 * (lv + 1) / WIN_LEVELS) * (1 - (st.fog || 0));
+        ctx.fillStyle = "rgba(255," + (198 + lv * 10) + "," + (112 + lv * 14) + "," + alpha.toFixed(3) + ")";
+        ctx.fill(paths[lv]);
+      }
+    }
+
+    /* ── ambient details ── */
+    var cars = [];
+    var carRng = makeRng(77);
+    for (var cI = 0; cI < 26; cI++) {
+      cars.push({
+        axis: cI % 2,
+        line: (1 + Math.floor(carRng() * (N - 1)) - C - 0.5) * GAP,
+        pos: (carRng() * 2 - 1) * R,
+        speed: (0.55 + carRng() * 0.8) * (carRng() < 0.5 ? -1 : 1)
+      });
+    }
+    var dust = [];
+    var dustRng = makeRng(31);
+    for (var dI = 0; dI < 46; dI++) {
+      dust.push({ x: (dustRng() * 2 - 1) * R, z: (dustRng() * 2 - 1) * R, y: dustRng() * 6, v: 0.25 + dustRng() * 0.5, size: 0.8 + dustRng() * 1.6 });
+    }
+
+    var tmpA = [0, 0], tmpB = [0, 0];
+    function line3(x1, y1, z1, x2, y2, z2) {
+      proj(x1, y1, z1, tmpA); proj(x2, y2, z2, tmpB);
+      ctx.moveTo(tmpA[0], tmpA[1]); ctx.lineTo(tmpB[0], tmpB[1]);
+    }
+
+    function drawGround(now) {
+      drawBox({ x: 0, z: 0, y0: -0.34, w: 2 * R, d: 2 * R, h: 0.34, ry: 0, rx: 0, rz: 0 },
+        { solid: 1, edge: 0.32, lit: 0, tone: 0, ground: true, fog: 0, depthFar: 0 });
+
+      // survey grid
+      var gA = 0.035 + gCur.grid * 0.2;
+      ctx.strokeStyle = "rgba(224,196,112," + gA.toFixed(3) + ")";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      var steps = Math.floor(R / (GAP / 2));
+      for (var g = -steps; g <= steps; g++) {
+        var t = g * GAP / 2;
+        line3(t, 0, -R, t, 0, R);
+        line3(-R, 0, t, R, 0, t);
+      }
+      ctx.stroke();
+
+      // blueprint lot outlines
+      if (gCur.grid > 0.3) {
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = "rgba(224,196,112," + ((gCur.grid - 0.3) * 0.7).toFixed(3) + ")";
+        ctx.beginPath();
+        for (var k = 0; k < lots.length; k++) {
+          var p = targets[1][k], hw = p.w / 2 + 0.07, hd = p.d / 2 + 0.07;
+          proj(p.x - hw, 0, p.z - hd, tmpA); ctx.moveTo(tmpA[0], tmpA[1]);
+          proj(p.x + hw, 0, p.z - hd, tmpA); ctx.lineTo(tmpA[0], tmpA[1]);
+          proj(p.x + hw, 0, p.z + hd, tmpA); ctx.lineTo(tmpA[0], tmpA[1]);
+          proj(p.x - hw, 0, p.z + hd, tmpA); ctx.lineTo(tmpA[0], tmpA[1]);
+          ctx.closePath();
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // street centre lines
+      if (gCur.traffic > 0.02) {
+        ctx.setLineDash([6, 8]);
+        ctx.strokeStyle = "rgba(224,196,112," + (gCur.traffic * 0.12).toFixed(3) + ")";
+        ctx.beginPath();
+        for (var st = 1; st < N; st++) {
+          var L = (st - C - 0.5) * GAP;
+          line3(L, 0, -R, L, 0, R);
+          line3(-R, 0, L, R, 0, L);
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // discovery spotlight sweeping the problem space
+      if (gCur.spot > 0.02) {
+        var sx = Math.sin(now * 0.00052) * R * 0.55, sz = Math.cos(now * 0.00037) * R * 0.5;
+        ctx.save();
+        ctx.globalCompositeOperation = "lighter";
+        var radii = [1.7, 1.15, 0.6];
+        for (var ri = 0; ri < radii.length; ri++) {
+          ctx.beginPath();
+          for (var a = 0; a <= 28; a++) {
+            var ang = a / 28 * Math.PI * 2;
+            proj(sx + Math.cos(ang) * radii[ri], 0.01, sz + Math.sin(ang) * radii[ri], tmpA);
+            if (a === 0) ctx.moveTo(tmpA[0], tmpA[1]); else ctx.lineTo(tmpA[0], tmpA[1]);
+          }
+          ctx.fillStyle = "rgba(224,196,112," + (gCur.spot * 0.075).toFixed(3) + ")";
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+    }
+
+    function drawTraffic(dt) {
+      if (gCur.traffic < 0.02) return;
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      for (var c = 0; c < cars.length; c++) {
+        var car = cars[c];
+        if (!reduceMotion) {
+          car.pos += car.speed * dt;
+          if (car.pos > R) car.pos = -R; else if (car.pos < -R) car.pos = R;
+        }
+        var tail = car.pos - Math.sign(car.speed) * 0.45;
+        var hx = car.axis ? car.line : car.pos, hz = car.axis ? car.pos : car.line;
+        var tx = car.axis ? car.line : tail, tz = car.axis ? tail : car.line;
+        proj(hx, 0.02, hz, tmpA); proj(tx, 0.02, tz, tmpB);
+        var grad = ctx.createLinearGradient(tmpB[0], tmpB[1], tmpA[0], tmpA[1]);
+        grad.addColorStop(0, "rgba(255,214,130,0)");
+        grad.addColorStop(1, "rgba(255,214,130," + (gCur.traffic * 0.85).toFixed(3) + ")");
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 2.6;
+        ctx.beginPath(); ctx.moveTo(tmpB[0], tmpB[1]); ctx.lineTo(tmpA[0], tmpA[1]); ctx.stroke();
+        ctx.fillStyle = "rgba(255,214,130," + (gCur.traffic * 0.25).toFixed(3) + ")";
+        ctx.beginPath(); ctx.arc(tmpA[0], tmpA[1], 5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = "rgba(255,240,190," + gCur.traffic.toFixed(3) + ")";
+        ctx.beginPath(); ctx.arc(tmpA[0], tmpA[1], 2.2, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawBeacon(now, top) {
+      if (gCur.beacon < 0.02 || !top) return;
+      var pulse = reduceMotion ? 1 : 0.8 + 0.2 * Math.sin(now * 0.0035);
+      var b = gCur.beacon;
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      var beamH = Math.max(top[1], 0) + 4;
+      var widths = [26, 12, 4], alphas = [0.035, 0.06, 0.1];
+      for (var bw = 0; bw < widths.length; bw++) {
+        var beam = ctx.createLinearGradient(0, top[1], 0, top[1] - beamH);
+        beam.addColorStop(0, "rgba(255,220,140," + (alphas[bw] * b * pulse).toFixed(3) + ")");
+        beam.addColorStop(1, "rgba(255,220,140,0)");
+        ctx.fillStyle = beam;
+        ctx.fillRect(top[0] - widths[bw] / 2, top[1] - beamH, widths[bw], beamH);
+      }
+      var r = 40 * pulse;
+      var glow = ctx.createRadialGradient(top[0], top[1], 0, top[0], top[1], r);
+      glow.addColorStop(0, "rgba(255,236,180," + (0.9 * b).toFixed(3) + ")");
+      glow.addColorStop(0.25, "rgba(224,196,112," + (0.35 * b).toFixed(3) + ")");
+      glow.addColorStop(1, "rgba(224,196,112,0)");
+      ctx.fillStyle = glow;
+      ctx.beginPath(); ctx.arc(top[0], top[1], r, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+
+    function drawDust(dt) {
+      if (gCur.dust < 0.02) return;
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      for (var p = 0; p < dust.length; p++) {
+        var m = dust[p];
+        if (!reduceMotion) { m.y += m.v * dt; if (m.y > 6.5) m.y = 0; }
+        var fade = Math.sin(Math.min(m.y / 6.5, 1) * Math.PI);
+        proj(m.x, m.y, m.z, tmpA);
+        ctx.fillStyle = "rgba(224,196,112," + (gCur.dust * 0.55 * fade).toFixed(3) + ")";
+        ctx.beginPath(); ctx.arc(tmpA[0], tmpA[1], m.size, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    /* ── frame ── */
+    var order = lots.map(function (l) { return l.k; });
+    var partBox = { x: 0, z: 0, y0: 0, w: 0, d: 0, h: 0, ry: 0, rx: 0, rz: 0 };
+    var style = { solid: 0, edge: 0, lit: 0, tone: 0, fog: 0, depthFar: 0, k: 0, part: 0 };
+    var beaconTop = [0, 0];
+
+    function render(now, dt) {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, Hh);
+      setCamera(now);
+      drawGround(now);
+      drawTraffic(dt);
+
+      order.sort(function (a, b) {
+        return (cur[a].x * VC[0] + cur[a].z * VC[2]) - (cur[b].x * VC[0] + cur[b].z * VC[2]);
+      });
+
+      var top = null;
+      for (var n = 0; n < order.length; n++) {
+        var k = order[n], c = cur[k];
+        var depth = c.x * VC[0] + c.z * VC[2];
+        style.solid = c.solid; style.edge = c.edge; style.lit = c.lit; style.tone = c.tone;
+        style.fog = gCur.fog; style.depthFar = Math.min(Math.max(0.5 - depth / (2 * R), 0), 1);
+        style.k = k; style.part = 0; style.ground = false;
+        drawBox(c, style);
+
+        if (lots[k].tower && c.spire > 0.01) {
+          // stepped crown + spire on the growth tower
+          var sh = 0.9 * c.spire;
+          partBox.x = c.x; partBox.z = c.z; partBox.ry = c.ry; partBox.rx = 0; partBox.rz = 0;
+          partBox.y0 = c.y0 + c.h; partBox.w = c.w * 0.66; partBox.d = c.d * 0.66; partBox.h = sh;
+          style.part = 1; drawBox(partBox, style);
+          partBox.y0 += sh; partBox.w = 0.12; partBox.d = 0.12; partBox.h = 1.15 * c.spire;
+          style.part = 2; style.lit = 0; drawBox(partBox, style);
+          top = proj(c.x, partBox.y0 + partBox.h, c.z, beaconTop);
+        }
+      }
+
+      drawBeacon(now, top);
+      drawDust(dt);
+
+      if (gCur.fog > 0.01) {
+        var haze = ctx.createLinearGradient(0, 0, 0, Hh);
+        haze.addColorStop(0, "rgba(12,11,9," + (gCur.fog * 0.55).toFixed(3) + ")");
+        haze.addColorStop(1, "rgba(12,11,9," + (gCur.fog * 0.12).toFixed(3) + ")");
+        ctx.fillStyle = haze;
+        ctx.fillRect(0, 0, W, Hh);
+      }
+    }
+
+    var raf = null, lastT = 0, visible = false, introduced = false;
+    // adaptive quality: if frames run slow on this device, drop to 1x pixels and ~30fps
+    var lowPower = false, perfFrames = 0, perfTime = 0;
+
+    function loop(now) {
+      raf = null;
+      var rawDt = lastT ? (now - lastT) / 1000 : 0;
+      if (lowPower && rawDt && rawDt < 0.028 && !dragging) { raf = requestAnimationFrame(loop); return; }
+      var dt = Math.min(rawDt, 0.05);
+      lastT = now;
+      if (!lowPower && rawDt && rawDt < 0.5 && !reduceMotion) {
+        perfFrames++; perfTime += rawDt;
+        if (perfFrames >= 90) {
+          if (perfTime / perfFrames > 0.034) { lowPower = true; resize(); }
+          perfFrames = 0; perfTime = 0;
+        }
+      }
+      if (!dragging && Math.abs(yawVel) > 1e-4) { yawUser += yawVel; yawVel *= 0.93; }
+      var busy = stepTweens(now);
+      render(now, dt);
+      var keepGoing = visible && !document.hidden && (!reduceMotion || busy || dragging || Math.abs(yawVel) > 1e-4);
+      if (keepGoing) raf = requestAnimationFrame(loop);
+      else lastT = 0;
+    }
+
+    function requestRender() { if (!raf) raf = requestAnimationFrame(loop); }
+
+    function resize() {
+      var rect = canvas.getBoundingClientRect();
+      W = Math.max(rect.width, 1); Hh = Math.max(rect.height, 1);
+      dpr = lowPower ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+      wide = W > 640 && getComputedStyle(copyEl).position === "absolute";
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(Hh * dpr);
+      requestRender();
+    }
+
+    /* ── UI ── */
+    var swapTimer = null;
+    function setCopy(idx, instant) {
+      var sc = SCENES[idx];
+      function fill() {
+        kickerEl.textContent = sc.kicker;
+        titleEl.textContent = sc.title;
+        bodyEl.textContent = sc.body;
+        tagsEl.innerHTML = "";
+        sc.tags.forEach(function (t) {
+          var span = document.createElement("span");
+          span.className = "process-tag";
+          span.textContent = t;
+          tagsEl.appendChild(span);
+        });
+        ctaEl.hidden = !sc.cta;
+        copyEl.classList.remove("is-swapping");
+      }
+      figEl.innerHTML = "Fig. <strong>0" + (idx + 1) + "</strong> / 0" + SCENES.length;
+      dots.forEach(function (d, n) {
+        if (n === idx) d.setAttribute("aria-current", "step"); else d.removeAttribute("aria-current");
+      });
+      nextBtn.innerHTML = idx === SCENES.length - 1 ? "Start over &#8634;" : "Next &rarr;";
+      nextBtn.setAttribute("aria-label", idx === SCENES.length - 1 ? "Back to the first stage" : "Next stage");
+      clearTimeout(swapTimer);
+      if (instant || reduceMotion) { fill(); return; }
+      copyEl.classList.add("is-swapping");
+      swapTimer = setTimeout(fill, 220);
+    }
+
+    function goTo(idx, opts) {
+      opts = opts || {};
+      idx = (idx + SCENES.length) % SCENES.length;
+      var forward = idx >= current;
+      current = idx;
+      setCopy(idx, opts.instant);
+      if (introduced) startTween(idx, forward);
+      if (opts.updateHash !== false && window.history && history.replaceState) {
+        history.replaceState(null, "", "#" + SCENES[idx].id);
+      }
+      requestRender();
+    }
+
+    prevBtn.addEventListener("click", function () { goTo(current - 1); });
+    nextBtn.addEventListener("click", function () { goTo(current + 1); });
+    dots.forEach(function (d) {
+      d.addEventListener("click", function () { goTo(+d.dataset.index); });
+    });
+    stage.addEventListener("keydown", function (e) {
+      if (e.target.closest && e.target.closest("a, button")) return;
+      if (e.key === "ArrowRight") { e.preventDefault(); goTo(current + 1); }
+      else if (e.key === "ArrowLeft") { e.preventDefault(); goTo(current - 1); }
+    });
+
+    canvas.addEventListener("pointerdown", function (e) {
+      dragging = true; lastX = e.clientX; lastDx = 0; yawVel = 0;
+      stage.classList.add("is-dragging");
+      if (canvas.setPointerCapture) canvas.setPointerCapture(e.pointerId);
+      if (!hasDragged) { hasDragged = true; hintEl.classList.add("is-hidden"); }
+      requestRender();
+    });
+    canvas.addEventListener("pointermove", function (e) {
+      if (!dragging) return;
+      lastDx = e.clientX - lastX; lastX = e.clientX;
+      yawUser -= lastDx * 0.009;
+      requestRender();
+    });
+    function endDrag() {
+      if (!dragging) return;
+      dragging = false;
+      stage.classList.remove("is-dragging");
+      yawVel = reduceMotion ? 0 : -lastDx * 0.009;
+      requestRender();
+    }
+    canvas.addEventListener("pointerup", endDrag);
+    canvas.addEventListener("pointercancel", endDrag);
+
+    /* ── visibility, sizing, deep links ── */
+    if ("ResizeObserver" in window) new ResizeObserver(resize).observe(canvas);
+    else window.addEventListener("resize", resize);
+    resize();
+
+    function introduce() {
+      if (introduced) return;
+      introduced = true;
+      startTween(current, true);
+    }
+
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        visible = entries[0].isIntersecting;
+        if (visible) { introduce(); requestRender(); }
+      }, { threshold: 0.12 }).observe(stage);
+    } else {
+      visible = true; introduce(); requestRender();
+    }
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) requestRender(); });
+
+    function scrollToStage() {
+      if (typeof smoothScrollTo === "function") smoothScrollTo("#architecture");
+      else if (section) section.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
+    }
+
+    var initial = sceneFromHash();
+    if (initial >= 0) {
+      current = initial;
+      cur = targets[initial].map(copyState);
+      gCur = copyState(GLOBALS[initial]);
+      setCopy(initial, true);
+      window.addEventListener("load", function () { setTimeout(scrollToStage, 80); });
+    }
+
+    window.addEventListener("hashchange", function () {
+      var idx = sceneFromHash();
+      if (idx < 0) return;
+      goTo(idx, { updateHash: false });
+      scrollToStage();
+    });
+  })();
   </script>
 </body>
 </html>
