@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dillon Noel | Strategy, Execution, and Growth Architecture</title>
   <meta name="description" content="Dillon Noel helps leaders solve complex business problems through strategy, execution, and growth-focused operating structure." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d0d0a'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' font-weight='700' text-anchor='middle' fill='%23e0c470'%3EDN%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
@@ -1885,6 +1886,381 @@
       .btn, .nav-cta { translate: none !important; }
     }
 
+    /* ═══ PORTFOLIO v3: board, tools, proof, offer ═══ */
+    :root {
+      --viz-gold: #b39033;    /* chart series 1 (validated on dark surface) */
+      --viz-copper: #a84f2c;  /* chart series 2 */
+      --viz-grid: rgba(240,236,224,0.08);
+    }
+
+    .hero-alt-link {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--gold-2);
+      border-bottom: 1px solid rgba(224,196,112,0.35);
+      transition: border-color var(--dur-fast) ease;
+    }
+    .hero-alt-link:hover { border-color: var(--gold-2); }
+
+    /* ─── chaos → structure board (scroll-scrubbed FLIP) ─── */
+    .cb {
+      position: relative;
+      margin-top: 56px;
+      border: 1px solid rgba(199,168,76,0.14);
+      border-radius: var(--radius);
+      background: linear-gradient(160deg, rgba(18,17,13,0.9), rgba(10,10,8,0.95));
+      padding: 22px;
+    }
+    .cb-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .cb-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-2); }
+    .cb-illus { font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); border: 1px solid rgba(199,168,76,0.18); padding: 4px 10px; border-radius: 999px; }
+    .cb-cols { position: absolute; left: 22px; right: 22px; top: var(--colTop, 62px); bottom: 22px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; pointer-events: none; }
+    .cb-col { border-radius: 16px; border: 1px dashed rgba(199,168,76,0.22); opacity: var(--colA, 0); padding: 10px 12px; }
+    .cb-col span { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .cb-col[data-col="now"] { border-style: solid; border-color: rgba(224,196,112,0.4); background: rgba(199,168,76,0.05); }
+    .cb-col[data-col="now"] span { color: var(--gold-2); }
+    .cb-stage { position: relative; height: 380px; }
+    .cb-card {
+      position: absolute;
+      left: 0; top: 0;
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(199,168,76,0.18);
+      background: rgba(28,26,20,0.96);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+      font-size: 0.84rem;
+      color: var(--text);
+      will-change: transform;
+      transform-origin: center;
+    }
+    .cb-card[data-col="now"] { border-color: rgba(224,196,112,0.5); }
+    .cb-card[data-col="later"] { color: var(--muted); }
+    .cb-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cb-owner {
+      flex: 0 0 auto;
+      width: 24px; height: 24px;
+      border-radius: 999px;
+      display: grid; place-items: center;
+      font-size: 0.62rem; font-weight: 700;
+      color: #0f0d08;
+      background: linear-gradient(170deg, var(--gold-2), var(--gold));
+      opacity: var(--ownA, 0);
+      transform: scale(calc(0.5 + var(--ownA, 0) * 0.5));
+    }
+
+    /* ─── tabs ─── */
+    .tabs {
+      position: relative;
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 5px;
+      margin-bottom: 22px;
+      border-radius: 999px;
+      border: 1px solid rgba(199,168,76,0.18);
+      background: rgba(12,12,9,0.7);
+      max-width: 100%;
+    }
+    .tabs-ink {
+      position: absolute;
+      top: 5px; left: 0;
+      height: calc(100% - 10px);
+      border-radius: 999px;
+      background: linear-gradient(170deg, var(--gold-2), var(--gold));
+      transition: transform 0.55s var(--ease-out-expo), width 0.55s var(--ease-out-expo);
+      z-index: 0;
+    }
+    .tab {
+      position: relative; z-index: 1;
+      appearance: none; border: 0; background: none; cursor: pointer;
+      font-family: inherit; font-size: 0.86rem; font-weight: 700;
+      color: var(--muted);
+      padding: 10px 18px;
+      border-radius: 999px;
+      transition: color 0.3s ease;
+    }
+    .tab[aria-selected="true"] { color: #0f0d08; }
+    .tab:hover:not([aria-selected="true"]) { color: var(--text); }
+    .tab:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(0,0,0,0.5), 0 0 0 5px var(--focus-ring); }
+    .tab-panel[hidden] { display: none; }
+    .tab-panel { animation: scIn var(--dur-slow) var(--ease-out-expo); }
+
+    .tool {
+      border-radius: var(--radius);
+      border: 1px solid rgba(199,168,76,0.16);
+      background: linear-gradient(160deg, rgba(20,19,14,0.95), rgba(10,10,8,0.97));
+      padding: 34px;
+      display: grid;
+      gap: 34px;
+    }
+
+    /* ─── cost of delay ─── */
+    .cod { grid-template-columns: 0.85fr 1.15fr; }
+    .rng { display: grid; gap: 8px; margin-top: 18px; }
+    .rng > span { display: flex; justify-content: space-between; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rng small { color: var(--muted); font-size: 0.78rem; }
+    .rng b { color: var(--gold-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .rng input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 6px; background: linear-gradient(90deg, var(--gold) 0 var(--fill, 50%), rgba(199,168,76,0.14) var(--fill, 50%) 100%); outline: none; }
+    .rng input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 999px; background: #fff3d0; border: 3px solid var(--gold); box-shadow: 0 0 0 4px rgba(224,196,112,0.15); cursor: pointer; transition: transform var(--dur-fast) var(--ease-back); }
+    .rng input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+    .rng input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 999px; background: #fff3d0; border: 3px solid var(--gold); cursor: pointer; }
+    .rng input[type="range"]:focus-visible { box-shadow: 0 0 0 3px rgba(0,0,0,0.5), 0 0 0 5px var(--focus-ring); }
+    .cod-total { font-family: 'Playfair Display', serif; font-size: clamp(2.6rem, 5vw, 3.8rem); line-height: 1; margin: 6px 0 12px; color: var(--text); font-variant-numeric: tabular-nums; }
+    .cod-split { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 0.9rem; color: var(--muted); }
+    .cod-split b { color: var(--text); font-variant-numeric: tabular-nums; }
+    .cod-split i, .pm-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 7px; vertical-align: -1px; }
+    .sw-gold { background: var(--viz-gold); }
+    .sw-copper { background: var(--viz-copper); }
+    .cod-chart { position: relative; margin-top: 18px; height: 240px; }
+    .cod-chart svg { display: block; width: 100%; height: 100%; overflow: visible; }
+    .cod-chart .bar { transition: y 0.6s var(--ease-out-expo), height 0.6s var(--ease-out-expo); }
+    .cod-chart .axis text { fill: var(--muted); font-size: 11px; font-family: 'DM Sans', sans-serif; }
+    .cod-chart .grid line { stroke: var(--viz-grid); stroke-width: 1; }
+    .cod-chart .hit { fill: transparent; cursor: crosshair; }
+    .cod-chart .hit:hover + .hl, .cod-chart .hl.on { opacity: 1; }
+    .cod-chart .hl { fill: rgba(240,236,224,0.05); opacity: 0; pointer-events: none; }
+    .chart-tip {
+      position: fixed; z-index: 9997; pointer-events: none;
+      padding: 10px 12px; border-radius: 12px;
+      background: rgba(14,14,11,0.96); border: 1px solid rgba(199,168,76,0.3);
+      color: var(--text); font-size: 0.8rem; line-height: 1.5;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.4);
+      opacity: 0; transform: translateY(4px); transition: opacity 0.15s ease, transform 0.15s ease;
+      min-width: 170px;
+    }
+    .chart-tip.on { opacity: 1; transform: none; }
+    .chart-tip b { color: var(--gold-2); }
+    .chart-tip .row { display: flex; justify-content: space-between; gap: 14px; }
+    .cod-table { margin-top: 12px; font-size: 0.85rem; color: var(--muted); }
+    .cod-table summary { cursor: pointer; color: var(--gold-2); font-weight: 600; }
+    .cod-table table { width: 100%; border-collapse: collapse; margin-top: 10px; font-variant-numeric: tabular-nums; }
+    .cod-table th, .cod-table td { text-align: right; padding: 6px 8px; border-bottom: 1px solid rgba(199,168,76,0.1); }
+    .cod-table th:first-child, .cod-table td:first-child { text-align: left; }
+    .cod-table th { color: var(--text); font-weight: 600; }
+    .cod-note { font-size: 0.78rem; color: var(--muted); margin: 14px 0 0; }
+
+    /* ─── priority matrix ─── */
+    .pm { grid-template-columns: 0.9fr 1.1fr; align-items: start; }
+    .pm-items { display: grid; gap: 8px; margin-top: 18px; }
+    .pm-item { display: grid; grid-template-columns: 26px 1fr 30px; gap: 8px; align-items: center; }
+    .pm-item .num { width: 26px; height: 26px; border-radius: 999px; display: grid; place-items: center; font-size: 0.72rem; font-weight: 700; color: #0f0d08; background: var(--gold-2); }
+    .pm-item input { padding: 9px 12px !important; font-size: 0.88rem !important; }
+    .pm-item button { appearance: none; border: 0; background: none; color: var(--muted); font-size: 1.1rem; cursor: pointer; border-radius: 8px; height: 30px; }
+    .pm-item button:hover { color: #e07070; background: rgba(224,112,112,0.08); }
+    .pm-add { margin-top: 10px; }
+    .pm-rank-title { margin: 22px 0 10px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-2); }
+    .pm-rank { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; position: relative; }
+    .pm-rank li {
+      display: grid; grid-template-columns: 26px 1fr auto; gap: 10px; align-items: center;
+      padding: 10px 12px; border-radius: 12px;
+      border: 1px solid rgba(199,168,76,0.12); background: rgba(255,255,255,0.02);
+      font-size: 0.9rem;
+    }
+    .pm-rank li .num { width: 26px; height: 26px; border-radius: 999px; display: grid; place-items: center; font-size: 0.72rem; font-weight: 700; color: var(--gold-2); border: 1px solid rgba(199,168,76,0.35); }
+    .pm-rank li .q { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+    .pm-rank li[data-q="win"] .q { color: var(--gold-2); }
+    .pm-rank li[data-q="pit"] { opacity: 0.6; }
+    .pm-plot { position: relative; aspect-ratio: 1 / 1; max-height: 520px; -webkit-user-select: none; user-select: none; }
+    .cb, .cs-visual { -webkit-user-select: none; user-select: none; }
+    .pm-plot svg { width: 100%; height: 100%; display: block; overflow: visible; touch-action: none; }
+    .pm-plot .quad { fill: rgba(255,255,255,0.015); stroke: rgba(199,168,76,0.12); transition: fill 0.3s ease; }
+    .pm-plot .quad.win { fill: rgba(199,168,76,0.06); }
+    .pm-plot .quad.hot { fill: rgba(199,168,76,0.12); }
+    .pm-plot .qlabel, .pm-plot .qsub, .pm-plot .axis-label { pointer-events: none; }
+    .pm-plot .qlabel { fill: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; font-family: 'DM Sans', sans-serif; }
+    .pm-plot .qlabel.win { fill: var(--gold-2); }
+    .pm-plot .qsub { fill: var(--muted); font-size: 11px; font-family: 'DM Sans', sans-serif; opacity: 0.8; }
+    .pm-plot .axis-label { fill: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; font-family: 'DM Sans', sans-serif; }
+    .pm-dot { cursor: grab; outline: none; }
+    .pm-dot circle.ring { fill: #0f0d08; stroke: var(--gold-2); stroke-width: 2; transition: r 0.3s var(--ease-back); }
+    .pm-dot text.n { fill: var(--gold-2); font-size: 12px; font-weight: 700; text-anchor: middle; dominant-baseline: central; pointer-events: none; font-family: 'DM Sans', sans-serif; }
+    .pm-dot text.lbl { fill: var(--text); font-size: 12px; cursor: grab; font-family: 'DM Sans', sans-serif; paint-order: stroke; stroke: #0d0d0a; stroke-width: 4px; }
+    .pm-dot:hover circle.ring, .pm-dot:focus-visible circle.ring, .pm-dot.drag circle.ring { r: 17; fill: var(--gold-2); }
+    .pm-dot:hover text.n, .pm-dot:focus-visible text.n, .pm-dot.drag text.n { fill: #0f0d08; }
+    .pm-dot.drag { cursor: grabbing; }
+
+    /* ─── proof: credentials ─── */
+    .proof-top { align-items: center; }
+    .why-list { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 12px; }
+    .why-list li { position: relative; padding-left: 22px; color: var(--muted); }
+    .why-list li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 8px; height: 8px; border-radius: 2px; background: var(--gold); transform: rotate(45deg); }
+    .why-list b { color: var(--text); }
+    .cred {
+      position: relative;
+      text-align: center;
+      padding: 34px 30px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(224,196,112,0.3);
+      background: radial-gradient(circle at 50% 0%, rgba(199,168,76,0.16), transparent 60%), linear-gradient(160deg, rgba(22,20,14,0.97), rgba(10,10,8,0.98));
+      box-shadow: 0 30px 70px rgba(0,0,0,0.45), 0 0 60px rgba(199,168,76,0.08);
+    }
+    .cred-seal { position: relative; width: 170px; height: 170px; margin: 0 auto 16px; display: grid; place-items: center; }
+    .cred-seal svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+    .cred-ring { fill: none; stroke: var(--gold-2); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2s var(--ease-out-expo) 0.2s; filter: drop-shadow(0 0 8px rgba(224,196,112,0.5)); }
+    .cred-ring-2 { fill: none; stroke: rgba(199,168,76,0.25); stroke-width: 1; stroke-dasharray: 2 6; animation: spinSlow 30s linear infinite; transform-origin: 80px 80px; }
+    .in-view .cred-ring, .cred.in-view .cred-ring { stroke-dashoffset: 0; }
+    .cred-seal span { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 800; color: var(--gold-2); letter-spacing: 0.02em; }
+    .cred-seal sup { font-size: 0.9rem; }
+    .cred-title { font-size: 1.15rem; margin-bottom: 10px; }
+    .cred-more { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+    .cred-more div { padding: 12px; border-radius: 14px; border: 1px solid rgba(199,168,76,0.16); background: rgba(255,255,255,0.02); display: grid; gap: 2px; }
+    .cred-more b { color: var(--gold-2); letter-spacing: 0.06em; }
+    .cred-more span { font-size: 0.78rem; color: var(--muted); }
+
+    /* ─── case studies ─── */
+    .cs-list { display: grid; gap: 26px; margin-top: 56px; }
+    .cs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      align-items: center;
+      padding: 30px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(199,168,76,0.14);
+      background: linear-gradient(160deg, rgba(18,17,13,0.95), rgba(10,10,8,0.97));
+    }
+    .cs:nth-child(even) .cs-visual { order: 2; }
+    .cs-visual { position: relative; border-radius: 20px; background: radial-gradient(circle at 50% 50%, rgba(199,168,76,0.08), transparent 70%), rgba(8,8,7,0.6); border: 1px solid rgba(199,168,76,0.1); padding: 12px; }
+    .cs-svg { display: block; width: 100%; height: auto; overflow: visible; }
+    .cs-svg text { font-family: 'DM Sans', sans-serif; }
+    .cs-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 2.4vw, 2rem); line-height: 1.15; margin-bottom: 16px; }
+    .cs-steps { margin: 0; display: grid; gap: 12px; }
+    .cs-steps div { padding-left: 14px; border-left: 2px solid rgba(199,168,76,0.25); }
+    .cs-steps div:last-child { border-left-color: var(--gold-2); }
+    .cs-steps dt { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-2); margin-bottom: 3px; }
+    .cs-steps dd { margin: 0; color: var(--muted); }
+    .cs-steps div:last-child dd { color: var(--text); }
+    .cs-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .cs-chip { font-size: 0.78rem; font-weight: 600; color: var(--gold-2); border: 1px solid rgba(201,162,39,0.24); background: rgba(201,162,39,0.07); border-radius: 999px; padding: 6px 12px; }
+
+    /* ─── intensive: deliverables, roadmap, guarantee ─── */
+    .deliv-eyebrow { margin-top: 6px; }
+    .deliv-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+    .deliv-grid > .deliv { grid-column: span 2; }
+    .deliv-grid > .deliv:nth-child(4), .deliv-grid > .deliv:nth-child(5) { grid-column: span 3; }
+    .deliv-grid > .roadmap { grid-column: 1 / -1; }
+    .roadmap .rm-row { grid-template-columns: 240px 1fr; align-items: center; gap: 16px; }
+    .roadmap .rm-scale { margin-left: 256px; }
+    .deliv h3 { font-size: 1.02rem; margin: 0; }
+    .deliv p { margin: 12px 0 0; font-size: 0.92rem; }
+    .roadmap-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .roadmap-head h3 { font-size: 1.02rem; margin: 0; }
+    .rm { display: grid; gap: 9px; }
+    .rm-scale { display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--muted); padding-left: 0; border-bottom: 1px solid rgba(199,168,76,0.12); padding-bottom: 4px; }
+    .rm-row { position: relative; display: grid; gap: 4px; }
+    .rm-label { font-size: 0.74rem; color: var(--muted); }
+    .rm-bar, .rm-ticks { position: relative; height: 8px; border-radius: 8px; background: rgba(199,168,76,0.08); overflow: hidden; }
+    .rm-bar::after {
+      content: ""; position: absolute; top: 0; bottom: 0;
+      left: calc(var(--s) * 100%); width: calc((var(--e) - var(--s)) * 100%);
+      border-radius: 8px; background: linear-gradient(90deg, var(--gold), var(--gold-2));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 1.1s var(--ease-out-expo);
+    }
+    .rm-ticks { background: repeating-linear-gradient(90deg, transparent 0 calc(100% / 13 - 6px), rgba(224,196,112,0.85) calc(100% / 13 - 6px) calc(100% / 13)); background-position: 34% 0; clip-path: inset(0 100% 0 33%); transition: clip-path 1.6s var(--ease-out-expo) 0.6s; }
+    .roadmap.in-view .rm-bar::after, .in-view .roadmap .rm-bar::after { transform: scaleX(1); }
+    .roadmap.in-view .rm-ticks { clip-path: inset(0 0 0 33%); }
+    .rm-row:nth-child(2) .rm-bar::after { transition-delay: 0.1s; }
+    .rm-row:nth-child(3) .rm-bar::after { transition-delay: 0.25s; }
+    .rm-row:nth-child(4) .rm-bar::after { transition-delay: 0.4s; }
+    .rm-row:nth-child(6) .rm-bar::after { transition-delay: 0.8s; }
+
+    .guarantee {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 26px;
+      align-items: center;
+      margin: 28px 0 40px;
+      padding: 26px 30px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(224,196,112,0.38);
+      background: linear-gradient(120deg, rgba(199,168,76,0.14), rgba(199,168,76,0.03));
+      box-shadow: 0 0 50px rgba(199,168,76,0.08);
+    }
+    .guarantee h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 8px; }
+    .guarantee p { margin: 0; color: var(--text); }
+    .g-seal svg { width: 120px; height: 120px; display: block; overflow: visible; }
+    .g-text { fill: var(--gold-2); font-size: 9.6px; font-weight: 700; letter-spacing: 1.6px; font-family: 'DM Sans', sans-serif; }
+    .g-seal svg text { animation: spinSlow 22s linear infinite; transform-origin: 60px 60px; transform-box: view-box; }
+    .g-check { fill: none; stroke: var(--gold-2); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1s var(--ease-out-expo) 0.4s; }
+    .guarantee.in-view .g-check { stroke-dashoffset: 0; }
+    .apply-grid { align-items: start; }
+    .fit-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .fit-list li { position: relative; padding-left: 26px; color: var(--text); }
+    .fit-list li::before { content: ""; position: absolute; left: 2px; top: 0.45em; width: 12px; height: 7px; border-left: 2px solid var(--gold-2); border-bottom: 2px solid var(--gold-2); transform: rotate(-45deg); }
+
+    /* ─── contact paths ─── */
+    .paths { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 10px; }
+    .path h3 { font-family: 'Playfair Display', serif; font-size: 1.45rem; line-height: 1.2; }
+
+    /* ─── printable fix plan ─── */
+    #fixPlanPrint { display: none; }
+    @media print {
+      body.print-fixplan { background: #fff !important; color: #111 !important; }
+      body.print-fixplan::before, body.print-fixplan::after { display: none !important; }
+      body.print-fixplan > *:not(#fixPlanPrint) { display: none !important; }
+      body.print-fixplan #fixPlanPrint { display: block !important; color: #111; font-family: 'DM Sans', Arial, sans-serif; }
+      #fixPlanPrint h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 26pt; margin: 0 0 4pt; color: #111; line-height: 1.1; }
+      #fixPlanPrint h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 15pt; margin: 18pt 0 4pt; color: #111; }
+      #fixPlanPrint .meta { color: #555; font-size: 10pt; margin-bottom: 14pt; }
+      #fixPlanPrint .score { font-size: 13pt; margin: 0 0 8pt; }
+      #fixPlanPrint table { width: 100%; border-collapse: collapse; font-size: 10.5pt; margin: 6pt 0 10pt; }
+      #fixPlanPrint td, #fixPlanPrint th { border-bottom: 1px solid #ddd; padding: 5pt 4pt; text-align: left; }
+      #fixPlanPrint .gap { color: #8a3b1c; font-weight: 700; }
+      #fixPlanPrint p { font-size: 10.5pt; line-height: 1.5; margin: 0 0 6pt; color: #222; }
+      #fixPlanPrint .fix { border-left: 3px solid #b39033; padding-left: 8pt; }
+      #fixPlanPrint .foot { margin-top: 20pt; padding-top: 8pt; border-top: 1px solid #ddd; font-size: 9.5pt; color: #555; }
+      @page { margin: 16mm; }
+    }
+
+    /* ─── responsive ─── */
+    @media (max-width: 1100px) {
+      .deliv-grid { grid-template-columns: 1fr 1fr; }
+      .deliv-grid > .deliv, .deliv-grid > .deliv:nth-child(4), .deliv-grid > .deliv:nth-child(5) { grid-column: span 1; }
+      .deliv-grid > .deliv:nth-child(5) { grid-column: 1 / -1; }
+    }
+    @media (max-width: 980px) {
+      .cod, .pm { grid-template-columns: 1fr; }
+      .cs { grid-template-columns: 1fr; gap: 22px; }
+      .cs:nth-child(even) .cs-visual { order: 0; }
+      .paths { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .cb { padding: 14px; margin-top: 36px; }
+      .cb-cols { left: 14px; right: 14px; bottom: 14px; gap: 6px; }
+      .cb-label { font-size: 0.66rem; letter-spacing: 0.1em; }
+      .cb-name { white-space: normal; line-height: 1.25; overflow: visible; text-overflow: clip; -webkit-hyphens: auto; hyphens: auto; overflow-wrap: break-word; min-width: 0; }
+      .rng small { display: none; }
+      .cb-col { padding: 8px 6px; }
+      .cb-col span { font-size: 0.6rem; letter-spacing: 0.08em; }
+      .cb-stage { height: 400px; }
+      .cb-card { font-size: 0.68rem; padding: 7px 7px; border-radius: 10px; align-items: flex-start; }
+      .cb-owner { width: 20px; height: 20px; font-size: 0.55rem; }
+      .tabs { border-radius: 18px; }
+      .tab { padding: 9px 12px; font-size: 0.8rem; }
+      .tabs-ink { border-radius: 14px; }
+      .tool { padding: 20px; }
+      .cs { padding: 18px; }
+      .deliv-grid { grid-template-columns: 1fr; }
+      .roadmap .rm-row { grid-template-columns: 1fr; gap: 4px; }
+      .roadmap .rm-scale { margin-left: 0; }
+      .guarantee { grid-template-columns: 1fr; text-align: center; padding: 22px; }
+      .g-seal svg { margin: 0 auto; }
+      .cred { padding: 26px 18px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cb-card { transition: none !important; }
+      .tabs-ink, .cred-ring, .g-check, .rm-bar::after, .rm-ticks, .cod-chart .bar { transition: none !important; }
+      .cred-ring-2, .g-seal svg text, .tab-panel { animation: none !important; }
+      .cred-ring, .g-check { stroke-dashoffset: 0 !important; }
+      .rm-bar::after { transform: scaleX(1) !important; }
+      .rm-ticks { clip-path: inset(0 0 0 33%) !important; }
+    }
+
     /* ─── REDUCED MOTION ─── */
     @media (prefers-reduced-motion: reduce) {
       .iso-copy, .iso-btn, .iso-hint { transition: none !important; }
@@ -2026,12 +2402,10 @@
       <div class="container nav">
         <a class="brand" href="#top" id="brandMark" aria-label="Dillon Noel, back to top">Dillon Noel</a>
         <div class="nav-links">
-          <a href="#about">Profile</a>
-          <a href="#impact">Impact</a>
-          <a href="#process">Process</a>
-          <a href="#architecture">Architecture</a>
+          <a href="#process">Method</a>
+          <a href="#scorecard">Free Tools</a>
+          <a href="#work">Case Studies</a>
           <a href="#testimonials">Testimonials</a>
-          <a href="#services">Services</a>
           <a href="#intensive">Strategy Intensive</a>
           <a href="#contact">Contact</a>
         </div>
@@ -2045,12 +2419,10 @@
     <!-- ─── MOBILE MENU ─── -->
     <div class="mobile-menu" id="mobileMenu" hidden>
       <nav class="mobile-menu-links" aria-label="Mobile">
-        <a href="#about">Profile</a>
-        <a href="#impact">Impact</a>
-        <a href="#process">Process</a>
-        <a href="#architecture">Architecture</a>
+        <a href="#process">Method</a>
+        <a href="#scorecard">Free Tools</a>
+        <a href="#work">Case Studies</a>
         <a href="#testimonials">Testimonials</a>
-        <a href="#services">Services</a>
         <a href="#intensive">Strategy Intensive</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -2089,9 +2461,6 @@
             <p class="lead">
               I help leaders turn stalled, complex initiatives into clear priorities, clear owners, and progress you can measure, without another strategy deck that sits in a drawer.
             </p>
-            <p class="authority-line">
-              Managed 7 enterprise SaaS applications &bull; Built 2 applications from concept to production
-            </p>
 
             <!-- Animated pills -->
             <div class="pill-row" id="pillRow">
@@ -2102,7 +2471,6 @@
 
             <!-- Animated certs -->
             <div class="cert-row" id="certRow">
-              <span class="cert">CBAP®</span>
               <span class="cert">PSPO</span>
               <span class="cert">PSM</span>
             </div>
@@ -2112,6 +2480,7 @@
               <a class="btn btn-secondary" href="#intensive">Apply for the Strategy Intensive</a>
             </div>
             <p class="hero-microcopy">Free &middot; 12 quick questions &middot; about 2 minutes &middot; instant results</p>
+            <a class="hero-alt-link" href="#work">Hiring for an enterprise team? See my track record &rarr;</a>
           </div>
         </div>
 
@@ -2165,164 +2534,49 @@
       </div>
     </div>
 
-    <!-- ─── HOOK STATEMENT (scroll typography) ─── -->
+    <!-- ─── HOOK STATEMENT (scroll typography + chaos board) ─── -->
     <section class="statement" id="statement" aria-label="The real problem">
       <div class="container">
         <p class="statement-text" id="statementText">Most stalled initiatives don&rsquo;t have a talent problem or an effort problem. They have an <em>architecture problem</em>: priorities nobody agreed on, owners nobody named, and no system that turns decisions into delivery. <em>That&rsquo;s fixable.</em></p>
-      </div>
-    </section>
 
-    <!-- ─── ABOUT ─── -->
-    <section id="about" class="section reveal">
-      <div class="container">
-        <div class="section-shell">
-          <div class="grid-2">
-            <div class="reveal delay-1">
-              <p class="eyebrow">Executive Profile</p>
-              <div class="heading-glow-wrap"><h2 class="has-shimmer">Clarity in complexity.<br>Structure in execution.</h2></div>
-              <p class="lead">
-                Dillon Noel is a strategy and execution professional who helps leaders navigate complex initiatives, strengthen delivery, and build systems that scale.
-              </p>
-              <p class="muted">
-                His work bridges business analysis, product thinking, and operational execution—bringing structure to ambiguity and turning ideas into actionable outcomes.
-              </p>
-            </div>
-
-            <div class="card reveal delay-2">
-              <p class="eyebrow">Why Leaders Work With Me</p>
-              <div class="stack">
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M3 12h18"></path><path d="M3 6h8"></path><path d="M3 18h13"></path></svg>
-                    </span>
-                    <h3>Clarity Over Confusion</h3>
-                  </div>
-                  <p class="muted">Know exactly what to work on first. Complex problems become a short, ranked list your team can act on with confidence.</p>
-                </div>
-
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M5 12l4 4 8-8"></path></svg>
-                    </span>
-                    <h3>Execution, Not Theory</h3>
-                  </div>
-                  <p class="muted">I stay through delivery, so the plan shows up as shipped work and moving numbers, not recommendations that stay on paper.</p>
-                </div>
-
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"></path></svg>
-                    </span>
-                    <h3>Enterprise-Grade Thinking</h3>
-                  </div>
-                  <p class="muted">Proven across 7 enterprise SaaS applications and 100+ stakeholders, so your initiative gets tested structure, not guesswork.</p>
-                </div>
-
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path><path d="M5 20h14"></path></svg>
-                    </span>
-                    <h3>Built for Growth</h3>
-                  </div>
-                  <p class="muted">Your team doesn&rsquo;t have to invent the operating structure. You get one designed to keep working as you grow.</p>
-                </div>
-              </div>
-            </div>
+        <div class="cb" id="chaosBoard" aria-label="Illustration: twelve scattered initiatives reorganized into ranked priorities with named owners">
+          <div class="cb-head">
+            <span class="cb-label" id="cbLabel">Before: 12 initiatives, no order, no owners</span>
+            <span class="cb-illus">Illustration</span>
+          </div>
+          <div class="cb-cols" aria-hidden="true">
+            <div class="cb-col" data-col="now"><span>Now &middot; top 3</span></div>
+            <div class="cb-col" data-col="next"><span>Next</span></div>
+            <div class="cb-col" data-col="later"><span>Parked</span></div>
+          </div>
+          <div class="cb-stage" id="cbStage">
+            <div class="cb-card" data-col="now"><span class="cb-name">Q3 partner launch</span><span class="cb-owner" aria-label="Owner">AR</span></div>
+            <div class="cb-card" data-col="now"><span class="cb-name">Billing migration</span><span class="cb-owner" aria-label="Owner">JM</span></div>
+            <div class="cb-card" data-col="now"><span class="cb-name">Compliance audit</span><span class="cb-owner" aria-label="Owner">TK</span></div>
+            <div class="cb-card" data-col="next"><span class="cb-name">CRM rollout</span><span class="cb-owner" aria-label="Owner">LS</span></div>
+            <div class="cb-card" data-col="next"><span class="cb-name">Onboarding redesign</span><span class="cb-owner" aria-label="Owner">PD</span></div>
+            <div class="cb-card" data-col="next"><span class="cb-name">Reporting dashboard</span><span class="cb-owner" aria-label="Owner">AR</span></div>
+            <div class="cb-card" data-col="next"><span class="cb-name">Pricing refresh</span><span class="cb-owner" aria-label="Owner">JM</span></div>
+            <div class="cb-card" data-col="later"><span class="cb-name">Vendor review</span></div>
+            <div class="cb-card" data-col="later"><span class="cb-name">Website rebuild</span></div>
+            <div class="cb-card" data-col="later"><span class="cb-name">Data cleanup</span></div>
+            <div class="cb-card" data-col="later"><span class="cb-name">Ops playbook</span></div>
+            <div class="cb-card" data-col="later"><span class="cb-name">Hiring plan</span></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ─── PROCESS ─── -->
+    <!-- ─── METHOD (one framework: Clarity → Structure → Alignment → Momentum) ─── -->
     <section id="process" class="section reveal">
       <div class="container">
-        <div class="section-shell">
+        <div class="section-shell iso-shell" id="architecture">
           <div class="section-head-split">
             <div>
-              <p class="eyebrow">Process</p>
-              <div class="heading-glow-wrap"><h2 class="has-shimmer">How I work with clients</h2></div>
+              <p class="eyebrow">The Method</p>
+              <div class="heading-glow-wrap"><h2 class="has-shimmer">Clarity. Structure. Alignment. Momentum.</h2></div>
             </div>
-            <p class="lead">A structured, repeatable process that turns complex challenges into clear execution — every time.</p>
-          </div>
-
-          <div class="process-wrap">
-            <div class="process-line" id="processLine" aria-hidden="true"><span class="process-line-fill"></span><span class="process-line-dot"></span></div>
-            <div class="process-grid">
-              <div class="process-step reveal delay-1">
-                <div class="card">
-                  <div class="icon-row">
-                    <span class="process-number">1</span>
-                    <h3>Understand the real problem</h3>
-                  </div>
-                  <p class="muted">Most organizations are solving the wrong problem. I start by asking the right questions — mapping the actual challenge, not the surface symptoms. This phase produces a clear problem statement and shared understanding.</p>
-                  <p class="process-reward"><span>You walk away with</span> a problem statement everyone agrees on.</p>
-                  <div class="process-tags">
-                    <span class="process-tag">Discovery sessions</span>
-                    <span class="process-tag">Stakeholder interviews</span>
-                    <span class="process-tag">Problem framing</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="process-step reveal delay-2">
-                <div class="card">
-                  <div class="icon-row">
-                    <span class="process-number">2</span>
-                    <h3>Build the execution architecture</h3>
-                  </div>
-                  <p class="muted">With clarity on the problem, I design the structure: priorities, decision frameworks, ownership models, and execution plans. This is where ambiguity becomes a concrete path forward.</p>
-                  <p class="process-reward"><span>You walk away with</span> a ranked roadmap with a named owner for every workstream.</p>
-                  <div class="process-tags">
-                    <span class="process-tag">Strategic roadmap</span>
-                    <span class="process-tag">Priority framework</span>
-                    <span class="process-tag">Ownership design</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="process-step reveal delay-3">
-                <div class="card">
-                  <div class="icon-row">
-                    <span class="process-number">3</span>
-                    <h3>Drive measurable progress</h3>
-                  </div>
-                  <p class="muted">Strategy without execution is just a document. I stay engaged through delivery — aligning stakeholders, removing blockers, and ensuring the plan translates into real, measurable outcomes.</p>
-                  <p class="process-reward"><span>You walk away with</span> measurable progress, not another status report.</p>
-                  <div class="process-tags">
-                    <span class="process-tag">Delivery</span>
-                    <span class="process-tag">Alignment</span>
-                    <span class="process-tag">Momentum</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="process-cta-strip reveal delay-3">
-            <div>
-              <strong>Need a structured partner for a complex initiative?</strong>
-              <div class="muted">Start with the Strategy Intensive and we'll map the right path forward.</div>
-            </div>
-            <a class="btn btn-primary" href="#intensive">Start Here</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─── ARCHITECTURE (interactive isometric city) ─── -->
-    <section id="architecture" class="section reveal">
-      <div class="container">
-        <div class="section-shell iso-shell">
-          <div class="section-head-split">
-            <div>
-              <p class="eyebrow">Growth Architecture</p>
-              <div class="heading-glow-wrap"><h2 class="has-shimmer">From ambiguity to architecture</h2></div>
-            </div>
-            <p class="lead">An interactive look at how a complex initiative becomes a structure that scales. Step through each stage, or drag the city to look around.</p>
+            <p class="lead">Every engagement runs on the same four stages, and the free scorecard measures the same four. Scroll to watch a stalled initiative get rebuilt, or drag the city to look around.</p>
           </div>
 
           <div class="iso-track" id="isoTrack">
@@ -2335,9 +2589,10 @@
             </div>
 
             <div class="iso-copy" id="isoCopy" aria-live="polite">
-              <p class="iso-kicker" id="isoKicker">Stage 01 · Understand the real problem</p>
+              <p class="iso-kicker" id="isoKicker">Stage 01 · Clarity</p>
               <h3 class="iso-title" id="isoTitle">Complexity without a map.</h3>
               <p class="iso-body" id="isoBody">Priorities drift, ownership blurs, and effort scatters. Most organizations are solving the wrong problem, so I start by mapping what is really there, not the surface symptoms.</p>
+              <p class="process-reward" id="isoReward"><span>You walk away with</span> a problem statement everyone agrees on.</p>
               <div class="process-tags" id="isoTags">
                 <span class="process-tag">Discovery sessions</span>
                 <span class="process-tag">Stakeholder interviews</span>
@@ -2349,10 +2604,10 @@
             <div class="iso-controls">
               <button type="button" class="iso-btn" id="isoPrev" aria-label="Previous stage">&larr; Prev</button>
               <div class="iso-dots" role="group" aria-label="Stages">
-                <button type="button" class="iso-dot" data-index="0" aria-current="step"><span class="num">01</span><span class="label">Problem</span></button>
-                <button type="button" class="iso-dot" data-index="1"><span class="num">02</span><span class="label">Blueprint</span></button>
-                <button type="button" class="iso-dot" data-index="2"><span class="num">03</span><span class="label">Momentum</span></button>
-                <button type="button" class="iso-dot" data-index="3"><span class="num">04</span><span class="label">Growth</span></button>
+                <button type="button" class="iso-dot" data-index="0" aria-current="step"><span class="num">01</span><span class="label">Clarity</span></button>
+                <button type="button" class="iso-dot" data-index="1"><span class="num">02</span><span class="label">Structure</span></button>
+                <button type="button" class="iso-dot" data-index="2"><span class="num">03</span><span class="label">Alignment</span></button>
+                <button type="button" class="iso-dot" data-index="3"><span class="num">04</span><span class="label">Momentum</span></button>
               </div>
               <button type="button" class="iso-btn" id="isoNext" aria-label="Next stage">Next &rarr;</button>
             </div>
@@ -2363,18 +2618,26 @@
       </div>
     </section>
 
-    <!-- ─── LEAD MAGNET: EXECUTION GAP SCORECARD ─── -->
+    <!-- ─── FREE TOOLS: scorecard · cost of delay · priority matrix ─── -->
     <section id="scorecard" class="section band reveal">
       <div class="container">
         <div class="section-shell sc-shell">
           <div class="section-head-split">
             <div>
-              <p class="eyebrow">Free Scorecard</p>
-              <div class="heading-glow-wrap"><h2 class="has-shimmer">Where is your initiative leaking momentum?</h2></div>
+              <p class="eyebrow">Free Tools</p>
+              <div class="heading-glow-wrap"><h2 class="has-shimmer">Get real value before we ever talk</h2></div>
             </div>
-            <p class="lead">Answer 12 quick questions about the initiative that matters most right now. You&rsquo;ll see your score, your single biggest execution gap, and the first fix to make, instantly. No email required.</p>
+            <p class="lead">Three tools from my client work. Diagnose where your initiative is stuck, see what the delay is costing, and decide what to do first. No email required.</p>
           </div>
 
+          <div class="tabs" role="tablist" aria-label="Free tools">
+            <span class="tabs-ink" aria-hidden="true"></span>
+            <button type="button" role="tab" class="tab" id="tab-scorecard" aria-controls="panel-scorecard" aria-selected="true" data-hash="scorecard">Execution Gap Scorecard</button>
+            <button type="button" role="tab" class="tab" id="tab-cost" aria-controls="panel-cost" aria-selected="false" tabindex="-1" data-hash="cost-of-delay">Cost of Delay Calculator</button>
+            <button type="button" role="tab" class="tab" id="tab-matrix" aria-controls="panel-matrix" aria-selected="false" tabindex="-1" data-hash="priority-matrix">Priority Matrix</button>
+          </div>
+
+          <div class="tab-panel" role="tabpanel" id="panel-scorecard" aria-labelledby="tab-scorecard">
           <div class="sc" id="sc" data-state="intro">
             <!-- intro -->
             <div class="sc-panel sc-intro" data-panel="intro">
@@ -2443,6 +2706,7 @@
                     </div>
                     <p class="sc-msg" id="scMsg" role="status"></p>
                     <div class="sc-or">
+                      <button type="button" class="btn btn-secondary" id="scPrint">Download my fix plan (PDF)</button>
                       <span>or skip ahead:</span>
                       <a class="btn btn-secondary" href="#intensive">Apply for the Strategy Intensive</a>
                       <button type="button" class="sc-retake" id="scRetake">Retake</button>
@@ -2453,17 +2717,148 @@
             </div>
             <noscript><p class="muted">The scorecard needs JavaScript. You can still <a href="#intensive" style="color:var(--gold-2);">apply for the Strategy Intensive</a>.</p></noscript>
           </div>
+          </div>
+
+          <div class="tab-panel" role="tabpanel" id="panel-cost" aria-labelledby="tab-cost" hidden>
+            <div class="tool cod">
+              <div class="cod-inputs">
+                <h3 class="sc-title">What is a stalled initiative really costing you?</h3>
+                <p class="muted">Move the sliders to match your situation. Everything updates live.</p>
+                <label class="rng"><span>People involved <b id="codPeopleOut">8</b></span><input type="range" id="codPeople" min="1" max="100" step="1" value="8" /></label>
+                <label class="rng"><span>Avg. yearly cost per person <small>(salary + benefits)</small> <b id="codSalaryOut">$120k</b></span><input type="range" id="codSalary" min="40000" max="300000" step="5000" value="120000" /></label>
+                <label class="rng"><span>Share of their time on this initiative <b id="codShareOut">40%</b></span><input type="range" id="codShare" min="5" max="100" step="5" value="40" /></label>
+                <label class="rng"><span>Weeks stalled or behind <b id="codWeeksOut">12</b></span><input type="range" id="codWeeks" min="1" max="52" step="1" value="12" /></label>
+                <label class="rng"><span>Value it should create per month once live <b id="codValueOut">$50k</b></span><input type="range" id="codValue" min="0" max="1000000" step="5000" value="50000" /></label>
+              </div>
+              <div class="cod-output">
+                <p class="iso-kicker">Estimated cost of the stall</p>
+                <p class="cod-total" id="codTotal" aria-live="polite">$0</p>
+                <div class="cod-split">
+                  <span><i class="sw-gold" aria-hidden="true"></i>Team time spent: <b id="codTeam">$0</b></span>
+                  <span><i class="sw-copper" aria-hidden="true"></i>Value delayed: <b id="codDelay">$0</b></span>
+                </div>
+                <div class="cod-chart" id="codChart" role="img" aria-label="Cumulative cost by week"></div>
+                <div class="chart-tip" id="codTip" role="status"></div>
+                <details class="cod-table"><summary>View as table</summary><div id="codTable"></div></details>
+                <p class="cod-note">A rough estimate from your inputs, not a quote. Team time = people &times; weekly cost &times; share of time &times; weeks. Value delayed = monthly value &times; weeks.</p>
+                <div class="sc-or">
+                  <a class="btn btn-primary" href="#intensive">Stop the stall: apply for the Intensive</a>
+                  <a class="btn btn-secondary tab-jump" href="#scorecard" data-tab="tab-scorecard">Find where it&rsquo;s stuck</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" role="tabpanel" id="panel-matrix" aria-labelledby="tab-matrix" hidden>
+            <div class="tool pm">
+              <div class="pm-left">
+                <h3 class="sc-title">Decide what to do first</h3>
+                <p class="muted">Name your initiatives, then drag each dot to where it belongs: how much impact it would have, and how much effort it takes. Your ranked list updates as you go.</p>
+                <div class="pm-items" id="pmItems"></div>
+                <button type="button" class="sc-back pm-add" id="pmAdd">+ Add an initiative</button>
+                <h4 class="pm-rank-title">Your ranked list</h4>
+                <ol class="pm-rank" id="pmRank"></ol>
+                <div class="sc-or">
+                  <button type="button" class="btn btn-secondary" id="pmCopy">Copy my list</button>
+                  <span class="sc-msg" id="pmMsg" role="status"></span>
+                </div>
+              </div>
+              <div class="pm-right">
+                <div class="pm-plot" id="pmPlot"></div>
+                <p class="cod-note">Drag the dots, or focus one and use the arrow keys.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── PROOF: profile, credentials, case studies ─── -->
+    <section id="work" class="section reveal">
+      <div class="container">
+        <div class="section-shell">
+          <div class="grid-2 proof-top">
+            <div>
+              <p class="eyebrow">Track Record</p>
+              <div class="heading-glow-wrap"><h2 class="has-shimmer">Clarity in complexity. Structure in execution.</h2></div>
+              <p class="lead">I&rsquo;m a strategy and execution leader who bridges business analysis, product thinking, and delivery. Enterprise teams bring me in when an initiative is too complex, too broad, or too messy to move. Founders and operators bring me in when the business has outgrown the way it runs.</p>
+              <ul class="why-list">
+                <li><b>Clarity over confusion.</b> Complex problems become a short, ranked list your team can act on.</li>
+                <li><b>Execution, not theory.</b> I stay through delivery, so the plan shows up as shipped work.</li>
+                <li><b>Enterprise-grade thinking.</b> Proven across 7 enterprise SaaS applications and 100+ stakeholders.</li>
+                <li><b>Built for growth.</b> Your team gets an operating structure designed to keep working as you scale.</li>
+              </ul>
+            </div>
+
+            <div class="cred">
+              <div class="cred-seal" aria-hidden="true">
+                <svg viewBox="0 0 160 160"><circle class="cred-ring" cx="80" cy="80" r="70" pathLength="1"></circle><circle class="cred-ring-2" cx="80" cy="80" r="58"></circle></svg>
+                <span>CBAP<sup>&reg;</sup></span>
+              </div>
+              <h3 class="cred-title">Certified Business Analysis Professional</h3>
+              <p class="muted">The highest business analysis certification from the International Institute of Business Analysis (IIBA). Earning it takes 7,500+ hours of business analysis work, deep experience across four core knowledge areas, verified references, and a rigorous exam.</p>
+              <div class="cred-more">
+                <div><b>PSPO</b><span>Professional Scrum Product Owner</span></div>
+                <div><b>PSM</b><span>Professional Scrum Master</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-list">
+          <article class="cs reveal" id="case-1" data-cs="1">
+            <div class="cs-visual" aria-hidden="true"><svg class="cs-svg" viewBox="0 0 400 300" data-viz="portfolio"></svg></div>
+            <div class="cs-copy">
+              <p class="iso-kicker">Case study 01 &middot; Enterprise delivery</p>
+              <h3 class="cs-title">Seven enterprise SaaS applications, one operating rhythm</h3>
+              <dl class="cs-steps">
+                <div><dt>The starting point</dt><dd>A portfolio of enterprise SaaS applications, each with its own stakeholders, priorities, and delivery pace.</dd></div>
+                <div><dt>What I did</dt><dd>Led coordination and execution across the portfolio: aligned priorities, clarified ownership, and set a shared delivery cadence across teams.</dd></div>
+                <div><dt>The result</dt><dd>Structure, alignment, and stronger delivery control across the whole portfolio.</dd></div>
+              </dl>
+              <div class="cs-chips"><span class="cs-chip">7 applications managed</span><span class="cs-chip">100+ stakeholders aligned</span><span class="cs-chip">Execution leadership</span></div>
+            </div>
+          </article>
+
+          <article class="cs reveal" id="case-2" data-cs="2">
+            <div class="cs-visual" aria-hidden="true"><svg class="cs-svg" viewBox="0 0 400 300" data-viz="launch"></svg></div>
+            <div class="cs-copy">
+              <p class="iso-kicker">Case study 02 &middot; 0-to-1 product</p>
+              <h3 class="cs-title">Two applications, from concept to production</h3>
+              <dl class="cs-steps">
+                <div><dt>The starting point</dt><dd>New applications that existed only as ideas and stakeholder wish lists.</dd></div>
+                <div><dt>What I did</dt><dd>Translated strategic intent into clear requirements, sequenced the build, and kept business and technical teams aligned through launch.</dd></div>
+                <div><dt>The result</dt><dd>Both applications went from concept to production.</dd></div>
+              </dl>
+              <div class="cs-chips"><span class="cs-chip">2 applications shipped</span><span class="cs-chip">Concept &rarr; production</span><span class="cs-chip">Requirements &amp; delivery</span></div>
+            </div>
+          </article>
+
+          <article class="cs reveal" id="case-3" data-cs="3">
+            <div class="cs-visual" aria-hidden="true"><svg class="cs-svg" viewBox="0 0 400 300" data-viz="ops"></svg></div>
+            <div class="cs-copy">
+              <p class="iso-kicker">Case study 03 &middot; Small &amp; mid-sized business</p>
+              <h3 class="cs-title">Growth systems that don&rsquo;t depend on one person</h3>
+              <dl class="cs-steps">
+                <div><dt>The starting point</dt><dd>A common pattern in growing businesses: decisions, handoffs, and know-how all route through the owner, so growth stalls when they&rsquo;re busy.</dd></div>
+                <div><dt>What I did</dt><dd>Designed operating structures and growth-oriented systems: clear roles, defined workflows, and handoffs that move without a bottleneck.</dd></div>
+                <div><dt>The result</dt><dd>Businesses positioned to scale more effectively, with the owner focused on strategy instead of every decision.</dd></div>
+              </dl>
+              <div class="cs-chips"><span class="cs-chip">Operating structure</span><span class="cs-chip">Workflow design</span><span class="cs-chip">Growth systems</span></div>
+            </div>
+          </article>
+
+          </div>
         </div>
       </div>
     </section>
 
     <!-- ─── TESTIMONIALS ─── -->
-    <section id="testimonials" class="section band reveal">
+    <section id="testimonials" class="section reveal">
       <div class="container">
         <div class="section-shell">
           <p class="eyebrow">Proof</p>
           <h2>Don&rsquo;t take my word for it</h2>
-          <p class="lead" style="margin-bottom:8px;">Leaders and engineers who have been inside complex initiatives with me.</p>
+          <p class="lead" style="margin-bottom:8px;">From leaders and engineers who have been inside complex initiatives with me.</p>
 
           <div class="testimonials-stage">
             <div class="testimonial-slide active" data-index="0">
@@ -2511,296 +2906,6 @@
               <button class="testimonial-dot" aria-label="Show testimonial 4" data-index="3"></button>
             </div>
           </div>
-
-          <div class="testimonial-grid">
-            <div class="testimonial-mini active" data-index="0" tabindex="0">
-              <div class="icon-row">
-                <span class="icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M9 11H5V7h4v4zm10 0h-4V7h4v4zM9 17H5v-4h4v4zm10 0h-4v-4h4v4z"></path></svg>
-                </span>
-              </div>
-              <p>Structure, clarity, and strong workstream definition.</p>
-            </div>
-
-            <div class="testimonial-mini" data-index="1" tabindex="0">
-              <div class="icon-row">
-                <span class="icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path></svg>
-                </span>
-              </div>
-              <p>Sharp decision framing and organized thinking.</p>
-            </div>
-
-            <div class="testimonial-mini" data-index="2" tabindex="0">
-              <div class="icon-row">
-                <span class="icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h10"></path><path d="M4 17h7"></path></svg>
-                </span>
-              </div>
-              <p>Strong blend of analysis rigor and execution focus.</p>
-            </div>
-
-            <div class="testimonial-mini" data-index="3" tabindex="0">
-              <div class="icon-row">
-                <span class="icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M3 12h18"></path><path d="M12 3v18"></path></svg>
-                </span>
-              </div>
-              <p>Trusted in ambiguity, complexity, and change.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─── ADVISORY FOCUS ─── -->
-    <section id="advisory" class="section band reveal">
-      <div class="container">
-        <div class="section-shell">
-          <div class="grid-2-alt">
-            <div class="reveal delay-1">
-              <p class="eyebrow">Advisory Focus</p>
-              <div class="heading-glow-wrap"><h2 class="has-shimmer">Where I create value</h2></div>
-              <p class="lead">
-                I help businesses and teams move from ambiguity to execution by creating clarity across strategy, operations, delivery, and growth.
-              </p>
-            </div>
-
-            <div class="focus-grid">
-              <div class="card reveal delay-1">
-                <div class="icon-row">
-                  <span class="icon-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M4 20l6-6"></path><path d="M14 10l6-6"></path><path d="M14 4h6v6"></path><path d="M4 14l6 6"></path></svg>
-                  </span>
-                </div>
-                <p class="eyebrow">Focus Area</p>
-                <h3>Strategy &amp; Decision Structuring</h3>
-              </div>
-
-              <div class="card reveal delay-2">
-                <div class="icon-row">
-                  <span class="icon-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"></path><path d="M4 5h16"></path></svg>
-                  </span>
-                </div>
-                <p class="eyebrow">Focus Area</p>
-                <h3>Execution Leadership</h3>
-              </div>
-
-              <div class="card reveal delay-2">
-                <div class="icon-row">
-                  <span class="icon-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V22a2 2 0 0 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 0 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6 1.7 1.7 0 0 0 10 3.05V3a2 2 0 0 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.2.48.7 1 1.55 1H21a2 2 0 0 1 0 4h-.09c-.85 0-1.35.52-1.51 1z"></path></svg>
-                  </span>
-                </div>
-                <p class="eyebrow">Focus Area</p>
-                <h3>Operational Clarity</h3>
-              </div>
-
-              <div class="card reveal delay-3">
-                <div class="icon-row">
-                  <span class="icon-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path><path d="M5 20h14"></path></svg>
-                  </span>
-                </div>
-                <p class="eyebrow">Focus Area</p>
-                <h3>Growth Systems</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─── IMPACT ─── -->
-    <section id="impact" class="section reveal">
-      <div class="container">
-        <div class="section-shell">
-          <p class="eyebrow">Selected Impact</p>
-          <div class="heading-glow-wrap"><h2 class="has-shimmer">Representative outcomes</h2></div>
-
-          <div class="case-grid">
-            <div class="card reveal delay-1">
-              <div class="icon-row">
-                <span class="icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M3 7h18"></path><path d="M6 12h12"></path><path d="M9 17h6"></path></svg>
-                </span>
-                <h3>Enterprise Delivery Leadership</h3>
-              </div>
-              <p class="muted">Led coordination and execution across multiple enterprise SaaS systems, creating structure, alignment, and stronger delivery control.</p>
-            </div>
-
-            <div class="card reveal delay-2">
-              <div class="icon-row">
-                <span class="icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M5 19l14-14"></path><path d="M8 5h11v11"></path></svg>
-                </span>
-                <h3>0-to-1 Product Execution</h3>
-              </div>
-              <p class="muted">Supported the build of high-value applications from concept through production, bridging strategic intent with practical execution.</p>
-            </div>
-
-            <div class="card reveal delay-3">
-              <div class="icon-row">
-                <span class="icon-badge" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path><path d="M5 20h14"></path></svg>
-                </span>
-                <h3>Business Growth Systems</h3>
-              </div>
-              <p class="muted">Designed operating structures and growth-oriented systems that help small and mid-sized businesses scale more effectively.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─── SERVICES ─── -->
-    <section id="services" class="section band reveal">
-      <div class="container">
-        <div class="section-shell">
-          <div class="grid-2-alt">
-            <div class="reveal delay-1">
-              <p class="eyebrow">Engagement Models</p>
-              <div class="heading-glow-wrap"><h2 class="has-shimmer">How I support organizations</h2></div>
-              <p class="lead">
-                I work with leaders, teams, and businesses that need better structure, sharper thinking, and stronger execution.
-              </p>
-
-              <ul class="list-clean" style="margin-top:20px;">
-                <li>
-                  <div class="list-item-with-icon">
-                    <span class="list-item-icon"><svg viewBox="0 0 24 24"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg></span>
-                    Strategic advisory for founders, operators, and business leaders
-                  </div>
-                </li>
-                <li>
-                  <div class="list-item-with-icon">
-                    <span class="list-item-icon"><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h10"></path><path d="M4 17h7"></path></svg></span>
-                    Business analysis and requirements clarity for initiatives
-                  </div>
-                </li>
-                <li>
-                  <div class="list-item-with-icon">
-                    <span class="list-item-icon"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"></path></svg></span>
-                    Project and execution leadership for cross-functional delivery
-                  </div>
-                </li>
-                <li>
-                  <div class="list-item-with-icon">
-                    <span class="list-item-icon"><svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path></svg></span>
-                    Growth architecture for small and mid-sized businesses
-                  </div>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <p class="eyebrow reveal delay-1">Core Capabilities</p>
-              <div class="service-grid" style="margin-top:16px;">
-                <div class="card reveal delay-1">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h10"></path><path d="M4 17h7"></path></svg>
-                    </span>
-                    <h3>Business Analysis</h3>
-                  </div>
-                  <p class="muted">Clarify business needs, sharpen requirements, and translate complexity into executable decisions.</p>
-                </div>
-
-                <div class="card reveal delay-2">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"></path><path d="M4 5h16"></path></svg>
-                    </span>
-                    <h3>Execution Leadership</h3>
-                  </div>
-                  <p class="muted">Bring structure, stakeholder alignment, and delivery discipline to high-value initiatives.</p>
-                </div>
-
-                <div class="card reveal delay-2">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M5 19l14-14"></path><path d="M8 5h11v11"></path></svg>
-                    </span>
-                    <h3>Strategy Consulting</h3>
-                  </div>
-                  <p class="muted">Support leaders with decision framing, priority setting, and strategic problem solving.</p>
-                </div>
-
-                <div class="card reveal delay-3">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V22a2 2 0 0 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 0 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6 1.7 1.7 0 0 0 10 3.05V3a2 2 0 0 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.2.48.7 1 1.55 1H21a2 2 0 0 1 0 4h-.09c-.85 0-1.35.52-1.51 1z"></path></svg>
-                    </span>
-                    <h3>Management Consulting</h3>
-                  </div>
-                  <p class="muted">Improve operating clarity, identify performance gaps, and strengthen execution.</p>
-                </div>
-
-                <div class="card reveal delay-3">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path><path d="M5 20h14"></path></svg>
-                    </span>
-                    <h3>Growth Systems</h3>
-                  </div>
-                  <p class="muted">Design scalable systems and operating structures that support sustainable business growth.</p>
-                </div>
-
-                <div class="card reveal delay-3">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M8 12h8"></path><path d="M12 8v8"></path><circle cx="12" cy="12" r="9"></circle></svg>
-                    </span>
-                    <h3>Strategic Partnering</h3>
-                  </div>
-                  <p class="muted">A trusted thinking partner for high-value business, execution, and growth decisions.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─── POSITIONING ─── -->
-    <section class="section reveal">
-      <div class="container">
-        <div class="positioning">
-          <div class="reveal delay-1">
-            <p class="eyebrow">Strategic Positioning</p>
-            <blockquote>"For leaders who need more than ideas — clarity, structure, and execution that moves the business forward."</blockquote>
-          </div>
-
-          <div class="card reveal delay-2" style="background: rgba(255,255,255,0.025);">
-            <p class="eyebrow">Best Fit</p>
-            <div class="stack">
-              <div class="mini-card">
-                <div class="icon-row">
-                  <span class="icon-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M12 12l8-4-8-4-8 4 8 4z"></path><path d="M4 8v8l8 4 8-4V8"></path></svg>
-                  </span>
-                  <p>Leaders navigating complex initiatives or cross-functional delivery.</p>
-                </div>
-              </div>
-              <div class="mini-card">
-                <div class="icon-row">
-                  <span class="icon-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M12 20V9"></path><path d="M8 13l4-4 4 4"></path></svg>
-                  </span>
-                  <p>Businesses that need clearer operating structure to scale effectively.</p>
-                </div>
-              </div>
-              <div class="mini-card">
-                <div class="icon-row">
-                  <span class="icon-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M3 12h18"></path><path d="M12 3v18"></path></svg>
-                  </span>
-                  <p>Teams that need stronger alignment between strategy and execution.</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -2809,89 +2914,87 @@
     <section id="intensive" class="section band reveal">
       <div class="container">
         <div class="section-shell">
-          <div class="grid-2">
-            <div class="reveal delay-1">
-              <p class="eyebrow">Strategy Intensive</p>
+          <div class="section-head-split">
+            <div>
+              <p class="eyebrow">Strategy Intensive &middot; 100% virtual</p>
               <div class="heading-glow-wrap"><h2 class="has-shimmer">Get a clear path forward in one focused session</h2></div>
-              <p class="lead">
-                Bring the initiative that&rsquo;s stuck. Together we diagnose the real problem, find the execution gaps, and leave with a prioritized path forward you can start on right away.
-              </p>
+            </div>
+            <p class="lead">Bring the initiative that&rsquo;s stuck. In a live working session on Zoom or Teams, we diagnose the real problem, find the execution gaps, and build the plan. You leave with five deliverables you can put to work the same week.</p>
+          </div>
 
-              <ul class="list-clean" style="margin-top:24px;">
-                <li>
-                  <div class="list-item-with-icon">
-                    <span class="list-item-icon"><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"></path></svg></span>
-                    Diagnose the real problem
-                  </div>
-                </li>
-                <li>
-                  <div class="list-item-with-icon">
-                    <span class="list-item-icon"><svg viewBox="0 0 24 24"><path d="M4 12h16"></path><path d="M12 4v16"></path></svg></span>
-                    Identify execution gaps and priority issues
-                  </div>
-                </li>
-                <li>
-                  <div class="list-item-with-icon">
-                    <span class="list-item-icon"><svg viewBox="0 0 24 24"><path d="M5 19l14-14"></path><path d="M8 5h11v11"></path></svg></span>
-                    Define a structured path forward
-                  </div>
-                </li>
-              </ul>
+          <p class="eyebrow deliv-eyebrow">What you leave with</p>
+          <div class="deliv-grid">
+              <div class="card deliv reveal delay-1">
+                <div class="icon-row"><span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"></path><path d="M9 10h6"></path><path d="M9 14h6"></path><path d="M9 18h3"></path></svg></span><h3>Problem statement &amp; success metrics</h3></div>
+                <p class="muted">One page that defines the real problem and how you&rsquo;ll measure the win.</p>
+              </div>
+              <div class="card deliv reveal delay-2">
+                <div class="icon-row"><span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V10"></path><path d="M10 20V4"></path><path d="M16 20v-7"></path><path d="M22 20H2"></path></svg></span><h3>Execution gap map</h3></div>
+                <p class="muted">Your initiative scored across clarity, structure, alignment, and momentum, with the biggest gaps marked.</p>
+              </div>
+              <div class="card deliv reveal delay-3">
+                <div class="icon-row"><span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h10"></path><path d="M7 12h10"></path><path d="M11 18h10"></path></svg></span><h3>Prioritized 90-day roadmap</h3></div>
+                <p class="muted">A 30/60/90-day plan, sequenced so the most important work happens first.</p>
+              </div>
+              <div class="card deliv reveal delay-3">
+                <div class="icon-row"><span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 10h18"></path><path d="M9 4v16"></path></svg></span><h3>Ownership &amp; decision-rights matrix</h3></div>
+                <p class="muted">One owner per workstream, and a clear map of who decides what.</p>
+              </div>
+              <div class="card deliv reveal delay-3">
+                <div class="icon-row"><span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"></path><path d="M8 9h8"></path><path d="M8 12h5"></path></svg></span><h3>Written summary + 30-day check-in</h3></div>
+                <p class="muted">A recap of every decision and next step, then a virtual check-in 30 days later to keep momentum.</p>
+              </div>
+            <div class="card roadmap reveal delay-3" id="roadmap">
+              <div class="roadmap-head"><h3>Example: a 90-day roadmap</h3><span class="cb-illus">Illustration</span></div>
+              <div class="rm" aria-label="Example roadmap from day 1 to day 90">
+                <div class="rm-scale"><span>Day 1</span><span>30</span><span>60</span><span>90</span></div>
+                <div class="rm-row"><span class="rm-label">Lock problem &amp; metrics</span><span class="rm-bar" style="--s:0;--e:0.12"></span></div>
+                <div class="rm-row"><span class="rm-label">Assign owners &amp; decision rights</span><span class="rm-bar" style="--s:0.06;--e:0.24"></span></div>
+                <div class="rm-row"><span class="rm-label">Ship the first visible win</span><span class="rm-bar" style="--s:0.16;--e:0.34"></span></div>
+                <div class="rm-row"><span class="rm-label">Weekly outcome reviews</span><span class="rm-ticks"></span></div>
+                <div class="rm-row"><span class="rm-label">Scale what works</span><span class="rm-bar" style="--s:0.62;--e:1"></span></div>
+              </div>
+            </div>
+          </div>
 
+          <div class="guarantee reveal" id="guarantee">
+            <div class="g-seal" aria-hidden="true">
+              <svg viewBox="0 0 120 120">
+                <defs><path id="gCircle" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"></path></defs>
+                <text class="g-text"><textPath href="#gCircle" textLength="270" lengthAdjust="spacing">CLARITY GUARANTEE &bull; ZERO RISK &bull; </textPath></text>
+                <path class="g-check" d="M44 61l11 11 22-24" pathLength="1"></path>
+              </svg>
+            </div>
+            <div>
+              <h3>The Clarity Guarantee</h3>
+              <p>If you don&rsquo;t leave with a clear, prioritized path forward, tell me within 7 days of receiving your deliverables and I&rsquo;ll refund your fee in full. You keep everything I made for you. The risk is mine, not yours.</p>
+            </div>
+          </div>
+
+          <div class="grid-2 apply-grid">
+            <div class="reveal delay-1">
               <ol class="how-steps">
                 <li><strong>Apply</strong><span>Five short questions. About two minutes.</span></li>
-                <li><strong>I review it personally</strong><span>You hear back within 1&ndash;2 business days.</span></li>
-                <li><strong>We work the problem</strong><span>You leave with clarity and a path forward.</span></li>
+                <li><strong>I review it personally</strong><span>You hear back within 1&ndash;2 business days. If it&rsquo;s not a fit, I&rsquo;ll tell you and point you somewhere better.</span></li>
+                <li><strong>Live virtual session</strong><span>We work the problem together on Zoom or Teams.</span></li>
+                <li><strong>Deliverables in your inbox</strong><span>All five, within 5 business days, plus your 30-day check-in.</span></li>
               </ol>
-
-              <div class="hero-actions">
-                <a class="btn btn-primary" href="#qualForm" id="applyJump">Apply for the Strategy Intensive</a>
-                <a class="btn btn-secondary" href="#scorecard">Not ready? Take the free scorecard</a>
-              </div>
 
               <p class="capacity-note">
                 <span class="hero-status-dot" aria-hidden="true"></span>
                 I keep a small number of engagements at a time so each one gets my direct attention. When the calendar is full, new applications wait for the next opening.
               </p>
 
-              <p class="muted" style="margin-top:14px;">
-                Most clients come in with unclear problems. They leave with structured clarity and a path forward.
-              </p>
+              <p class="eyebrow" style="margin-top:28px;">Best fit</p>
+              <ul class="fit-list">
+                <li>Founders and operators scaling their business</li>
+                <li>Teams facing execution friction or alignment issues</li>
+                <li>Leaders managing complex, high-stakes initiatives</li>
+              </ul>
             </div>
 
             <div class="card reveal delay-2">
-              <p class="eyebrow">Ideal Clients</p>
-              <div class="stack">
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                    </span>
-                    <p>Founders and operators scaling their business</p>
-                  </div>
-                </div>
-
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M8 10h8"></path><path d="M8 14h5"></path><path d="M21 12c0 4.97-4.03 9-9 9-1.54 0-2.99-.39-4.25-1.08L3 21l1.08-4.75A8.96 8.96 0 0 1 3 12c0-4.97 4.03-9 9-9s9 4.03 9 9z"></path></svg>
-                    </span>
-                    <p>Teams facing execution friction or alignment issues</p>
-                  </div>
-                </div>
-
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"></path></svg>
-                    </span>
-                    <p>Leaders managing complex, high-stakes initiatives</p>
-                  </div>
-                </div>
-              </div>
-
-              <p class="eyebrow" style="margin-top:28px;">Pre-Call Qualification</p>
-
+              <p class="eyebrow">Apply for the Strategy Intensive</p>
               <div class="qual-form" id="qualForm">
                 <div class="qual-group">
                   <label class="qual-label" for="qual-name">Your name</label>
@@ -2937,83 +3040,32 @@
       </div>
     </section>
 
-    <!-- ─── CONTACT ─── -->
+    <!-- ─── CONTACT: two ways to work together ─── -->
     <section id="contact" class="section reveal">
       <div class="container">
         <div class="section-shell">
-          <div class="contact-grid">
-            <div class="reveal delay-1">
-              <p class="eyebrow">Contact</p>
-              <div class="heading-glow-wrap"><h2 class="has-shimmer">Let's discuss your next initiative</h2></div>
-              <p class="lead">
-                Reach out for consulting, strategic advisory, project leadership, or business growth conversations.
-              </p>
-
-              <div class="stack" style="margin-top:26px; max-width:400px;">
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"></path><path d="M4 7l8 6 8-6"></path></svg>
-                    </span>
-                    <div>
-                      <h3>Email</h3>
-                      <p class="muted"><a href="mailto:dillon1.noel@outlook.com" style="color:var(--gold-2);">dillon1&#46;noel&#64;outlook&#46;com</a></p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mini-card">
-                  <div class="icon-row">
-                    <span class="icon-badge" aria-hidden="true">
-                      <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-6a2 2 0 1 0-4 0v6h-4v-12h4v2"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                    </span>
-                    <div>
-                      <h3>LinkedIn</h3>
-                      <p class="muted"><a href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer" style="color:var(--gold-2);">Connect on LinkedIn</a></p>
-                    </div>
-                  </div>
-                </div>
+          <p class="eyebrow">Contact</p>
+          <div class="heading-glow-wrap"><h2 class="has-shimmer">Two ways to work together</h2></div>
+          <div class="paths">
+            <div class="card path reveal delay-1">
+              <p class="iso-kicker">Founders &amp; small business leaders</p>
+              <h3>Your initiative is stuck and you want it moving.</h3>
+              <p class="muted">Start with the free scorecard to find the gap, or apply for the Strategy Intensive and we&rsquo;ll fix it together.</p>
+              <div class="hero-actions">
+                <a class="btn btn-primary" href="#intensive">Apply for the Intensive</a>
+                <a class="btn btn-secondary" href="#scorecard">Take the free scorecard</a>
               </div>
             </div>
-
-            <div class="card reveal delay-2">
-              <p class="eyebrow">Send a Message</p>
-              <div class="qual-form" id="contactForm">
-                <div class="qual-group">
-                  <input class="qual-input" type="text" placeholder="Your name" id="contact-name" />
-                </div>
-                <div class="qual-group">
-                  <input class="qual-input" type="email" placeholder="Your email" id="contact-email" />
-                </div>
-                <div class="qual-group">
-                  <textarea class="qual-textarea" placeholder="What would you like to discuss?" style="min-height:120px;" id="contact-message"></textarea>
-                </div>
-                <p id="contactError" style="display:none; color:#e07070; font-size:0.88rem; margin:0; text-align:center;">
-                  Please fill in all fields before sending.
-                </p>
-                <button type="button" class="btn btn-primary" style="width:100%;" id="contactSubmitBtn" onclick="handleContactSubmit()">Send Message</button>
-                <p id="contactSuccess" style="display:none; color:var(--gold-2); font-weight:600; text-align:center; margin:0;">
-                  ✓ Message sent — I'll respond within 1–2 business days.
-                </p>
+            <div class="card path reveal delay-2">
+              <p class="iso-kicker">Enterprise teams &amp; recruiters</p>
+              <h3>You&rsquo;re evaluating a delivery, product, or business analysis leader.</h3>
+              <p class="muted">The case studies and credentials above are the short version. LinkedIn has the full history, and I respond to email directly.</p>
+              <div class="hero-actions">
+                <a class="btn btn-primary" href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">View my LinkedIn</a>
+                <a class="btn btn-secondary" href="mailto:dillon1.noel@outlook.com">Email me</a>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─── CTA BAND ─── -->
-    <section class="contact-cta-band reveal">
-      <div class="container contact-cta-grid">
-        <div>
-          <div class="heading-glow-wrap">
-            <h2 class="has-shimmer" style="font-size:2.1rem; margin-bottom:8px;">Every week it stays stuck costs you.</h2>
-          </div>
-          <p class="muted" style="margin:0;">Find your biggest execution gap in two minutes, or apply now and we&rsquo;ll fix it together.</p>
-        </div>
-        <div class="hero-actions" style="margin-top:0; justify-content:flex-end;">
-          <a class="btn btn-primary" href="#intensive">Apply for the Strategy Intensive</a>
-          <a class="btn btn-secondary" href="#scorecard">Take the free scorecard</a>
         </div>
       </div>
     </section>
@@ -3029,21 +3081,15 @@
               <div class="hero-status-dot"></div>
               Currently accepting new engagements
             </div>
-            <div class="cert-row" style="margin-top:14px;">
-              <span class="cert" style="opacity:1; transform:none;">CBAP®</span>
-              <span class="cert" style="opacity:1; transform:none;">PSPO</span>
-              <span class="cert" style="opacity:1; transform:none;">PSM</span>
-            </div>
           </div>
 
           <div>
             <p class="eyebrow" style="margin-bottom:18px;">Navigation</p>
             <div class="footer-list">
-              <a href="#about">Executive Profile</a>
-              <a href="#impact">Selected Impact</a>
-              <a href="#services">Advisory Focus</a>
-              <a href="#process">How I Work</a>
-              <a href="#scorecard">Free Execution Gap Scorecard</a>
+              <a href="#process">The Method</a>
+              <a href="#scorecard">Free Tools</a>
+              <a href="#work">Case Studies</a>
+              <a href="#testimonials">Testimonials</a>
               <a href="#intensive">Strategy Intensive</a>
               <a href="#contact">Contact</a>
             </div>
@@ -3054,13 +3100,6 @@
             <div class="footer-list">
               <a href="mailto:dillon1.noel@outlook.com" style="color:inherit;">dillon1&#46;noel&#64;outlook&#46;com</a>
               <a href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">LinkedIn Profile</a>
-            </div>
-            <p class="eyebrow" style="margin:24px 0 14px;">Specialties</p>
-            <div class="pill-row">
-              <span class="pill" style="opacity:1; transform:none;">Business Analysis</span>
-              <span class="pill" style="opacity:1; transform:none;">Strategy</span>
-              <span class="pill" style="opacity:1; transform:none;">Execution</span>
-              <span class="pill" style="opacity:1; transform:none;">Growth Systems</span>
             </div>
           </div>
         </div>
@@ -3969,6 +4008,31 @@
       var send = $("scSend"); send.disabled = false; send.textContent = "Email my full results"; send.style.display = "";
     }
 
+    /* printable one-page fix plan (Save as PDF from the print dialog) */
+    function printFixPlan() {
+      if (!lastResult) return;
+      var r = lastResult, box = document.getElementById("fixPlanPrint");
+      if (!box) { box = document.createElement("div"); box.id = "fixPlanPrint"; document.body.appendChild(box); }
+      var esc = function (t) { var d = document.createElement("div"); d.textContent = t; return d.innerHTML; };
+      var order = PILLARS.map(function (pl, i) { return i; }).sort(function (a, b) { return r.pillarPct[a] - r.pillarPct[b] || a - b; });
+      var rows = PILLARS.map(function (pl, i) { return "<tr><td" + (i === r.gap ? ' class="gap"' : "") + ">" + pl.name + (i === r.gap ? " (biggest gap)" : "") + "</td><td>" + r.pillarPct[i] + "%</td></tr>"; }).join("");
+      var plans = order.map(function (i, n) {
+        var pl = PILLARS[i];
+        return "<h2>" + (n + 1) + ". " + pl.name + " &middot; " + r.pillarPct[i] + "%</h2><p>" + esc(pl.why) + "</p><p class=\"fix\"><b>First fix:</b> " + esc(pl.fix) + "</p>";
+      }).join("");
+      var date = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+      box.innerHTML = "<h1>Your Execution Gap Fix Plan</h1><div class=\"meta\">Prepared " + date + " &middot; Execution Gap Scorecard by Dillon Noel &middot; dillonnoel.com</div>" +
+        "<p class=\"score\"><b>Overall score: " + r.total + "/100</b> (" + r.band + ")</p><table><thead><tr><th>Area</th><th>Score</th></tr></thead><tbody>" + rows + "</tbody></table>" +
+        "<p>Work the areas in this order: weakest first, because each one supports the next.</p>" + plans +
+        "<div class=\"foot\">Want help closing these gaps? Apply for the Strategy Intensive at dillonnoel.com/#intensive. Backed by the Clarity Guarantee.</div>";
+      document.body.classList.add("print-fixplan");
+      var cleanup = function () { document.body.classList.remove("print-fixplan"); window.removeEventListener("afterprint", cleanup); };
+      window.addEventListener("afterprint", cleanup);
+      window.print();
+      setTimeout(cleanup, 1000);
+    }
+    var printBtn = $("scPrint"); if (printBtn) printBtn.addEventListener("click", printFixPlan);
+
     $("scStart").addEventListener("click", start);
     $("scRetake").addEventListener("click", function () { start(); if (typeof smoothScrollTo === "function") smoothScrollTo("#scorecard"); });
     backBtn.addEventListener("click", function () { if (qi > 0 && !locked) { qi--; renderQuestion(-1); } });
@@ -4014,6 +4078,658 @@
   </script>
 
   <script>
+  /* ═══════════════════════════════════════════════════════════
+     PORTFOLIO v3: chaos board, free tools (tabs, cost of delay,
+     priority matrix), and scroll-animated case studies.
+     ═══════════════════════════════════════════════════════════ */
+  (function () {
+    "use strict";
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var NS = "http://www.w3.org/2000/svg";
+    function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+    function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+    function easeInOut(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function el(tag, attrs, parent) {
+      var n = document.createElementNS(NS, tag);
+      for (var k in attrs) n.setAttribute(k, attrs[k]);
+      if (parent) parent.appendChild(n);
+      return n;
+    }
+    function money(n) {
+      n = Math.round(n);
+      if (Math.abs(n) >= 1e6) return "$" + (n / 1e6).toFixed(n >= 1e7 ? 1 : 2).replace(/\.?0+$/, "") + "M";
+      if (Math.abs(n) >= 1e3) return "$" + Math.round(n / 1e3) + "k";
+      return "$" + n;
+    }
+    function moneyFull(n) { return "$" + Math.round(n).toLocaleString("en-US"); }
+
+    /* ── scroll-driven animation loop shared by the board and case studies ── */
+    var scrubbers = [];
+    var running = false, lastT = 0;
+    function loop(now) {
+      var dt = lastT ? Math.min((now - lastT) / 1000, 0.05) : 1 / 60;
+      lastT = now;
+      var active = false;
+      scrubbers.forEach(function (sc) {
+        if (!sc.visible) return;
+        active = true;
+        var target = reduce ? 1 : sc.progress();
+        sc.p += (target - sc.p) * (reduce ? 1 : 1 - Math.exp(-dt * 7));
+        if (Math.abs(target - sc.p) < 0.0005) sc.p = target;
+        sc.update(sc.p, now);
+      });
+      if (active) requestAnimationFrame(loop); else { running = false; lastT = 0; }
+    }
+    function kick() { if (!running) { running = true; requestAnimationFrame(loop); } }
+    function addScrubber(node, progress, update) {
+      var sc = { node: node, progress: progress, update: update, p: reduce ? 1 : 0, visible: false };
+      scrubbers.push(sc);
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (entries) { sc.visible = entries[0].isIntersecting; if (sc.visible) kick(); }, { rootMargin: "100px 0px" }).observe(node);
+      } else { sc.visible = true; kick(); }
+      return sc;
+    }
+    window.addEventListener("scroll", kick, { passive: true });
+
+    /* ═══ 1. CHAOS → STRUCTURE BOARD (scroll-scrubbed FLIP) ═══ */
+    var board = document.getElementById("chaosBoard");
+    if (board) {
+      var stageEl = document.getElementById("cbStage");
+      var labelEl = document.getElementById("cbLabel");
+      var cards = Array.prototype.slice.call(stageEl.querySelectorAll(".cb-card"));
+      var cols = {};
+      board.querySelectorAll(".cb-col").forEach(function (c) { cols[c.getAttribute("data-col")] = c; });
+      var layout = [];
+      function measureBoard() {
+        board.style.setProperty("--colTop", (stageEl.offsetTop - 4) + "px");
+        var sr = stageEl.getBoundingClientRect();
+        var colW = cols.now.getBoundingClientRect().width;
+        var cardW = Math.max(colW - 14, 60);
+        var counts = { now: 0, next: 0, later: 0 }, yAcc = { now: 0, next: 0, later: 0 };
+        layout = cards.map(function (card, i) {
+          card.style.width = cardW + "px";
+          var col = card.getAttribute("data-col");
+          var cr = cols[col].getBoundingClientRect();
+          var h = card.offsetHeight;
+          var ax = cr.left - sr.left + 7;
+          var ay = cr.top - sr.top + 34 + yAcc[col];
+          yAcc[col] += h + 8; counts[col]++;
+          // deterministic scatter for the "before" state: a jittered grid, so it reads messy but legible
+          var gc = sr.width > 700 ? 4 : 3, gr = Math.ceil(cards.length / gc);
+          var cellW = sr.width / gc, cellH = sr.height / gr;
+          var cell = (i * 5) % cards.length; // shuffle cell order
+          var jx = (Math.sin(i * 12.9898) * 43758.5453) % 1; jx = jx < 0 ? jx + 1 : jx;
+          var jy = (Math.sin(i * 78.233) * 12345.678) % 1; jy = jy < 0 ? jy + 1 : jy;
+          var sw = cardW * 0.78;
+          return {
+            bx: (cell % gc) * cellW + jx * Math.max(cellW - sw, 0) - (cardW - sw) / 2,
+            by: Math.floor(cell / gc) * cellH + jy * Math.max(cellH - h, 0) * 0.8 + 6,
+            br: (((i * 37) % 21) - 10),
+            ax: ax, ay: ay
+          };
+        });
+      }
+      measureBoard();
+      window.addEventListener("resize", function () { measureBoard(); kick(); });
+      addScrubber(board, function () {
+        var r = board.getBoundingClientRect(), vh = window.innerHeight;
+        return clamp((vh * 0.72 - r.top) / (vh * 0.55), 0, 1);
+      }, function (p) {
+        cards.forEach(function (card, i) {
+          var L = layout[i]; if (!L) return;
+          var t = easeInOut(clamp((p - i * 0.025) / 0.7, 0, 1));
+          card.style.transform = "translate(" + lerp(L.bx, L.ax, t).toFixed(1) + "px," + lerp(L.by, L.ay, t).toFixed(1) + "px) rotate(" + lerp(L.br, 0, t).toFixed(2) + "deg) scale(" + lerp(0.78, 1, t).toFixed(3) + ")";
+          card.style.setProperty("--ownA", clamp((p - 0.82) / 0.18, 0, 1).toFixed(3));
+          card.style.opacity = card.getAttribute("data-col") === "later" ? lerp(1, 0.55, t).toFixed(2) : "1";
+        });
+        board.style.setProperty("--colA", clamp((p - 0.35) / 0.4, 0, 1).toFixed(3));
+        var after = p > 0.6;
+        if (labelEl._after !== after) {
+          labelEl._after = after;
+          labelEl.textContent = after ? "After: 3 priorities, named owners, the rest parked" : "Before: 12 initiatives, no order, no owners";
+        }
+      });
+    }
+
+    /* ═══ 2. TABS (free tools) ═══ */
+    var tabs = Array.prototype.slice.call(document.querySelectorAll(".tabs .tab"));
+    var ink = document.querySelector(".tabs-ink");
+    var onTabShown = {};
+    function placeInk(tab) {
+      if (!ink || !tab) return;
+      ink.style.width = tab.offsetWidth + "px";
+      ink.style.height = tab.offsetHeight + "px";
+      ink.style.top = "0px";
+      ink.style.transform = "translate(" + tab.offsetLeft + "px," + tab.offsetTop + "px)";
+    }
+    function selectTab(tab, focus, updateHash) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute("aria-selected", on ? "true" : "false");
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+      });
+      placeInk(tab);
+      if (focus) tab.focus();
+      if (updateHash && history.replaceState) history.replaceState(null, "", "#" + tab.getAttribute("data-hash"));
+      var fn = onTabShown[tab.id]; if (fn) fn();
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener("click", function () { selectTab(t, false, true); });
+      t.addEventListener("keydown", function (e) {
+        var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (d) { e.preventDefault(); selectTab(tabs[(i + d + tabs.length) % tabs.length], true, true); }
+      });
+    });
+    window.addEventListener("resize", function () { placeInk(tabs.filter(function (t) { return t.getAttribute("aria-selected") === "true"; })[0]); });
+    if (tabs.length) requestAnimationFrame(function () { placeInk(tabs[0]); });
+    document.querySelectorAll(".tab-jump").forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        var t = document.getElementById(a.getAttribute("data-tab"));
+        if (!t) return;
+        e.preventDefault(); selectTab(t, false, true);
+        if (typeof smoothScrollTo === "function") smoothScrollTo("#scorecard");
+      });
+    });
+    function tabFromHash() {
+      var h = (location.hash || "").slice(1);
+      var t = tabs.filter(function (x) { return x.getAttribute("data-hash") === h && h !== "scorecard"; })[0];
+      if (t) {
+        selectTab(t, false, false);
+        setTimeout(function () { if (typeof smoothScrollTo === "function") smoothScrollTo("#scorecard"); }, 60);
+      }
+    }
+    window.addEventListener("hashchange", tabFromHash);
+    window.addEventListener("load", tabFromHash);
+
+    /* ═══ 3. COST OF DELAY CALCULATOR ═══ */
+    var codChart = document.getElementById("codChart");
+    if (codChart) {
+      var inp = {
+        people: document.getElementById("codPeople"), salary: document.getElementById("codSalary"),
+        share: document.getElementById("codShare"), weeks: document.getElementById("codWeeks"),
+        value: document.getElementById("codValue")
+      };
+      var outs = {
+        people: document.getElementById("codPeopleOut"), salary: document.getElementById("codSalaryOut"),
+        share: document.getElementById("codShareOut"), weeks: document.getElementById("codWeeksOut"),
+        value: document.getElementById("codValueOut")
+      };
+      var totalEl = document.getElementById("codTotal"), teamEl = document.getElementById("codTeam"), delayEl = document.getElementById("codDelay");
+      var tip = document.getElementById("codTip"), tableEl = document.getElementById("codTable");
+      var svg = el("svg", { "aria-hidden": "true" }, codChart);
+      var gGrid = el("g", { "class": "grid" }, svg), gAxis = el("g", { "class": "axis" }, svg), gBars = el("g", {}, svg), gHits = el("g", {}, svg);
+      var shown = { team: [], delay: [], total: 0 }, anim = null, shownTotal = 0;
+
+      function readInputs() {
+        var v = {
+          people: +inp.people.value, salary: +inp.salary.value, share: +inp.share.value / 100,
+          weeks: +inp.weeks.value, value: +inp.value.value
+        };
+        v.teamWeek = v.people * (v.salary / 52) * v.share;
+        v.delayWeek = v.value * 12 / 52;
+        v.team = v.teamWeek * v.weeks; v.delay = v.delayWeek * v.weeks; v.total = v.team + v.delay;
+        return v;
+      }
+      function niceMax(n) {
+        if (n <= 0) return 1000;
+        var p = Math.pow(10, Math.floor(Math.log10(n))), m = n / p;
+        var step = m <= 1 ? 1 : m <= 1.5 ? 1.5 : m <= 2 ? 2 : m <= 3 ? 3 : m <= 5 ? 5 : m <= 7.5 ? 7.5 : 10;
+        return step * p;
+      }
+      function topRounded(x, y, w, h, r) {
+        r = Math.min(r, w / 2, h);
+        if (h <= 0) return "";
+        return "M" + x + "," + (y + h) + "V" + (y + r) + "Q" + x + "," + y + " " + (x + r) + "," + y +
+               "H" + (x + w - r) + "Q" + (x + w) + "," + y + " " + (x + w) + "," + (y + r) + "V" + (y + h) + "Z";
+      }
+      var geom = null;
+      function draw(teamArr, delayArr, v) {
+        var W = codChart.clientWidth || 600, H = codChart.clientHeight || 240;
+        var m = { l: 54, r: 8, t: 10, b: 26 };
+        var iw = W - m.l - m.r, ih = H - m.t - m.b, n = teamArr.length;
+        var yMax = niceMax(v.total);
+        svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+        // grid + y labels (recessive)
+        gGrid.innerHTML = ""; gAxis.innerHTML = "";
+        for (var g = 0; g <= 3; g++) {
+          var gy = m.t + ih - ih * g / 3;
+          el("line", { x1: m.l, x2: W - m.r, y1: gy, y2: gy }, gGrid);
+          var tl = el("text", { x: m.l - 8, y: gy + 4, "text-anchor": "end" }, gAxis); tl.textContent = money(yMax * g / 3);
+        }
+        var bw = iw / n, barW = Math.max(Math.min(bw - 2, 26), 1.5);
+        var labelEvery = n <= 12 ? 1 : n <= 26 ? 4 : 8;
+        for (var k = 0; k < n; k++) {
+          if ((k + 1) % labelEvery === 0 || k === 0 || k === n - 1) {
+            if (k === n - 1 || (k + 1) % labelEvery === 0 || k === 0) {
+              var xl = el("text", { x: m.l + bw * k + bw / 2, y: H - 8, "text-anchor": "middle" }, gAxis);
+              xl.textContent = k === 0 ? "Wk 1" : (k + 1);
+            }
+          }
+        }
+        // bars: keep elements, update geometry
+        while (gBars.children.length > n * 2) gBars.removeChild(gBars.lastChild);
+        while (gBars.children.length < n * 2) {
+          el("path", { fill: "var(--viz-gold)" }, gBars);
+          el("path", { fill: "var(--viz-copper)" }, gBars);
+        }
+        for (var i = 0; i < n; i++) {
+          var x = m.l + bw * i + (bw - barW) / 2;
+          var ht = ih * teamArr[i] / yMax, hd = ih * delayArr[i] / yMax;
+          var gap = hd > 0.5 && ht > 0.5 ? 2 : 0; // 2px surface gap between stacked segments
+          var yTeam = m.t + ih - ht;
+          var teamPath = gBars.children[i * 2], delayPath = gBars.children[i * 2 + 1];
+          if (hd > 0.5) {
+            teamPath.setAttribute("d", ht > 0 ? "M" + x + "," + (m.t + ih) + "V" + yTeam + "H" + (x + barW) + "V" + (m.t + ih) + "Z" : "");
+            delayPath.setAttribute("d", topRounded(x, yTeam - hd, barW, Math.max(hd - gap, 0), 4));
+          } else {
+            teamPath.setAttribute("d", topRounded(x, yTeam, barW, ht, 4));
+            delayPath.setAttribute("d", "");
+          }
+        }
+        geom = { m: m, bw: bw, ih: ih, n: n, W: W, H: H };
+        // hover hit-targets (full column height, wider than the bar)
+        gHits.innerHTML = "";
+        for (var j = 0; j < n; j++) {
+          var hl = el("rect", { "class": "hl", x: m.l + bw * j, y: m.t, width: bw, height: ih }, gHits);
+          var hit = el("rect", { "class": "hit", x: m.l + bw * j, y: m.t, width: bw, height: ih + m.b, "data-i": j }, gHits);
+          gHits.insertBefore(hit, hl);
+        }
+      }
+      function showTip(i, cx, cy) {
+        var v = readInputs();
+        var t = v.teamWeek * (i + 1), d = v.delayWeek * (i + 1);
+        tip.innerHTML = "<b>Week " + (i + 1) + "</b>" +
+          '<div class="row"><span><i class="sw-gold" style="display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px"></i>Team time</span><span>' + moneyFull(t) + "</span></div>" +
+          '<div class="row"><span><i class="sw-copper" style="display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px"></i>Value delayed</span><span>' + moneyFull(d) + "</span></div>" +
+          '<div class="row"><span>Total so far</span><span>' + moneyFull(t + d) + "</span></div>";
+        tip.style.left = Math.min(cx + 14, window.innerWidth - 200) + "px";
+        tip.style.top = (cy - 90) + "px";
+        tip.classList.add("on");
+      }
+      codChart.addEventListener("pointermove", function (e) {
+        var hit = e.target.closest && e.target.closest(".hit");
+        gHits.querySelectorAll(".hl.on").forEach(function (h) { h.classList.remove("on"); });
+        if (!hit) { tip.classList.remove("on"); return; }
+        var i = +hit.getAttribute("data-i");
+        var hl = hit.nextSibling; if (hl) hl.classList.add("on");
+        showTip(i, e.clientX, e.clientY);
+      });
+      codChart.addEventListener("pointerleave", function () { tip.classList.remove("on"); gHits.querySelectorAll(".hl.on").forEach(function (h) { h.classList.remove("on"); }); });
+
+      function renderTable(v) {
+        var step = v.weeks <= 12 ? 1 : 4, rows = "";
+        for (var w = step; w <= v.weeks; w += step) rows += "<tr><td>Week " + w + "</td><td>" + moneyFull(v.teamWeek * w) + "</td><td>" + moneyFull(v.delayWeek * w) + "</td><td>" + moneyFull((v.teamWeek + v.delayWeek) * w) + "</td></tr>";
+        if (v.weeks % step) rows += "<tr><td>Week " + v.weeks + "</td><td>" + moneyFull(v.team) + "</td><td>" + moneyFull(v.delay) + "</td><td>" + moneyFull(v.total) + "</td></tr>";
+        tableEl.innerHTML = "<table><thead><tr><th>Week</th><th>Team time</th><th>Value delayed</th><th>Total</th></tr></thead><tbody>" + rows + "</tbody></table>";
+      }
+
+      function update(fromZero) {
+        var v = readInputs();
+        outs.people.textContent = v.people;
+        outs.salary.textContent = money(v.salary);
+        outs.share.textContent = Math.round(v.share * 100) + "%";
+        outs.weeks.textContent = v.weeks;
+        outs.value.textContent = money(v.value);
+        Object.keys(inp).forEach(function (k) {
+          var r = inp[k]; r.style.setProperty("--fill", ((r.value - r.min) / (r.max - r.min) * 100) + "%");
+        });
+        teamEl.textContent = moneyFull(v.team);
+        delayEl.textContent = moneyFull(v.delay);
+        renderTable(v);
+        var tTeam = [], tDelay = [];
+        for (var w = 1; w <= v.weeks; w++) { tTeam.push(v.teamWeek * w); tDelay.push(v.delayWeek * w); }
+        var fT = tTeam.map(function (_, i) { return fromZero ? 0 : (shown.team[i] || 0); });
+        var fD = tDelay.map(function (_, i) { return fromZero ? 0 : (shown.delay[i] || 0); });
+        var fTotal = fromZero ? 0 : shownTotal;
+        var t0 = performance.now(), dur = reduce ? 1 : 650;
+        if (anim) cancelAnimationFrame(anim);
+        (function step(now) {
+          var p = Math.min((now - t0) / dur, 1), e = easeOut(p);
+          var cT = tTeam.map(function (x, i) { return lerp(fT[i], x, e); });
+          var cD = tDelay.map(function (x, i) { return lerp(fD[i], x, e); });
+          shown.team = cT; shown.delay = cD;
+          draw(cT, cD, v);
+          shownTotal = lerp(fTotal, v.total, e);
+          totalEl.textContent = moneyFull(shownTotal);
+          if (p < 1) anim = requestAnimationFrame(step); else anim = null;
+        })(t0);
+      }
+      Object.keys(inp).forEach(function (k) { inp[k].addEventListener("input", function () { update(false); }); });
+      window.addEventListener("resize", function () { if (!document.getElementById("panel-cost").hidden) update(false); });
+      var codShownOnce = false;
+      onTabShown["tab-cost"] = function () { requestAnimationFrame(function () { update(!codShownOnce); codShownOnce = true; }); };
+    }
+
+    /* ═══ 4. PRIORITY MATRIX (drag dots on an impact × effort grid) ═══ */
+    var plot = document.getElementById("pmPlot");
+    if (plot) {
+      var itemsEl = document.getElementById("pmItems"), rankEl = document.getElementById("pmRank");
+      var addBtn = document.getElementById("pmAdd"), copyBtn = document.getElementById("pmCopy"), pmMsg = document.getElementById("pmMsg");
+      var uid = 0;
+      var items = [
+        ["Pricing refresh", 0.78, 0.25], ["Ops playbook", 0.66, 0.18], ["Billing migration", 0.82, 0.76],
+        ["Hiring plan", 0.6, 0.55], ["CRM rollout", 0.42, 0.7], ["Website rebuild", 0.25, 0.82]
+      ].map(function (a) { return { id: ++uid, name: a[0], impact: a[1], effort: a[2] }; });
+      var QUAD = {
+        win: { label: "Quick win", order: 0 }, bet: { label: "Big bet", order: 1 },
+        fill: { label: "Fill-in", order: 2 }, pit: { label: "Money pit", order: 3 }
+      };
+      function quad(it) { return it.impact >= 0.5 ? (it.effort < 0.5 ? "win" : "bet") : (it.effort < 0.5 ? "fill" : "pit"); }
+      function ranked() {
+        return items.slice().sort(function (a, b) {
+          var qa = QUAD[quad(a)].order, qb = QUAD[quad(b)].order;
+          if (qa !== qb) return qa - qb;
+          return (b.impact - b.effort * 0.6) - (a.impact - a.effort * 0.6);
+        });
+      }
+
+      var S = 500, pad = { l: 34, r: 10, t: 10, b: 34 };
+      var pw = S - pad.l - pad.r, ph = S - pad.t - pad.b;
+      var psvg = el("svg", { viewBox: "0 0 " + S + " " + S, role: "group", "aria-label": "Impact versus effort matrix" }, plot);
+      var quads = {
+        win: el("rect", { "class": "quad win", x: pad.l, y: pad.t, width: pw / 2, height: ph / 2, rx: 14 }, psvg),
+        bet: el("rect", { "class": "quad", x: pad.l + pw / 2, y: pad.t, width: pw / 2, height: ph / 2, rx: 14 }, psvg),
+        fill: el("rect", { "class": "quad", x: pad.l, y: pad.t + ph / 2, width: pw / 2, height: ph / 2, rx: 14 }, psvg),
+        pit: el("rect", { "class": "quad", x: pad.l + pw / 2, y: pad.t + ph / 2, width: pw / 2, height: ph / 2, rx: 14 }, psvg)
+      };
+      [["QUICK WINS", "Do first", pad.l + 14, pad.t + 24, "win"], ["BIG BETS", "Plan and resource", pad.l + pw / 2 + 14, pad.t + 24, ""],
+       ["FILL-INS", "Batch or delegate", pad.l + 14, pad.t + ph / 2 + 24, ""], ["MONEY PITS", "Drop or rethink", pad.l + pw / 2 + 14, pad.t + ph / 2 + 24, ""]]
+        .forEach(function (q) {
+          var t = el("text", { "class": "qlabel " + q[4], x: q[2], y: q[3] }, psvg); t.textContent = q[0];
+          var t2 = el("text", { "class": "qsub", x: q[2], y: q[3] + 16 }, psvg); t2.textContent = q[1];
+        });
+      var ax = el("text", { "class": "axis-label", x: pad.l + pw / 2, y: S - 8, "text-anchor": "middle" }, psvg); ax.textContent = "EFFORT  →";
+      var ay = el("text", { "class": "axis-label", x: 12, y: pad.t + ph / 2, "text-anchor": "middle", transform: "rotate(-90 12 " + (pad.t + ph / 2) + ")" }, psvg); ay.textContent = "IMPACT  →";
+      var dotLayer = el("g", {}, psvg);
+      var dotEls = {}, liEls = {}, activeQuad = null;
+
+      function px(it) { return pad.l + it.effort * pw; }
+      function py(it) { return pad.t + (1 - it.impact) * ph; }
+      function short(n) { n = n || "Untitled"; return n.length > 20 ? n.slice(0, 19) + "…" : n; }
+
+      function renderDots() {
+        var order = ranked();
+        var rankOf = {}; order.forEach(function (it, i) { rankOf[it.id] = i + 1; });
+        Object.keys(dotEls).forEach(function (id) { if (!items.some(function (it) { return String(it.id) === id; })) { dotLayer.removeChild(dotEls[id].g); delete dotEls[id]; } });
+        var hot = {};
+        items.forEach(function (it) {
+          var d = dotEls[it.id];
+          if (!d) {
+            var g = el("g", { "class": "pm-dot", tabindex: "0", role: "slider" }, dotLayer);
+            var ring = el("circle", { "class": "ring", r: 14 }, g);
+            var n = el("text", { "class": "n" }, g);
+            var lbl = el("text", { "class": "lbl", y: 4 }, g);
+            d = dotEls[it.id] = { g: g, n: n, lbl: lbl };
+            attachDrag(g, it);
+          }
+          var x = px(it), y = py(it);
+          d.g.setAttribute("transform", "translate(" + x.toFixed(1) + "," + y.toFixed(1) + ")");
+          d.n.textContent = rankOf[it.id];
+          d.lbl.textContent = short(it.name);
+          var left = it.effort > 0.62;
+          d.lbl.setAttribute("x", left ? -22 : 22);
+          d.lbl.setAttribute("text-anchor", left ? "end" : "start");
+          d.g.setAttribute("aria-label", (it.name || "Untitled") + ": impact " + Math.round(it.impact * 100) + "%, effort " + Math.round(it.effort * 100) + "%, " + QUAD[quad(it)].label);
+          d.g.setAttribute("aria-valuetext", QUAD[quad(it)].label);
+          hot[quad(it)] = true;
+        });
+        Object.keys(quads).forEach(function (k) { quads[k].classList.toggle("hot", k === activeQuad); });
+      }
+
+      function renderRank() {
+        var order = ranked();
+        var first = {};
+        Object.keys(liEls).forEach(function (id) { first[id] = liEls[id].getBoundingClientRect().top; });
+        Object.keys(liEls).forEach(function (id) { if (!items.some(function (it) { return String(it.id) === id; })) { rankEl.removeChild(liEls[id]); delete liEls[id]; } });
+        order.forEach(function (it, i) {
+          var li = liEls[it.id];
+          if (!li) { li = liEls[it.id] = document.createElement("li"); li.innerHTML = '<span class="num"></span><span class="nm"></span><span class="q"></span>'; }
+          li.querySelector(".num").textContent = i + 1;
+          li.querySelector(".nm").textContent = it.name || "Untitled";
+          li.querySelector(".q").textContent = QUAD[quad(it)].label;
+          li.setAttribute("data-q", quad(it));
+          rankEl.appendChild(li);
+        });
+        // FLIP: animate each row from its old position to its new one
+        if (!reduce) order.forEach(function (it) {
+          var li = liEls[it.id], was = first[it.id];
+          if (was === undefined) return;
+          var dy = was - li.getBoundingClientRect().top;
+          if (Math.abs(dy) < 1) return;
+          li.style.transition = "none";
+          li.style.transform = "translateY(" + dy + "px)";
+          requestAnimationFrame(function () { li.style.transition = "transform 0.45s cubic-bezier(0.16,1,0.3,1)"; li.style.transform = ""; });
+        });
+      }
+
+      function renderItems() {
+        itemsEl.innerHTML = "";
+        items.forEach(function (it, i) {
+          var row = document.createElement("div"); row.className = "pm-item";
+          row.innerHTML = '<span class="num"></span><input class="qual-input" type="text" maxlength="40" /><button type="button" aria-label="Remove">&times;</button>';
+          row.querySelector(".num").textContent = i + 1;
+          var input = row.querySelector("input");
+          input.value = it.name; input.setAttribute("aria-label", "Initiative " + (i + 1));
+          input.addEventListener("input", function () { it.name = input.value; renderDots(); renderRank(); });
+          row.querySelector("button").addEventListener("click", function () {
+            items = items.filter(function (x) { return x !== it; }); renderAll();
+          });
+          itemsEl.appendChild(row);
+        });
+        addBtn.hidden = items.length >= 8;
+      }
+      function renderAll() { renderItems(); renderDots(); renderRank(); }
+
+      function attachDrag(g, it) {
+        var dragging = false;
+        function toPlot(e) {
+          var pt = psvg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+          var loc = pt.matrixTransform(psvg.getScreenCTM().inverse());
+          it.effort = clamp((loc.x - pad.l) / pw, 0, 1);
+          it.impact = clamp(1 - (loc.y - pad.t) / ph, 0, 1);
+        }
+        g.addEventListener("pointerdown", function (e) { dragging = true; g.classList.add("drag"); g.setPointerCapture(e.pointerId); e.preventDefault(); });
+        g.addEventListener("pointermove", function (e) { if (!dragging) return; toPlot(e); activeQuad = quad(it); renderDots(); renderRank(); });
+        function end() { dragging = false; activeQuad = null; g.classList.remove("drag"); renderDots(); }
+        g.addEventListener("pointerup", end); g.addEventListener("pointercancel", end);
+        g.addEventListener("keydown", function (e) {
+          var s = 0.05, moved = true;
+          if (e.key === "ArrowUp") it.impact = clamp(it.impact + s, 0, 1);
+          else if (e.key === "ArrowDown") it.impact = clamp(it.impact - s, 0, 1);
+          else if (e.key === "ArrowRight") it.effort = clamp(it.effort + s, 0, 1);
+          else if (e.key === "ArrowLeft") it.effort = clamp(it.effort - s, 0, 1);
+          else moved = false;
+          if (moved) { e.preventDefault(); renderDots(); renderRank(); }
+        });
+      }
+
+      addBtn.addEventListener("click", function () {
+        if (items.length >= 8) return;
+        items.push({ id: ++uid, name: "New initiative", impact: 0.5 + (Math.random() - 0.5) * 0.2, effort: 0.5 + (Math.random() - 0.5) * 0.2 });
+        renderAll();
+        var inputs = itemsEl.querySelectorAll("input"); var last = inputs[inputs.length - 1];
+        if (last) { last.focus(); last.select(); }
+      });
+      copyBtn.addEventListener("click", function () {
+        var text = "My priorities (impact vs. effort)\n" + ranked().map(function (it, i) { return (i + 1) + ". " + (it.name || "Untitled") + " (" + QUAD[quad(it)].label + ")"; }).join("\n") + "\n\nMade with the free Priority Matrix at dillonnoel.com";
+        var done = function () { pmMsg.textContent = "Copied to your clipboard."; setTimeout(function () { pmMsg.textContent = ""; }, 2500); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function () { pmMsg.textContent = "Couldn't copy automatically. Select the list and copy it."; });
+        else pmMsg.textContent = "Couldn't copy automatically. Select the list and copy it.";
+      });
+      renderAll();
+    }
+
+    /* ═══ 5. CASE STUDY VISUALS (scroll-scrubbed SVG) ═══ */
+    var GOLD = "#e0c470", GOLD_D = "#c9a84c", MUTED = "#a89e7a", INK = "#f0ece0", DIM = "rgba(240,236,224,0.18)";
+    function mixColor(a, b, t) {
+      function h(c) { return [parseInt(c.slice(1, 3), 16), parseInt(c.slice(3, 5), 16), parseInt(c.slice(5, 7), 16)]; }
+      var x = h(a), y = h(b);
+      return "rgb(" + Math.round(lerp(x[0], y[0], t)) + "," + Math.round(lerp(x[1], y[1], t)) + "," + Math.round(lerp(x[2], y[2], t)) + ")";
+    }
+    function caption(svgEl, a, b) {
+      var t = el("text", { x: 16, y: 26, fill: GOLD, "font-size": 12, "font-weight": 700, "letter-spacing": "1.5" }, svgEl);
+      return function (p) { var s = p > 0.55 ? b : a; if (t._s !== s) { t._s = s; t.textContent = s; } };
+    }
+
+    var VIZ = {
+      // seven apps on seven rhythms → one shared cadence
+      portfolio: function (svgEl) {
+        var hub = { x: 200, y: 158 }, R = 104;
+        var chaos = [[64, 70], [338, 92], [112, 250], [306, 262], [208, 52], [40, 178], [366, 196]];
+        var ring = el("circle", { cx: hub.x, cy: hub.y, r: R, fill: "none", stroke: GOLD_D, "stroke-width": 1.2, "stroke-dasharray": "4 6", opacity: 0 }, svgEl);
+        var tangles = [], spokes = [];
+        for (var i = 0; i < 7; i++) {
+          tangles.push(el("line", { stroke: DIM, "stroke-width": 1.2 }, svgEl));
+          tangles.push(el("line", { stroke: DIM, "stroke-width": 1.2 }, svgEl));
+          spokes.push(el("line", { stroke: GOLD_D, "stroke-width": 1.4, "pathLength": 1, "stroke-dasharray": 1 }, svgEl));
+        }
+        var hubC = el("circle", { cx: hub.x, cy: hub.y, r: 32, fill: "#14130e", stroke: GOLD, "stroke-width": 2 }, svgEl);
+        var hubT = el("text", { x: hub.x, y: hub.y - 3, "text-anchor": "middle", fill: GOLD, "font-size": 10, "font-weight": 700 }, svgEl); hubT.textContent = "SHARED";
+        var hubT2 = el("text", { x: hub.x, y: hub.y + 10, "text-anchor": "middle", fill: GOLD, "font-size": 10, "font-weight": 700 }, svgEl); hubT2.textContent = "CADENCE";
+        var nodes = [];
+        for (var k = 0; k < 7; k++) {
+          var g = el("g", {}, svgEl);
+          var c = el("circle", { r: 18, fill: "#14130e", "stroke-width": 1.6 }, g);
+          var t = el("text", { y: 4, "text-anchor": "middle", "font-size": 11, "font-weight": 700 }, g); t.textContent = "App " + (k + 1);
+          t.setAttribute("font-size", 8.5);
+          nodes.push({ g: g, c: c, t: t });
+        }
+        var pulse = el("circle", { r: 4, fill: "#fff3d0", opacity: 0 }, svgEl);
+        var cap = caption(svgEl, "BEFORE: 7 APPS, 7 RHYTHMS", "AFTER: ONE SHARED CADENCE");
+        return function (p, now) {
+          var pos = [];
+          for (var k = 0; k < 7; k++) {
+            var t = easeInOut(clamp((p - k * 0.03) / 0.75, 0, 1));
+            var ang = -Math.PI / 2 + k * 2 * Math.PI / 7;
+            var x = lerp(chaos[k][0], hub.x + R * Math.cos(ang), t), y = lerp(chaos[k][1], hub.y + R * Math.sin(ang), t);
+            pos.push([x, y]);
+            nodes[k].g.setAttribute("transform", "translate(" + x.toFixed(1) + "," + y.toFixed(1) + ")");
+            var col = mixColor("#6b654f", GOLD, t);
+            nodes[k].c.setAttribute("stroke", col); nodes[k].t.setAttribute("fill", mixColor("#8f876c", INK, t));
+          }
+          for (var i = 0; i < 7; i++) {
+            var a = pos[i], b = pos[(i + 2) % 7], c2 = pos[(i + 3) % 7];
+            tangles[i * 2].setAttribute("x1", a[0]); tangles[i * 2].setAttribute("y1", a[1]); tangles[i * 2].setAttribute("x2", b[0]); tangles[i * 2].setAttribute("y2", b[1]);
+            tangles[i * 2 + 1].setAttribute("x1", a[0]); tangles[i * 2 + 1].setAttribute("y1", a[1]); tangles[i * 2 + 1].setAttribute("x2", c2[0]); tangles[i * 2 + 1].setAttribute("y2", c2[1]);
+            var to = clamp(1 - p * 1.6, 0, 1).toFixed(3);
+            tangles[i * 2].setAttribute("opacity", to); tangles[i * 2 + 1].setAttribute("opacity", to);
+            spokes[i].setAttribute("x1", hub.x); spokes[i].setAttribute("y1", hub.y); spokes[i].setAttribute("x2", a[0]); spokes[i].setAttribute("y2", a[1]);
+            spokes[i].setAttribute("stroke-dashoffset", (1 - clamp((p - 0.45 - i * 0.03) / 0.35, 0, 1)).toFixed(3));
+          }
+          ring.setAttribute("opacity", clamp((p - 0.6) / 0.3, 0, 1).toFixed(3));
+          hubC.setAttribute("opacity", clamp(p * 2, 0.25, 1).toFixed(3));
+          var pa = (now / 1400) % (Math.PI * 2);
+          pulse.setAttribute("cx", hub.x + R * Math.cos(pa)); pulse.setAttribute("cy", hub.y + R * Math.sin(pa));
+          pulse.setAttribute("opacity", reduce ? 0 : clamp((p - 0.92) / 0.08, 0, 1).toFixed(3));
+          cap(p);
+        };
+      },
+      // two apps through four milestones to production
+      launch: function (svgEl) {
+        var X0 = 70, X1 = 350, stages = ["CONCEPT", "REQUIREMENTS", "BUILD", "PRODUCTION"];
+        var mx = stages.map(function (_, i) { return X0 + (X1 - X0) * i / 3; });
+        stages.forEach(function (s, i) {
+          var t = el("text", { x: mx[i], y: 70, "text-anchor": "middle", fill: MUTED, "font-size": 9, "font-weight": 700, "letter-spacing": "1" }, svgEl); t.textContent = s;
+          el("line", { x1: mx[i], x2: mx[i], y1: 80, y2: 250, stroke: "rgba(199,168,76,0.1)", "stroke-dasharray": "3 5" }, svgEl);
+        });
+        var lanes = [130, 205].map(function (y, li) {
+          var lab = el("text", { x: 16, y: y + 4, fill: INK, "font-size": 11, "font-weight": 700 }, svgEl); lab.textContent = "App " + (li + 1);
+          el("line", { x1: X0, x2: X1, y1: y, y2: y, stroke: "rgba(199,168,76,0.16)", "stroke-width": 6, "stroke-linecap": "round" }, svgEl);
+          var bar = el("line", { x1: X0, x2: X0, y1: y, y2: y, stroke: GOLD, "stroke-width": 6, "stroke-linecap": "round" }, svgEl);
+          var dias = mx.map(function (x) { return el("rect", { x: x - 7, y: y - 7, width: 14, height: 14, transform: "rotate(45 " + x + " " + y + ")", fill: "#14130e", stroke: "#6b654f", "stroke-width": 2 }, svgEl); });
+          var head = el("circle", { cx: X0, cy: y, r: 6, fill: "#fff3d0" }, svgEl);
+          var live = el("g", { opacity: 0 }, svgEl);
+          el("rect", { x: X1 - 20, y: y - 34, width: 40, height: 18, rx: 9, fill: GOLD }, live);
+          var lt = el("text", { x: X1, y: y - 21, "text-anchor": "middle", fill: "#0f0d08", "font-size": 9, "font-weight": 800 }, live); lt.textContent = "LIVE";
+          return { y: y, bar: bar, dias: dias, head: head, live: live };
+        });
+        var cap = caption(svgEl, "TWO IDEAS ON A WHITEBOARD", "TWO APPLICATIONS IN PRODUCTION");
+        return function (p) {
+          lanes.forEach(function (ln, li) {
+            var lp = easeInOut(clamp((p - li * 0.12) / 0.78, 0, 1));
+            var x = lerp(X0, X1, lp);
+            ln.bar.setAttribute("x2", x.toFixed(1));
+            ln.head.setAttribute("cx", x.toFixed(1));
+            ln.head.setAttribute("opacity", lp >= 1 ? 0 : 1);
+            ln.dias.forEach(function (d, i) {
+              var on = x >= mx[i] - 0.5;
+              d.setAttribute("fill", on ? GOLD : "#14130e"); d.setAttribute("stroke", on ? GOLD : "#6b654f");
+            });
+            ln.live.setAttribute("opacity", clamp((lp - 0.97) / 0.03, 0, 1).toFixed(2));
+          });
+          cap(p);
+        };
+      },
+      // owner-centered hub → owner on strategy, functions in a flow
+      ops: function (svgEl) {
+        var funcs = ["Sales", "Operations", "Delivery", "Finance"];
+        var center = { x: 200, y: 160 };
+        var before = funcs.map(function (_, i) { var a = -Math.PI / 2 + Math.PI / 4 + i * Math.PI / 2; return [center.x + 112 * Math.cos(a), center.y + 92 * Math.sin(a)]; });
+        var after = funcs.map(function (_, i) { return [62 + i * 92, 226]; });
+        var spokes = funcs.map(function () { return el("line", { stroke: "#8a5a3a", "stroke-width": 1.6 }, svgEl); });
+        var flows = funcs.slice(1).map(function () { return el("line", { stroke: GOLD, "stroke-width": 2, "pathLength": 1, "stroke-dasharray": 1, "marker-end": "" }, svgEl); });
+        var arrows = funcs.slice(1).map(function () { return el("path", { fill: GOLD, opacity: 0 }, svgEl); });
+        var down = el("line", { x1: 200, y1: 92, x2: 200, y2: 186, stroke: GOLD_D, "stroke-width": 1.2, "stroke-dasharray": "3 5", opacity: 0 }, svgEl);
+        var boxes = funcs.map(function (f) {
+          var g = el("g", {}, svgEl);
+          var r = el("rect", { x: -40, y: -17, width: 80, height: 34, rx: 10, fill: "#14130e", "stroke-width": 1.6 }, g);
+          var t = el("text", { y: 4, "text-anchor": "middle", "font-size": 10.5, "font-weight": 700 }, g); t.textContent = f;
+          return { g: g, r: r, t: t };
+        });
+        var owner = el("g", {}, svgEl);
+        var oc = el("circle", { r: 32, fill: "#14130e", stroke: GOLD, "stroke-width": 2 }, owner);
+        var ot = el("text", { y: -2, "text-anchor": "middle", fill: GOLD, "font-size": 10.5, "font-weight": 800 }, owner); ot.textContent = "OWNER";
+        var ot2 = el("text", { y: 12, "text-anchor": "middle", fill: MUTED, "font-size": 8.5, "font-weight": 700 }, owner);
+        var cap = caption(svgEl, "BEFORE: EVERYTHING ROUTES THROUGH ONE PERSON", "AFTER: A SYSTEM THAT RUNS ITSELF");
+        return function (p) {
+          var t = easeInOut(clamp(p / 0.8, 0, 1));
+          var ox = 200, oy = lerp(center.y, 84, t);
+          owner.setAttribute("transform", "translate(" + ox + "," + oy.toFixed(1) + ")");
+          var label = p > 0.55 ? "STRATEGY" : "BOTTLENECK";
+          if (ot2._l !== label) { ot2._l = label; ot2.textContent = label; }
+          oc.setAttribute("stroke", mixColor("#c0603a", GOLD, t));
+          var pos = boxes.map(function (b, i) {
+            var bt = easeInOut(clamp((p - i * 0.04) / 0.8, 0, 1));
+            var x = lerp(before[i][0], after[i][0], bt), y = lerp(before[i][1], after[i][1], bt);
+            b.g.setAttribute("transform", "translate(" + x.toFixed(1) + "," + y.toFixed(1) + ")");
+            b.r.setAttribute("stroke", mixColor("#6b654f", GOLD, bt)); b.t.setAttribute("fill", mixColor("#8f876c", INK, bt));
+            return [x, y];
+          });
+          spokes.forEach(function (s, i) {
+            s.setAttribute("x1", ox); s.setAttribute("y1", oy); s.setAttribute("x2", pos[i][0]); s.setAttribute("y2", pos[i][1]);
+            s.setAttribute("opacity", clamp(1 - p * 1.7, 0, 1).toFixed(3));
+          });
+          flows.forEach(function (f, i) {
+            var a = pos[i], b = pos[i + 1];
+            f.setAttribute("x1", a[0] + 40); f.setAttribute("y1", a[1]); f.setAttribute("x2", b[0] - 46); f.setAttribute("y2", b[1]);
+            var fp = clamp((p - 0.62 - i * 0.08) / 0.2, 0, 1);
+            f.setAttribute("stroke-dashoffset", (1 - fp).toFixed(3));
+            var hx = b[0] - 46, hy = b[1];
+            arrows[i].setAttribute("d", "M" + hx + "," + (hy - 4) + "L" + (hx + 6) + "," + hy + "L" + hx + "," + (hy + 4) + "Z");
+            arrows[i].setAttribute("opacity", fp >= 1 ? 1 : 0);
+          });
+          down.setAttribute("opacity", clamp((p - 0.75) / 0.2, 0, 1).toFixed(3));
+          down.setAttribute("y1", (oy + 34).toFixed(1));
+          cap(p);
+        };
+      }
+    };
+
+    document.querySelectorAll(".cs-svg[data-viz]").forEach(function (svgEl) {
+      var make = VIZ[svgEl.getAttribute("data-viz")]; if (!make) return;
+      var update = make(svgEl);
+      var article = svgEl.closest(".cs");
+      update(reduce ? 1 : 0, performance.now());
+      addScrubber(article, function () {
+        var r = svgEl.getBoundingClientRect(), vh = window.innerHeight;
+        return clamp((vh * 0.85 - r.top) / (vh * 0.5), 0, 1);
+      }, update);
+    });
+  })();
+  </script>
+  <script>
   /* ─── ISOMETRIC ARCHITECTURE STAGE ───
      A dependency-free isometric city drawn on a 2D canvas. Four scenes share
      the same 49 city lots; switching scenes tweens every lot to new targets.
@@ -4031,6 +4747,7 @@
     var titleEl  = document.getElementById("isoTitle");
     var bodyEl   = document.getElementById("isoBody");
     var tagsEl   = document.getElementById("isoTags");
+    var rewardEl = document.getElementById("isoReward");
     var ctaEl    = document.getElementById("isoCta");
     var figEl    = document.getElementById("isoFig");
     var hintEl   = document.getElementById("isoHint");
@@ -4040,18 +4757,22 @@
     var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     var SCENES = [
-      { id: "ambiguity", kicker: "Stage 01 · Understand the real problem", title: "Complexity without a map.",
+      { id: "ambiguity", kicker: "Stage 01 · Clarity", title: "Complexity without a map.",
         body: "Priorities drift, ownership blurs, and effort scatters. Most organizations are solving the wrong problem, so I start by mapping what is really there, not the surface symptoms.",
+        reward: "a problem statement everyone agrees on.",
         tags: ["Discovery sessions", "Stakeholder interviews", "Problem framing"] },
-      { id: "blueprint", kicker: "Stage 02 · Build the execution architecture", title: "Ambiguity becomes a blueprint.",
-        body: "Priorities, decision frameworks, ownership models, and execution plans, designed and aligned before anything gets built.",
+      { id: "blueprint", kicker: "Stage 02 · Structure", title: "Ambiguity becomes a blueprint.",
+        body: "Priorities, decision frameworks, ownership models, and execution plans, designed before anything gets built.",
+        reward: "a ranked roadmap with one owner per workstream.",
         tags: ["Strategic roadmap", "Priority framework", "Ownership design"] },
-      { id: "momentum", kicker: "Stage 03 · Drive measurable progress", title: "Structure you can watch move.",
-        body: "Stakeholders aligned, blockers removed, delivery moving in sequence. Strategy stops being a document and starts showing up as measurable outcomes.",
-        tags: ["Delivery", "Alignment", "Momentum"] },
-      { id: "tower", kicker: "Stage 04 · Growth architecture", title: "Built to scale.",
-        body: "When the foundation is right, growth has somewhere to go: operating clarity, stronger execution, and systems that keep scaling.",
-        tags: ["Growth systems", "Operating clarity", "Scale"], cta: true }
+      { id: "momentum", kicker: "Stage 03 · Alignment", title: "Everyone builds the same plan.",
+        body: "Every leader carries the same story. Blockers surface early and get removed, and delivery moves in sequence instead of in parallel chaos.",
+        reward: "stakeholders aligned on one plan, with blockers surfaced early.",
+        tags: ["Stakeholder alignment", "Blocker removal", "Delivery rhythm"] },
+      { id: "tower", kicker: "Stage 04 · Momentum", title: "Built to scale.",
+        body: "A measurement rhythm turns effort into visible, repeatable progress. When the foundation is right, growth has somewhere to go.",
+        reward: "measurable progress, not another status report.",
+        tags: ["Outcome reviews", "Operating clarity", "Growth systems"], cta: true }
     ];
 
     /* ── deterministic randomness, so the city is identical on every visit ── */
@@ -4667,6 +5388,7 @@
         if (instant) kickerEl.textContent = sc.kicker; else scramble(kickerEl, sc.kicker);
         titleEl.textContent = sc.title;
         bodyEl.textContent = sc.body;
+        if (rewardEl) rewardEl.innerHTML = "<span>You walk away with</span> " + sc.reward;
         tagsEl.innerHTML = "";
         sc.tags.forEach(function (t) {
           var span = document.createElement("span");
