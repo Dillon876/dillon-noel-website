@@ -1905,9 +1905,11 @@
     .hero-alt-link:hover { border-color: var(--gold-2); }
 
     /* ─── chaos → structure board (scroll-scrubbed FLIP) ─── */
+    .cb-track { position: relative; margin-top: 56px; }
+    .cb-track.is-pinned { height: calc(var(--cbH, 480px) + 140vh); }
+    .cb-track.is-pinned .cb { position: sticky; top: var(--cbTop, 100px); }
     .cb {
       position: relative;
-      margin-top: 56px;
       border: 1px solid rgba(199,168,76,0.14);
       border-radius: var(--radius);
       background: linear-gradient(160deg, rgba(18,17,13,0.9), rgba(10,10,8,0.95));
@@ -2229,7 +2231,8 @@
       .paths { grid-template-columns: 1fr; }
     }
     @media (max-width: 760px) {
-      .cb { padding: 14px; margin-top: 36px; }
+      .cb { padding: 14px; }
+      .cb-track { margin-top: 36px; }
       .cb-cols { left: 14px; right: 14px; bottom: 14px; gap: 6px; }
       .cb-label { font-size: 0.66rem; letter-spacing: 0.1em; }
       .cb-name { white-space: normal; line-height: 1.25; overflow: visible; text-overflow: clip; -webkit-hyphens: auto; hyphens: auto; overflow-wrap: break-word; min-width: 0; }
@@ -2539,6 +2542,7 @@
       <div class="container">
         <p class="statement-text" id="statementText">Most stalled initiatives don&rsquo;t have a talent problem or an effort problem. They have an <em>architecture problem</em>: priorities nobody agreed on, owners nobody named, and no system that turns decisions into delivery. <em>That&rsquo;s fixable.</em></p>
 
+        <div class="cb-track" id="cbTrack">
         <div class="cb" id="chaosBoard" aria-label="Illustration: twelve scattered initiatives reorganized into ranked priorities with named owners">
           <div class="cb-head">
             <span class="cb-label" id="cbLabel">Before: 12 initiatives, no order, no owners</span>
@@ -2563,6 +2567,7 @@
             <div class="cb-card" data-col="later"><span class="cb-name">Ops playbook</span></div>
             <div class="cb-card" data-col="later"><span class="cb-name">Hiring plan</span></div>
           </div>
+        </div>
         </div>
       </div>
     </section>
@@ -4172,9 +4177,31 @@
       }
       measureBoard();
       window.addEventListener("resize", function () { measureBoard(); kick(); });
-      addScrubber(board, function () {
-        var r = board.getBoundingClientRect(), vh = window.innerHeight;
-        return clamp((vh * 0.72 - r.top) / (vh * 0.55), 0, 1);
+      var track = document.getElementById("cbTrack");
+      function pinBoard() {
+        if (!track) return;
+        var vh = window.innerHeight, bh = board.offsetHeight;
+        var nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-offset")) || 88;
+        var canPin = !reduce && bh < vh - nav - 8;
+        track.classList.toggle("is-pinned", canPin);
+        track.style.setProperty("--cbH", bh + "px");
+        // center the board in the space below the nav
+        track.style.setProperty("--cbTop", Math.max(nav, nav + (vh - nav - bh) / 2) + "px");
+      }
+      pinBoard();
+      window.addEventListener("resize", pinBoard);
+      window.addEventListener("load", pinBoard);
+      addScrubber(track || board, function () {
+        if (!track || !track.classList.contains("is-pinned")) {
+          var rb = board.getBoundingClientRect(), vh2 = window.innerHeight;
+          return clamp((vh2 * 0.55 - rb.top) / (vh2 * 0.5), 0, 1);
+        }
+        var r = track.getBoundingClientRect();
+        var top = parseFloat(track.style.getPropertyValue("--cbTop")) || 100;
+        var range = r.height - board.offsetHeight;
+        var raw = clamp((top - r.top) / range, 0, 1);
+        // hold "before" for the first 22% of the pinned scroll, transform through 78%, then hold "after"
+        return clamp((raw - 0.22) / 0.56, 0, 1);
       }, function (p) {
         cards.forEach(function (card, i) {
           var L = layout[i]; if (!L) return;
