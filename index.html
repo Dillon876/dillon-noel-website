@@ -2114,6 +2114,9 @@
 
     /* ─── case studies ─── */
     .cs-list { display: grid; gap: 26px; margin-top: 56px; }
+    .cs-track { position: relative; }
+    .cs-track.is-pinned { height: calc(var(--csH, 520px) + 110vh); }
+    .cs-track.is-pinned > .cs { position: sticky; top: var(--csTop, 100px); }
     .cs {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -2124,7 +2127,7 @@
       border: 1px solid rgba(199,168,76,0.14);
       background: linear-gradient(160deg, rgba(18,17,13,0.95), rgba(10,10,8,0.97));
     }
-    .cs:nth-child(even) .cs-visual { order: 2; }
+    .cs-track:nth-child(even) .cs-visual { order: 2; }
     .cs-visual { position: relative; border-radius: 20px; background: radial-gradient(circle at 50% 50%, rgba(199,168,76,0.08), transparent 70%), rgba(8,8,7,0.6); border: 1px solid rgba(199,168,76,0.1); padding: 12px; }
     .cs-svg { display: block; width: 100%; height: auto; overflow: visible; }
     .cs-svg text { font-family: 'DM Sans', sans-serif; }
@@ -2227,7 +2230,7 @@
     @media (max-width: 980px) {
       .cod, .pm { grid-template-columns: 1fr; }
       .cs { grid-template-columns: 1fr; gap: 22px; }
-      .cs:nth-child(even) .cs-visual { order: 0; }
+      .cs-track:nth-child(even) .cs-visual { order: 0; }
       .paths { grid-template-columns: 1fr; }
     }
     @media (max-width: 760px) {
@@ -2781,7 +2784,7 @@
     <!-- ─── PROOF: profile, credentials, case studies ─── -->
     <section id="work" class="section reveal">
       <div class="container">
-        <div class="section-shell">
+        <div class="section-shell iso-shell">
           <div class="grid-2 proof-top">
             <div>
               <p class="eyebrow">Track Record</p>
@@ -2810,6 +2813,7 @@
           </div>
 
           <div class="cs-list">
+          <div class="cs-track">
           <article class="cs reveal" id="case-1" data-cs="1">
             <div class="cs-visual" aria-hidden="true"><svg class="cs-svg" viewBox="0 0 400 300" data-viz="portfolio"></svg></div>
             <div class="cs-copy">
@@ -2823,7 +2827,9 @@
               <div class="cs-chips"><span class="cs-chip">7 applications managed</span><span class="cs-chip">100+ stakeholders aligned</span><span class="cs-chip">Execution leadership</span></div>
             </div>
           </article>
+          </div>
 
+          <div class="cs-track">
           <article class="cs reveal" id="case-2" data-cs="2">
             <div class="cs-visual" aria-hidden="true"><svg class="cs-svg" viewBox="0 0 400 300" data-viz="launch"></svg></div>
             <div class="cs-copy">
@@ -2837,7 +2843,9 @@
               <div class="cs-chips"><span class="cs-chip">2 applications shipped</span><span class="cs-chip">Concept &rarr; production</span><span class="cs-chip">Requirements &amp; delivery</span></div>
             </div>
           </article>
+          </div>
 
+          <div class="cs-track">
           <article class="cs reveal" id="case-3" data-cs="3">
             <div class="cs-visual" aria-hidden="true"><svg class="cs-svg" viewBox="0 0 400 300" data-viz="ops"></svg></div>
             <div class="cs-copy">
@@ -2851,6 +2859,7 @@
               <div class="cs-chips"><span class="cs-chip">Operating structure</span><span class="cs-chip">Workflow design</span><span class="cs-chip">Growth systems</span></div>
             </div>
           </article>
+          </div>
 
           </div>
         </div>
@@ -4748,10 +4757,35 @@
       var make = VIZ[svgEl.getAttribute("data-viz")]; if (!make) return;
       var update = make(svgEl);
       var article = svgEl.closest(".cs");
+      var track = article.parentElement && article.parentElement.classList.contains("cs-track") ? article.parentElement : null;
+      function navOff() { return parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-offset")) || 88; }
+      function pinCase() {
+        if (!track) return;
+        var vh = window.innerHeight, ah = article.offsetHeight, nav = navOff();
+        var canPin = !reduce && ah < vh - nav - 8;
+        track.classList.toggle("is-pinned", canPin);
+        track.style.setProperty("--csH", ah + "px");
+        track.style.setProperty("--csTop", Math.max(nav, nav + (vh - nav - ah) / 2) + "px");
+      }
+      pinCase();
+      window.addEventListener("resize", pinCase);
+      window.addEventListener("load", pinCase);
       update(reduce ? 1 : 0, performance.now());
-      addScrubber(article, function () {
-        var r = svgEl.getBoundingClientRect(), vh = window.innerHeight;
-        return clamp((vh * 0.85 - r.top) / (vh * 0.5), 0, 1);
+      addScrubber(track || article, function () {
+        var raw;
+        if (track && track.classList.contains("is-pinned")) {
+          // pinned: progress through the track while the case study stays on screen
+          var r = track.getBoundingClientRect();
+          var top = parseFloat(track.style.getPropertyValue("--csTop")) || 100;
+          raw = clamp((top - r.top) / Math.max(r.height - article.offsetHeight, 1), 0, 1);
+        } else {
+          // too tall to pin (phones): animate only while the visual is fully on screen
+          var rv = svgEl.getBoundingClientRect(), vh = window.innerHeight, nav = navOff();
+          var span = vh - nav - rv.height;
+          raw = span > 40 ? clamp((vh - rv.bottom) / span, 0, 1) : clamp((vh * 0.8 - rv.top) / (vh * 0.5), 0, 1);
+        }
+        // hold "before" for the first stretch, transform through the middle, hold "after" at the end
+        return clamp((raw - 0.2) / 0.58, 0, 1);
       }, update);
     });
   })();
