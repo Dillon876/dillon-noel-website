@@ -1356,8 +1356,533 @@
       .iso-controls { position: relative; left: auto; right: auto; bottom: auto; padding: 20px 14px 18px; }
       .iso-fig { top: 16px; right: 18px; font-size: 0.9rem; }
       .iso-hint { bottom: 12px; right: 16px; }
-      .iso-btn { padding: 9px 14px; }
-      .iso-dot { padding: 7px 10px; }
+      .iso-controls { gap: 8px; padding: 20px 10px 18px; }
+      .iso-btn { padding: 9px 12px; }
+      .iso-dots { gap: 2px; }
+      .iso-dot { padding: 7px 9px; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       MOTION SYSTEM
+       One set of timing and easing tokens shared by every effect,
+       so the whole site moves with the same personality.
+       ═══════════════════════════════════════════════════════════ */
+    :root {
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);   /* entrances, reveals */
+      --ease-in-out:   cubic-bezier(0.65, 0, 0.35, 1);  /* state changes */
+      --ease-in:       cubic-bezier(0.7, 0, 0.84, 0);   /* exits */
+      --ease-back:     cubic-bezier(0.34, 1.56, 0.64, 1); /* playful overshoot, selections */
+      --ease-linear:   linear;                          /* progress, marquee */
+      --dur-fast: 0.2s;
+      --dur-base: 0.45s;
+      --dur-slow: 0.9s;
+      --dur-cinema: 1.4s;
+    }
+
+    /* ─── NAV: brand character reveal, CTA, mobile menu ─── */
+    .brand { display: inline-flex; }
+    .brand .ch {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(0.5em);
+      filter: blur(4px);
+      animation: brandChar 0.9s var(--ease-out-expo) forwards;
+      animation-delay: calc(var(--i) * 45ms + 120ms);
+      white-space: pre;
+    }
+    @keyframes brandChar { to { opacity: 1; transform: none; filter: blur(0); } }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #0f0d08;
+      background: linear-gradient(170deg, var(--gold-2), var(--gold));
+      box-shadow: 0 8px 24px rgba(201,162,39,0.2);
+      white-space: nowrap;
+      transition: box-shadow var(--dur-fast) ease, filter var(--dur-fast) ease;
+    }
+    .nav-cta:hover { box-shadow: 0 12px 30px rgba(201,162,39,0.32); filter: brightness(1.05); }
+
+    .menu-toggle {
+      display: none;
+      appearance: none;
+      width: 46px; height: 46px;
+      border-radius: 14px;
+      border: 1px solid rgba(199,168,76,0.26);
+      background: rgba(255,255,255,0.03);
+      cursor: pointer;
+      position: relative;
+      z-index: 61;
+    }
+    .menu-toggle-lines { position: absolute; inset: 0; }
+    .menu-toggle-lines span {
+      position: absolute;
+      left: 13px; right: 13px;
+      height: 1.6px;
+      border-radius: 2px;
+      background: var(--gold-2);
+      transition: transform var(--dur-base) var(--ease-out-expo), opacity var(--dur-fast) ease, left var(--dur-base) var(--ease-out-expo);
+    }
+    .menu-toggle-lines span:nth-child(1) { top: 16px; }
+    .menu-toggle-lines span:nth-child(2) { top: 22px; left: 19px; }
+    .menu-toggle-lines span:nth-child(3) { top: 28px; }
+    .menu-open .menu-toggle-lines span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .menu-open .menu-toggle-lines span:nth-child(2) { opacity: 0; left: 30px; }
+    .menu-open .menu-toggle-lines span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 49;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 34px;
+      padding: 110px 28px 40px;
+      background: rgba(8,8,7,0.94);
+      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(18px);
+      clip-path: circle(0% at calc(100% - 44px) 36px);
+      transition: clip-path 0.7s var(--ease-out-expo);
+      overflow-y: auto;
+    }
+    .mobile-menu[hidden] { display: none; }
+    .menu-open .mobile-menu { clip-path: circle(150% at calc(100% - 44px) 36px); }
+    .mobile-menu-links { display: grid; gap: 6px; }
+    .mobile-menu-links a {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 8vw, 2.6rem);
+      line-height: 1.2;
+      color: var(--text);
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.5s ease, transform 0.6s var(--ease-out-expo), color var(--dur-fast) ease;
+      transition-delay: calc(var(--i, 0) * 45ms + 120ms);
+    }
+    .mobile-menu-links a:hover, .mobile-menu-links a:focus-visible { color: var(--gold-2); outline: none; }
+    .menu-open .mobile-menu-links a { opacity: 1; transform: none; }
+    .mobile-menu-cta {
+      align-self: flex-start;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.5s ease 0.55s, transform 0.6s var(--ease-out-expo) 0.55s;
+    }
+    .menu-open .mobile-menu-cta { opacity: 1; transform: none; }
+    body.menu-open { overflow: hidden; }
+
+    @media (max-width: 1100px) {
+      .nav { flex-direction: row !important; align-items: center !important; padding: 10px 0 !important; min-height: 64px; }
+      .nav-links, .nav-cta { display: none; }
+      .menu-toggle { display: inline-block; }
+    }
+
+    /* ─── HERO: kinetic type, iris photo reveal, depth parallax ─── */
+    .hero-microcopy {
+      margin: 12px 0 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+
+    .kinetic .kt-word {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+      padding-bottom: 0.08em;
+      margin-bottom: -0.08em;
+    }
+    .kinetic .kt-inner {
+      display: inline-block;
+      transform: translateY(105%);
+      transition: transform var(--dur-cinema) var(--ease-out-expo);
+      transition-delay: calc(var(--i) * 70ms + 150ms);
+    }
+    .kinetic.is-in .kt-inner { transform: none; }
+
+    .hero-photo.iris {
+      clip-path: circle(0% at 50% 38%);
+      transition: clip-path 1.6s var(--ease-out-expo) 0.2s;
+    }
+    .hero-photo.iris.is-in { clip-path: circle(80% at 50% 38%); }
+
+    .hero-photo-wrap > .hero-ring,
+    .hero-photo-wrap > .hero-ring-2,
+    .hero-photo-wrap > .hero-glow,
+    .hero-photo-wrap > .hero-badge,
+    .hero-photo-wrap > .hero-status,
+    .hero-photo-wrap > .hero-photo {
+      translate: calc(var(--mx, 0) * var(--depth, 0) * 1px) calc(var(--my, 0) * var(--depth, 0) * 1px);
+    }
+    .hero-photo-wrap > .hero-ring-2 { --depth: 22; }
+    .hero-photo-wrap > .hero-ring   { --depth: 13; }
+    .hero-photo-wrap > .hero-glow   { --depth: -18; }
+    .hero-photo-wrap > .hero-photo  { --depth: 5; }
+    .hero-photo-wrap > .hero-badge  { --depth: 16; animation: floatY 6s ease-in-out infinite; }
+    .hero-photo-wrap > .hero-status { --depth: 10; animation: floatY 7s ease-in-out -2s infinite; }
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-5px); }
+    }
+
+    /* ─── MARQUEE (velocity-reactive) ─── */
+    .marquee {
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      padding: 22px 0;
+      margin: 18px 0 0;
+      border-top: 1px solid rgba(199,168,76,0.10);
+      border-bottom: 1px solid rgba(199,168,76,0.10);
+      background: linear-gradient(90deg, rgba(12,12,9,0.9), rgba(18,17,12,0.6), rgba(12,12,9,0.9));
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    }
+    .marquee-track { display: flex; width: max-content; will-change: transform; }
+    .marquee-group { display: flex; align-items: center; gap: 28px; padding-right: 28px; flex-shrink: 0; }
+    .marquee-group span {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+      color: var(--text);
+      white-space: nowrap;
+      transition: color var(--dur-fast) ease;
+    }
+    .marquee-group span:hover { color: var(--gold-2); }
+    .marquee-group i { color: var(--gold); font-style: normal; font-size: 0.9rem; opacity: 0.8; }
+
+    /* ─── HOOK STATEMENT (scroll typography) ─── */
+    .statement { position: relative; z-index: 1; padding: 110px 0 40px; }
+    .statement-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.7rem, 3.6vw, 3.2rem);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      max-width: 1020px;
+      margin: 0;
+      color: var(--text);
+    }
+    .statement-text em { font-style: normal; color: var(--gold-2); }
+    .statement-text .sw { opacity: 0.16; transition: opacity 0.35s ease; }
+    .statement-text .sw.on { opacity: 1; }
+
+    /* ─── PROCESS: scroll-linked path + rewards ─── */
+    .process-reward {
+      margin: 14px 0 0;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(199,168,76,0.18);
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    .process-reward span {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold-2);
+      margin-bottom: 4px;
+    }
+    .process-line { background: rgba(201,162,39,0.10) !important; overflow: visible; }
+    .process-line-fill {
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, var(--gold), var(--gold-2));
+      transform-origin: left center;
+      transform: scaleX(var(--pp, 0));
+      box-shadow: 0 0 12px rgba(224,196,112,0.5);
+    }
+    .process-line-dot {
+      position: absolute;
+      top: 50%;
+      left: calc(var(--pp, 0) * 100%);
+      width: 11px; height: 11px;
+      margin: -5.5px 0 0 -5.5px;
+      border-radius: 999px;
+      background: #fff3d0;
+      box-shadow: 0 0 0 4px rgba(224,196,112,0.22), 0 0 18px rgba(224,196,112,0.9);
+      opacity: calc(var(--pp, 0) * 40);
+    }
+    .process-number { transition: background var(--dur-base) ease, box-shadow var(--dur-base) ease, color var(--dur-base) ease, transform var(--dur-base) var(--ease-back); }
+    .process-step.is-reached .process-number {
+      background: linear-gradient(170deg, var(--gold-2), var(--gold));
+      color: #0f0d08;
+      box-shadow: 0 0 22px rgba(224,196,112,0.45);
+      transform: scale(1.08);
+    }
+
+    /* ─── SVG line drawing on icons ─── */
+    body.draw-ready .icon-badge svg [data-draw] {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      transition: stroke-dashoffset 1.4s var(--ease-out-expo);
+      transition-delay: calc(var(--d, 0) * 120ms + 200ms);
+    }
+    body.draw-ready .in-view .icon-badge svg [data-draw],
+    body.draw-ready .icon-badge.in-view svg [data-draw] { stroke-dashoffset: 0; }
+
+    /* ─── CARDS: 3D tilt + pointer lighting ─── */
+    .tilt-light {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      background: radial-gradient(420px circle at var(--lx, 50%) var(--ly, 50%), rgba(224,196,112,0.13), transparent 45%);
+      transition: opacity var(--dur-base) ease;
+      z-index: 0;
+    }
+    .tilt-on { position: relative; }
+    .tilt-on > :not(.tilt-light) { position: relative; z-index: 1; }
+    .tilt-on.is-tilting .tilt-light { opacity: 1; }
+    .tilt-on.is-tilting.is-tilting.is-tilting {
+      transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, -4px));
+      transition: transform 0.12s linear, border-color 0.28s ease, box-shadow 0.28s ease;
+      transition-delay: 0s;
+    }
+    .mini-card.tilt-on { --lift: -2px; }
+
+    /* ─── BUTTONS: magnetic + sheen ─── */
+    .btn, .nav-cta { translate: var(--mag-x, 0px) var(--mag-y, 0px); }
+    .btn-primary { position: relative; overflow: hidden; isolation: isolate; }
+    .btn-primary::after {
+      content: "";
+      position: absolute;
+      top: 0; bottom: 0;
+      left: -60%;
+      width: 40%;
+      background: linear-gradient(100deg, transparent, rgba(255,250,230,0.55), transparent);
+      transform: skewX(-20deg);
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0;
+    }
+    .btn-primary:hover::after { animation: btnSheen 0.9s var(--ease-out-expo); }
+    @keyframes btnSheen {
+      0%   { left: -60%; opacity: 1; }
+      100% { left: 130%; opacity: 0; }
+    }
+
+    /* ─── CONTEXTUAL CURSOR ─── */
+    .cursor-label {
+      position: fixed;
+      left: 0; top: 0;
+      z-index: 9998;
+      pointer-events: none;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(12,12,9,0.86);
+      border: 1px solid rgba(199,168,76,0.4);
+      color: var(--gold-2);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.6);
+      transition: opacity var(--dur-fast) ease, transform var(--dur-base) var(--ease-back);
+      white-space: nowrap;
+    }
+    .cursor-label.is-on { opacity: 1; transform: translate(14px, 14px) scale(1); }
+    .cursor-glow.is-context { width: 140px; height: 140px; background: radial-gradient(circle, rgba(224,196,112,0.16), transparent 70%); }
+
+    /* ─── ARCHITECTURE: pinned scroll-scrubbed story ─── */
+    .iso-shell { overflow: clip; }
+    .iso-track.is-pinned { height: calc(var(--iso-h, 640px) + 260vh); }
+    .iso-track.is-pinned .iso-pin { position: sticky; top: calc(var(--nav-offset, 88px) + 8px); }
+    .iso-track.is-pinned .iso-stage { height: var(--iso-h, 640px); }
+    .iso-dots { position: relative; }
+    .iso-dots::after {
+      content: "";
+      position: absolute;
+      left: 18px; right: 18px; bottom: -7px;
+      height: 2px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-2));
+      transform-origin: left;
+      transform: scaleX(var(--sp, 0));
+      opacity: 0;
+      transition: opacity var(--dur-base) ease;
+    }
+    .iso-track.is-pinned .iso-dots::after { opacity: 1; }
+
+    /* ─── SCORECARD (lead magnet) ─── */
+    .sc {
+      position: relative;
+      border-radius: var(--radius);
+      border: 1px solid rgba(199,168,76,0.16);
+      background: linear-gradient(160deg, rgba(20,19,14,0.95), rgba(10,10,8,0.97));
+      padding: 34px;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .sc-panel[hidden] { display: none; }
+    .sc-panel { animation: scIn var(--dur-slow) var(--ease-out-expo); }
+    @keyframes scIn { from { opacity: 0; transform: translateY(16px); } }
+    .sc-intro-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 34px; align-items: center; }
+    .sc-title { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 2.6vw, 2.2rem); line-height: 1.1; margin-bottom: 12px; }
+    .sc-points { list-style: none; padding: 0; margin: 18px 0 24px; display: grid; gap: 10px; }
+    .sc-points li { position: relative; padding-left: 26px; color: var(--text); }
+    .sc-points li::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 14px; height: 8px; border-left: 2px solid var(--gold-2); border-bottom: 2px solid var(--gold-2); transform: rotate(-45deg); }
+    .sc-preview { display: grid; gap: 22px; justify-items: center; }
+    .sc-preview-ring {
+      width: 150px; height: 150px;
+      border-radius: 999px;
+      display: grid; place-items: center;
+      background: conic-gradient(var(--gold-2) 0 62%, rgba(199,168,76,0.12) 62% 100%);
+      -webkit-mask: radial-gradient(circle, transparent 58%, #000 59%);
+      mask: radial-gradient(circle, transparent 58%, #000 59%);
+      animation: spinSlow 14s linear infinite;
+    }
+    .sc-preview-ring span { display: none; }
+    @keyframes spinSlow { to { transform: rotate(360deg); } }
+    .sc-preview-bars { width: 100%; max-width: 240px; display: grid; gap: 10px; }
+    .sc-preview-bars i { display: block; height: 8px; border-radius: 8px; background: rgba(199,168,76,0.12); position: relative; overflow: hidden; }
+    .sc-preview-bars i::after { content: ""; position: absolute; inset: 0; width: var(--w); border-radius: 8px; background: linear-gradient(90deg, var(--gold), var(--gold-2)); animation: barPulse 3.2s var(--ease-in-out) infinite alternate; }
+    @keyframes barPulse { from { transform: scaleX(0.6); transform-origin: left; } to { transform: scaleX(1); transform-origin: left; } }
+
+    .sc-progress { height: 3px; border-radius: 3px; background: rgba(199,168,76,0.12); overflow: hidden; }
+    .sc-progress span { display: block; height: 100%; width: 100%; transform-origin: left; transform: scaleX(var(--qp, 0)); background: linear-gradient(90deg, var(--gold), var(--gold-2)); transition: transform var(--dur-base) var(--ease-out-expo); }
+    .sc-meta { display: flex; justify-content: space-between; margin: 16px 0 26px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-2); }
+    .sc-meta #scCount { color: var(--muted); }
+    .sc-q-wrap { min-height: 4.2em; }
+    .sc-q {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+      line-height: 1.25;
+      margin: 0 0 26px;
+      max-width: 820px;
+    }
+    .sc-q.swap-out { animation: qOut 0.22s var(--ease-in) forwards; }
+    .sc-q.swap-in  { animation: qIn 0.55s var(--ease-out-expo); }
+    @keyframes qOut { to { opacity: 0; transform: translateX(-24px); } }
+    @keyframes qIn  { from { opacity: 0; transform: translateX(28px); } }
+    .sc-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .sc-opt {
+      appearance: none;
+      font-family: inherit;
+      text-align: left;
+      cursor: pointer;
+      padding: 18px 20px;
+      border-radius: 18px;
+      border: 1px solid rgba(199,168,76,0.18);
+      background: rgba(255,255,255,0.025);
+      color: var(--text);
+      display: grid; gap: 4px;
+      transition: border-color var(--dur-fast) ease, background var(--dur-fast) ease, transform var(--dur-base) var(--ease-back);
+    }
+    .sc-opt b { font-size: 1.05rem; }
+    .sc-opt span { font-size: 0.82rem; color: var(--muted); }
+    .sc-opt:hover { border-color: rgba(199,168,76,0.45); background: rgba(199,168,76,0.07); transform: translateY(-2px); }
+    .sc-opt:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(0,0,0,0.5), 0 0 0 5px var(--focus-ring); }
+    .sc-opt.is-picked { border-color: var(--gold-2); background: rgba(199,168,76,0.16); transform: scale(0.97); }
+    .sc-opt.is-prev { border-color: rgba(224,196,112,0.55); }
+    .sc-back { appearance: none; border: 0; background: none; color: var(--muted); font: inherit; font-size: 0.85rem; margin-top: 20px; cursor: pointer; padding: 6px 0; }
+    .sc-back:hover { color: var(--gold-2); }
+    .sc-back[disabled] { opacity: 0.35; cursor: default; }
+
+    .sc-results-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 38px; align-items: start; }
+    .sc-results { clip-path: circle(0% at var(--ix, 50%) var(--iy, 50%)); animation: none; }
+    .sc-results.is-open { clip-path: circle(150% at var(--ix, 50%) var(--iy, 50%)); transition: clip-path 1.1s var(--ease-out-expo); }
+    .sc-score-card { display: grid; justify-items: center; gap: 12px; }
+    .sc-ring { position: relative; width: 190px; height: 190px; }
+    .sc-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); overflow: visible; }
+    .sc-ring circle { fill: none; stroke-width: 9; stroke-linecap: round; }
+    .sc-ring-bg { stroke: rgba(199,168,76,0.12); }
+    .sc-ring-fg { stroke: var(--gold-2); stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--p)); transition: stroke-dashoffset 1.6s var(--ease-out-expo) 0.3s; filter: drop-shadow(0 0 6px rgba(224,196,112,0.5)); }
+    .sc-ring-label { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
+    .sc-ring-label strong { font-family: 'Playfair Display', serif; font-size: 3.2rem; line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
+    .sc-ring-label span { font-size: 0.8rem; color: var(--muted); }
+    .sc-band { font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.78rem; color: var(--gold-2); margin: 0; }
+    .sc-bars { width: 100%; display: grid; gap: 12px; margin-top: 8px; }
+    .sc-bar { display: grid; grid-template-columns: 92px 1fr 40px; gap: 10px; align-items: center; font-size: 0.85rem; }
+    .sc-bar-track { height: 8px; border-radius: 8px; background: rgba(199,168,76,0.12); overflow: hidden; }
+    .sc-bar-fill { display: block; height: 100%; border-radius: 8px; background: linear-gradient(90deg, var(--gold), var(--gold-2)); transform-origin: left; transform: scaleX(0); transition: transform 1.2s var(--ease-out-expo); transition-delay: calc(var(--i) * 110ms + 500ms); }
+    .sc-bar.is-gap .sc-bar-fill { background: linear-gradient(90deg, #b8643c, #e0a070); }
+    .sc-bar.is-gap span:first-child { color: #e0a070; font-weight: 700; }
+    .sc-bar b { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); font-weight: 600; }
+    .sc-gap-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.5rem); margin-bottom: 10px; }
+    .sc-fix { margin: 18px 0 12px; padding: 18px 20px; border-radius: 16px; border: 1px solid rgba(199,168,76,0.22); background: rgba(199,168,76,0.06); }
+    .sc-fix p { margin: 0; }
+    .sc-fix-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-2); margin-bottom: 6px !important; }
+    .sc-map-link { color: var(--gold-2); font-weight: 600; font-size: 0.9rem; }
+    .sc-map-link:hover { text-decoration: underline; }
+    .sc-next { margin-top: 26px; padding-top: 22px; border-top: 1px solid rgba(199,168,76,0.14); }
+    .sc-next-title { font-weight: 700; margin-bottom: 4px; }
+    .sc-email { display: grid; grid-template-columns: 0.7fr 1fr auto; gap: 10px; margin-top: 14px; }
+    .sc-msg { min-height: 1.4em; margin: 10px 0 0; font-size: 0.88rem; color: var(--gold-2); }
+    .sc-msg.is-error { color: #e07070; }
+    .sc-or { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 8px; color: var(--muted); font-size: 0.85rem; }
+    .sc-retake { appearance: none; background: none; border: 0; color: var(--muted); font: inherit; text-decoration: underline; cursor: pointer; }
+    .sc-retake:hover { color: var(--gold-2); }
+
+    /* ─── INTENSIVE: how it works + ethical scarcity ─── */
+    .how-steps { list-style: none; counter-reset: how; padding: 0; margin: 24px 0 6px; display: grid; gap: 12px; }
+    .how-steps li { counter-increment: how; display: grid; grid-template-columns: 34px 1fr; column-gap: 12px; align-items: start; }
+    .how-steps li::before {
+      content: counter(how);
+      grid-row: span 2;
+      width: 34px; height: 34px;
+      border-radius: 999px;
+      display: grid; place-items: center;
+      font-weight: 700; font-size: 0.85rem;
+      color: var(--gold-2);
+      border: 1px solid rgba(199,168,76,0.3);
+      background: rgba(199,168,76,0.08);
+    }
+    .how-steps strong { color: var(--text); }
+    .how-steps span { color: var(--muted); font-size: 0.92rem; }
+    .capacity-note { display: flex; gap: 10px; align-items: flex-start; margin: 20px 0 0; font-size: 0.88rem; color: var(--text); }
+    .capacity-note .hero-status-dot { margin-top: 7px; flex: 0 0 auto; }
+
+    /* ─── CTA BAND: animated lighting ─── */
+    .contact-cta-band { position: relative; overflow: hidden; }
+    .contact-cta-band::before {
+      content: "";
+      position: absolute;
+      inset: -40% -10%;
+      background: radial-gradient(ellipse 30% 60% at 50% 50%, rgba(224,196,112,0.12), transparent 70%);
+      animation: lightSweep 12s var(--ease-in-out) infinite alternate;
+      pointer-events: none;
+    }
+    .contact-cta-band > .container { position: relative; }
+    @keyframes lightSweep { from { transform: translateX(-35%); } to { transform: translateX(35%); } }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 980px) {
+      .sc-intro-grid, .sc-results-grid { grid-template-columns: 1fr; }
+      .sc-preview { display: none; }
+    }
+    @media (max-width: 760px) {
+      .statement { padding: 70px 0 20px; }
+      .sc { padding: 22px; }
+      .sc-options { grid-template-columns: 1fr; }
+      .sc-email { grid-template-columns: 1fr; }
+      .process-step .process-number { transition-delay: 0s; }
+    }
+
+    /* view transition for the architecture copy (button mode only) */
+    #isoCopy { view-transition-name: iso-copy; }
+    ::view-transition-old(root) { display: none; }
+    ::view-transition-new(root) { animation: none; }
+    ::view-transition-old(iso-copy) { animation: vtOut 0.22s var(--ease-in) both; }
+    ::view-transition-new(iso-copy) { animation: vtIn 0.6s var(--ease-out-expo) both; }
+    @keyframes vtOut { to { opacity: 0; transform: translateY(-10px); filter: blur(4px); } }
+    @keyframes vtIn  { from { opacity: 0; transform: translateY(14px); filter: blur(4px); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .brand .ch { animation: none !important; opacity: 1 !important; transform: none !important; filter: none !important; }
+      .kinetic .kt-inner { transform: none !important; transition: none !important; }
+      .hero-photo.iris { clip-path: none !important; transition: none !important; }
+      .hero-photo-wrap > * { animation: none !important; translate: none !important; }
+      .statement-text .sw { opacity: 1 !important; transition: none !important; }
+      .sc-panel, .sc-preview-ring, .sc-preview-bars i::after, .contact-cta-band::before, .btn-primary:hover::after, .sc-q { animation: none !important; }
+      .sc-results { clip-path: none !important; transition: none !important; }
+      .mobile-menu, .mobile-menu-links a, .mobile-menu-cta { transition: none !important; }
+      .sc-ring-fg, .sc-bar-fill, .sc-progress span { transition: none !important; }
+      body.draw-ready .icon-badge svg [data-draw] { stroke-dashoffset: 0 !important; transition: none !important; }
+      .btn, .nav-cta { translate: none !important; }
     }
 
     /* ─── REDUCED MOTION ─── */
@@ -1499,18 +2024,37 @@
     <!-- ─── NAV ─── -->
     <div class="topbar">
       <div class="container nav">
-        <div class="brand">Dillon Noel</div>
+        <a class="brand" href="#top" id="brandMark" aria-label="Dillon Noel, back to top">Dillon Noel</a>
         <div class="nav-links">
           <a href="#about">Profile</a>
           <a href="#impact">Impact</a>
           <a href="#process">Process</a>
-          <a href="#architecture" class="nav-optional">Architecture</a>
+          <a href="#architecture">Architecture</a>
           <a href="#testimonials">Testimonials</a>
           <a href="#services">Services</a>
           <a href="#intensive">Strategy Intensive</a>
           <a href="#contact">Contact</a>
         </div>
+        <a class="nav-cta" href="#scorecard">Free Scorecard</a>
+        <button type="button" class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+          <span class="menu-toggle-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
       </div>
+    </div>
+
+    <!-- ─── MOBILE MENU ─── -->
+    <div class="mobile-menu" id="mobileMenu" hidden>
+      <nav class="mobile-menu-links" aria-label="Mobile">
+        <a href="#about">Profile</a>
+        <a href="#impact">Impact</a>
+        <a href="#process">Process</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#services">Services</a>
+        <a href="#intensive">Strategy Intensive</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a class="btn btn-primary mobile-menu-cta" href="#scorecard">Get your free Execution Gap Score</a>
     </div>
 
     <!-- ─── HERO ─── -->
@@ -1538,12 +2082,12 @@
 
           <!-- Copy -->
           <div class="hero-copy reveal delay-2">
-            <p class="eyebrow" id="heroEyebrow">Dillon Noel</p>
+            <p class="eyebrow" id="heroEyebrow">For founders, operators &amp; enterprise leaders</p>
             <div class="heading-glow-wrap">
-              <h1 class="has-shimmer">Strategy, execution, and growth architecture for leaders solving <span style="color:var(--gold-2);">complex business problems.</span></h1>
+              <h1 class="has-shimmer kinetic" id="heroTitle">Your strategy isn&rsquo;t the problem. <span style="color:var(--gold-2);">Execution is.</span></h1>
             </div>
             <p class="lead">
-              I help organizations clarify priorities, align stakeholders, and build execution systems that turn strategy into measurable progress.
+              I help leaders turn stalled, complex initiatives into clear priorities, clear owners, and progress you can measure, without another strategy deck that sits in a drawer.
             </p>
             <p class="authority-line">
               Managed 7 enterprise SaaS applications &bull; Built 2 applications from concept to production
@@ -1564,9 +2108,10 @@
             </div>
 
             <div class="hero-actions">
-              <a class="btn btn-primary" href="#intensive">Apply for Strategy Intensive</a>
-              <a class="btn btn-secondary" href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">LinkedIn Profile</a>
+              <a class="btn btn-primary" href="#scorecard">Get your free Execution Gap Score</a>
+              <a class="btn btn-secondary" href="#intensive">Apply for the Strategy Intensive</a>
             </div>
+            <p class="hero-microcopy">Free &middot; 12 quick questions &middot; about 2 minutes &middot; instant results</p>
           </div>
         </div>
 
@@ -1605,6 +2150,28 @@
       </div>
     </header>
 
+    <!-- ─── MARQUEE ─── -->
+    <div class="marquee" id="marquee" aria-label="What working together delivers">
+      <div class="marquee-track" id="marqueeTrack">
+        <div class="marquee-group">
+          <span>Clear priorities</span><i aria-hidden="true">&#10022;</i>
+          <span>Named owners</span><i aria-hidden="true">&#10022;</i>
+          <span>Decisions that stick</span><i aria-hidden="true">&#10022;</i>
+          <span>Aligned stakeholders</span><i aria-hidden="true">&#10022;</i>
+          <span>Blockers removed</span><i aria-hidden="true">&#10022;</i>
+          <span>Measurable progress</span><i aria-hidden="true">&#10022;</i>
+          <span>Systems that scale</span><i aria-hidden="true">&#10022;</i>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── HOOK STATEMENT (scroll typography) ─── -->
+    <section class="statement" id="statement" aria-label="The real problem">
+      <div class="container">
+        <p class="statement-text" id="statementText">Most stalled initiatives don&rsquo;t have a talent problem or an effort problem. They have an <em>architecture problem</em>: priorities nobody agreed on, owners nobody named, and no system that turns decisions into delivery. <em>That&rsquo;s fixable.</em></p>
+      </div>
+    </section>
+
     <!-- ─── ABOUT ─── -->
     <section id="about" class="section reveal">
       <div class="container">
@@ -1631,7 +2198,7 @@
                     </span>
                     <h3>Clarity Over Confusion</h3>
                   </div>
-                  <p class="muted">Breaks complex business problems into structured, actionable paths leaders and teams can execute with confidence.</p>
+                  <p class="muted">Know exactly what to work on first. Complex problems become a short, ranked list your team can act on with confidence.</p>
                 </div>
 
                 <div class="mini-card">
@@ -1641,7 +2208,7 @@
                     </span>
                     <h3>Execution, Not Theory</h3>
                   </div>
-                  <p class="muted">Focuses on implementation, alignment, and measurable progress—not recommendations that stay on paper.</p>
+                  <p class="muted">I stay through delivery, so the plan shows up as shipped work and moving numbers, not recommendations that stay on paper.</p>
                 </div>
 
                 <div class="mini-card">
@@ -1651,7 +2218,7 @@
                     </span>
                     <h3>Enterprise-Grade Thinking</h3>
                   </div>
-                  <p class="muted">Applies structured thinking shaped by high-scale environments and delivery complexity.</p>
+                  <p class="muted">Proven across 7 enterprise SaaS applications and 100+ stakeholders, so your initiative gets tested structure, not guesswork.</p>
                 </div>
 
                 <div class="mini-card">
@@ -1661,7 +2228,7 @@
                     </span>
                     <h3>Built for Growth</h3>
                   </div>
-                  <p class="muted">Designs systems that support stronger operating clarity, better execution, and scalable growth.</p>
+                  <p class="muted">Your team doesn&rsquo;t have to invent the operating structure. You get one designed to keep working as you grow.</p>
                 </div>
               </div>
             </div>
@@ -1683,7 +2250,7 @@
           </div>
 
           <div class="process-wrap">
-            <div class="process-line"></div>
+            <div class="process-line" id="processLine" aria-hidden="true"><span class="process-line-fill"></span><span class="process-line-dot"></span></div>
             <div class="process-grid">
               <div class="process-step reveal delay-1">
                 <div class="card">
@@ -1692,6 +2259,7 @@
                     <h3>Understand the real problem</h3>
                   </div>
                   <p class="muted">Most organizations are solving the wrong problem. I start by asking the right questions — mapping the actual challenge, not the surface symptoms. This phase produces a clear problem statement and shared understanding.</p>
+                  <p class="process-reward"><span>You walk away with</span> a problem statement everyone agrees on.</p>
                   <div class="process-tags">
                     <span class="process-tag">Discovery sessions</span>
                     <span class="process-tag">Stakeholder interviews</span>
@@ -1707,6 +2275,7 @@
                     <h3>Build the execution architecture</h3>
                   </div>
                   <p class="muted">With clarity on the problem, I design the structure: priorities, decision frameworks, ownership models, and execution plans. This is where ambiguity becomes a concrete path forward.</p>
+                  <p class="process-reward"><span>You walk away with</span> a ranked roadmap with a named owner for every workstream.</p>
                   <div class="process-tags">
                     <span class="process-tag">Strategic roadmap</span>
                     <span class="process-tag">Priority framework</span>
@@ -1722,6 +2291,7 @@
                     <h3>Drive measurable progress</h3>
                   </div>
                   <p class="muted">Strategy without execution is just a document. I stay engaged through delivery — aligning stakeholders, removing blockers, and ensuring the plan translates into real, measurable outcomes.</p>
+                  <p class="process-reward"><span>You walk away with</span> measurable progress, not another status report.</p>
                   <div class="process-tags">
                     <span class="process-tag">Delivery</span>
                     <span class="process-tag">Alignment</span>
@@ -1746,7 +2316,7 @@
     <!-- ─── ARCHITECTURE (interactive isometric city) ─── -->
     <section id="architecture" class="section reveal">
       <div class="container">
-        <div class="section-shell">
+        <div class="section-shell iso-shell">
           <div class="section-head-split">
             <div>
               <p class="eyebrow">Growth Architecture</p>
@@ -1755,6 +2325,8 @@
             <p class="lead">An interactive look at how a complex initiative becomes a structure that scales. Step through each stage, or drag the city to look around.</p>
           </div>
 
+          <div class="iso-track" id="isoTrack">
+          <div class="iso-pin">
           <div class="iso-stage" id="isoStage" tabindex="0" role="region" aria-roledescription="carousel" aria-label="From ambiguity to architecture, interactive illustration. Use the left and right arrow keys to change stage.">
             <div class="iso-viewport">
               <canvas class="iso-canvas" id="isoCanvas" aria-hidden="true"></canvas>
@@ -1771,7 +2343,7 @@
                 <span class="process-tag">Stakeholder interviews</span>
                 <span class="process-tag">Problem framing</span>
               </div>
-              <a class="btn btn-primary iso-cta" id="isoCta" href="#intensive" hidden>Apply for Strategy Intensive</a>
+              <a class="btn btn-primary iso-cta" id="isoCta" href="#scorecard" hidden>Find your biggest gap, free</a>
             </div>
 
             <div class="iso-controls">
@@ -1785,6 +2357,102 @@
               <button type="button" class="iso-btn" id="isoNext" aria-label="Next stage">Next &rarr;</button>
             </div>
           </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── LEAD MAGNET: EXECUTION GAP SCORECARD ─── -->
+    <section id="scorecard" class="section band reveal">
+      <div class="container">
+        <div class="section-shell sc-shell">
+          <div class="section-head-split">
+            <div>
+              <p class="eyebrow">Free Scorecard</p>
+              <div class="heading-glow-wrap"><h2 class="has-shimmer">Where is your initiative leaking momentum?</h2></div>
+            </div>
+            <p class="lead">Answer 12 quick questions about the initiative that matters most right now. You&rsquo;ll see your score, your single biggest execution gap, and the first fix to make, instantly. No email required.</p>
+          </div>
+
+          <div class="sc" id="sc" data-state="intro">
+            <!-- intro -->
+            <div class="sc-panel sc-intro" data-panel="intro">
+              <div class="sc-intro-grid">
+                <div>
+                  <h3 class="sc-title">The Execution Gap Scorecard</h3>
+                  <p class="muted">Built on the same four-part structure I use with clients: clarity, structure, alignment, and momentum.</p>
+                  <ul class="sc-points">
+                    <li>Your overall execution score</li>
+                    <li>A breakdown across all four areas</li>
+                    <li>Your biggest gap, and the first fix to make this week</li>
+                  </ul>
+                  <button type="button" class="btn btn-primary" id="scStart">Start the scorecard</button>
+                  <p class="hero-microcopy">12 questions &middot; about 2 minutes &middot; results on screen</p>
+                </div>
+                <div class="sc-preview" aria-hidden="true">
+                  <div class="sc-preview-ring"><span>?</span></div>
+                  <div class="sc-preview-bars"><i style="--w:72%"></i><i style="--w:38%"></i><i style="--w:55%"></i><i style="--w:24%"></i></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- questions -->
+            <div class="sc-panel sc-quiz" data-panel="quiz" hidden>
+              <div class="sc-progress" aria-hidden="true"><span id="scProgressFill"></span></div>
+              <div class="sc-meta"><span id="scPillar">Clarity</span><span id="scCount">1 / 12</span></div>
+              <div class="sc-q-wrap" aria-live="polite">
+                <p class="sc-q" id="scQuestion"></p>
+              </div>
+              <div class="sc-options" id="scOptions" role="group" aria-label="Your answer">
+                <button type="button" class="sc-opt" data-value="2"><b>Yes</b><span>This is true today</span></button>
+                <button type="button" class="sc-opt" data-value="1"><b>Somewhat</b><span>Partly, or not consistently</span></button>
+                <button type="button" class="sc-opt" data-value="0"><b>Not yet</b><span>This isn&rsquo;t true for us</span></button>
+              </div>
+              <button type="button" class="sc-back" id="scBack">&larr; Back</button>
+            </div>
+
+            <!-- results -->
+            <div class="sc-panel sc-results" data-panel="results" hidden>
+              <div class="sc-results-grid">
+                <div class="sc-score-card">
+                  <div class="sc-ring" id="scRing" style="--p:0">
+                    <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="sc-ring-bg" cx="60" cy="60" r="52"></circle><circle class="sc-ring-fg" cx="60" cy="60" r="52" pathLength="100"></circle></svg>
+                    <div class="sc-ring-label"><strong id="scScore">0</strong><span>/ 100</span></div>
+                  </div>
+                  <p class="sc-band" id="scBand">Leaking momentum</p>
+                  <div class="sc-bars" id="scBars"></div>
+                </div>
+                <div class="sc-diagnosis">
+                  <p class="iso-kicker">Your biggest gap</p>
+                  <h3 class="sc-gap-title" id="scGapTitle">Structure</h3>
+                  <p class="muted" id="scGapWhy"></p>
+                  <div class="sc-fix">
+                    <p class="sc-fix-label">Your first fix this week</p>
+                    <p id="scGapFix"></p>
+                  </div>
+                  <a class="sc-map-link" id="scMapLink" href="#blueprint">See this stage on the map &rarr;</a>
+
+                  <div class="sc-next">
+                    <p class="sc-next-title">Want the fix plan for all four areas?</p>
+                    <p class="muted">I&rsquo;ll email your results with a short plan for each area. Free, no pitch deck attached.</p>
+                    <div class="sc-email">
+                      <input class="qual-input" type="text" id="scName" placeholder="First name" autocomplete="given-name" aria-label="First name" />
+                      <input class="qual-input" type="email" id="scEmail" placeholder="you@company.com" autocomplete="email" aria-label="Email" />
+                      <button type="button" class="btn btn-primary" id="scSend">Email my full results</button>
+                    </div>
+                    <p class="sc-msg" id="scMsg" role="status"></p>
+                    <div class="sc-or">
+                      <span>or skip ahead:</span>
+                      <a class="btn btn-secondary" href="#intensive">Apply for the Strategy Intensive</a>
+                      <button type="button" class="sc-retake" id="scRetake">Retake</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <noscript><p class="muted">The scorecard needs JavaScript. You can still <a href="#intensive" style="color:var(--gold-2);">apply for the Strategy Intensive</a>.</p></noscript>
+          </div>
         </div>
       </div>
     </section>
@@ -1793,8 +2461,9 @@
     <section id="testimonials" class="section band reveal">
       <div class="container">
         <div class="section-shell">
-          <p class="eyebrow">Testimonials</p>
-          <h2>What others say about working with me</h2>
+          <p class="eyebrow">Proof</p>
+          <h2>Don&rsquo;t take my word for it</h2>
+          <p class="lead" style="margin-bottom:8px;">Leaders and engineers who have been inside complex initiatives with me.</p>
 
           <div class="testimonials-stage">
             <div class="testimonial-slide active" data-index="0">
@@ -2143,9 +2812,9 @@
           <div class="grid-2">
             <div class="reveal delay-1">
               <p class="eyebrow">Strategy Intensive</p>
-              <div class="heading-glow-wrap"><h2 class="has-shimmer">Start with a focused strategy session</h2></div>
+              <div class="heading-glow-wrap"><h2 class="has-shimmer">Get a clear path forward in one focused session</h2></div>
               <p class="lead">
-                A structured session designed for leaders who need clarity on a complex business, execution, or growth challenge.
+                Bring the initiative that&rsquo;s stuck. Together we diagnose the real problem, find the execution gaps, and leave with a prioritized path forward you can start on right away.
               </p>
 
               <ul class="list-clean" style="margin-top:24px;">
@@ -2169,12 +2838,23 @@
                 </li>
               </ul>
 
+              <ol class="how-steps">
+                <li><strong>Apply</strong><span>Five short questions. About two minutes.</span></li>
+                <li><strong>I review it personally</strong><span>You hear back within 1&ndash;2 business days.</span></li>
+                <li><strong>We work the problem</strong><span>You leave with clarity and a path forward.</span></li>
+              </ol>
+
               <div class="hero-actions">
-                <a class="btn btn-primary" href="https://form.typeform.com/to/your-typeform-id" target="_blank" rel="noreferrer">Apply for Strategy Call</a>
-                <a class="btn btn-secondary" href="https://www.linkedin.com/in/dillon-noel/" target="_blank" rel="noreferrer">Message on LinkedIn</a>
+                <a class="btn btn-primary" href="#qualForm" id="applyJump">Apply for the Strategy Intensive</a>
+                <a class="btn btn-secondary" href="#scorecard">Not ready? Take the free scorecard</a>
               </div>
 
-              <p class="muted" style="margin-top:18px;">
+              <p class="capacity-note">
+                <span class="hero-status-dot" aria-hidden="true"></span>
+                I keep a small number of engagements at a time so each one gets my direct attention. When the calendar is full, new applications wait for the next opening.
+              </p>
+
+              <p class="muted" style="margin-top:14px;">
                 Most clients come in with unclear problems. They leave with structured clarity and a path forward.
               </p>
             </div>
@@ -2327,13 +3007,13 @@
       <div class="container contact-cta-grid">
         <div>
           <div class="heading-glow-wrap">
-            <h2 class="has-shimmer" style="font-size:2.1rem; margin-bottom:8px;">Ready to move forward?</h2>
+            <h2 class="has-shimmer" style="font-size:2.1rem; margin-bottom:8px;">Every week it stays stuck costs you.</h2>
           </div>
-          <p class="muted" style="margin:0;">Let's talk about your next initiative — strategy, execution, or growth.</p>
+          <p class="muted" style="margin:0;">Find your biggest execution gap in two minutes, or apply now and we&rsquo;ll fix it together.</p>
         </div>
         <div class="hero-actions" style="margin-top:0; justify-content:flex-end;">
-          <a class="btn btn-primary" href="#intensive">Apply for Strategy Intensive</a>
-          <a class="btn btn-secondary" href="mailto:dillon1.noel@outlook.com">Send an Email</a>
+          <a class="btn btn-primary" href="#intensive">Apply for the Strategy Intensive</a>
+          <a class="btn btn-secondary" href="#scorecard">Take the free scorecard</a>
         </div>
       </div>
     </section>
@@ -2363,6 +3043,7 @@
               <a href="#impact">Selected Impact</a>
               <a href="#services">Advisory Focus</a>
               <a href="#process">How I Work</a>
+              <a href="#scorecard">Free Execution Gap Scorecard</a>
               <a href="#intensive">Strategy Intensive</a>
               <a href="#contact">Contact</a>
             </div>
@@ -2790,6 +3471,546 @@
         if (rect.top < window.innerHeight) animatePillsAndCerts();
       }
     });
+  </script>
+
+  <script>
+  /* ═══════════════════════════════════════════════════════════
+     MOTION LAYER
+     Kinetic type, spring-driven pointer effects, scroll-linked
+     storytelling, mobile menu, and the Execution Gap Scorecard.
+     Everything respects prefers-reduced-motion, and pointer-only
+     effects run only on devices with a real mouse.
+     ═══════════════════════════════════════════════════════════ */
+  (function () {
+    "use strict";
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+    /* ── shared ticker: one rAF loop for every spring/scroll effect ── */
+    var tickers = [], ticking = false, lastT = 0;
+    function tick(now) {
+      var dt = lastT ? Math.min((now - lastT) / 1000, 0.05) : 1 / 60;
+      lastT = now;
+      tickers = tickers.filter(function (fn) { return fn(dt, now) !== false; });
+      if (tickers.length) requestAnimationFrame(tick);
+      else { ticking = false; lastT = 0; }
+    }
+    function addTicker(fn) {
+      if (tickers.indexOf(fn) === -1) tickers.push(fn);
+      if (!ticking) { ticking = true; requestAnimationFrame(tick); }
+    }
+
+    /* ── spring physics (mass 1): stiffness pulls to target, damping settles ── */
+    function Spring(k, c) { this.k = k; this.c = c; this.x = 0; this.v = 0; this.target = 0; }
+    Spring.prototype.step = function (dt) {
+      var a = -this.k * (this.x - this.target) - this.c * this.v;
+      this.v += a * dt; this.x += this.v * dt;
+      return Math.abs(this.v) > 0.002 || Math.abs(this.x - this.target) > 0.002;
+    };
+
+    function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+
+    /* ── 1. Brand: character-by-character logo reveal ── */
+    var brand = document.getElementById("brandMark");
+    if (brand && !reduce) {
+      var label = brand.textContent;
+      brand.textContent = "";
+      label.split("").forEach(function (ch, i) {
+        var s = document.createElement("span");
+        s.className = "ch"; s.setAttribute("aria-hidden", "true");
+        s.style.setProperty("--i", i);
+        s.textContent = ch;
+        brand.appendChild(s);
+      });
+    }
+
+    /* ── 2. Kinetic headline: words rise through a mask, staggered ── */
+    var heroTitle = document.getElementById("heroTitle");
+    if (heroTitle && !reduce) {
+      var wi = 0;
+      (function walk(node) {
+        Array.prototype.slice.call(node.childNodes).forEach(function (child) {
+          if (child.nodeType === 3) {
+            var frag = document.createDocumentFragment();
+            child.textContent.split(/(\s+)/).forEach(function (part) {
+              if (!part) return;
+              if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+              var w = document.createElement("span"); w.className = "kt-word";
+              var inner = document.createElement("span"); inner.className = "kt-inner";
+              inner.style.setProperty("--i", wi++);
+              inner.textContent = part;
+              w.appendChild(inner); frag.appendChild(w);
+            });
+            node.replaceChild(frag, child);
+          } else if (child.nodeType === 1) walk(child);
+        });
+      })(heroTitle);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { heroTitle.classList.add("is-in"); }); });
+    } else if (heroTitle) heroTitle.classList.remove("kinetic");
+
+    /* ── 3. Iris reveal on the headshot ── */
+    var heroPhoto = document.querySelector(".hero-photo");
+    if (heroPhoto && !reduce) {
+      heroPhoto.classList.add("iris");
+      var openIris = function () { requestAnimationFrame(function () { heroPhoto.classList.add("is-in"); }); };
+      if (heroPhoto.complete) openIris(); else { heroPhoto.addEventListener("load", openIris); heroPhoto.addEventListener("error", openIris); }
+    }
+
+    /* ── 4. Depth parallax: hero layers follow the cursor at different depths ── */
+    var heroEl = document.querySelector(".hero");
+    var photoWrap = document.getElementById("heroPhotoWrap");
+    if (heroEl && photoWrap && finePointer && !reduce) {
+      var mxS = new Spring(90, 14), myS = new Spring(90, 14);
+      var parallaxTick = function (dt) {
+        var a = mxS.step(dt), b = myS.step(dt);
+        photoWrap.style.setProperty("--mx", mxS.x.toFixed(3));
+        photoWrap.style.setProperty("--my", myS.x.toFixed(3));
+        return a || b;
+      };
+      heroEl.addEventListener("pointermove", function (e) {
+        var r = photoWrap.getBoundingClientRect();
+        mxS.target = clamp((e.clientX - (r.left + r.width / 2)) / (window.innerWidth / 2), -1, 1);
+        myS.target = clamp((e.clientY - (r.top + r.height / 2)) / (window.innerHeight / 2), -1, 1);
+        addTicker(parallaxTick);
+      });
+      heroEl.addEventListener("pointerleave", function () { mxS.target = 0; myS.target = 0; addTicker(parallaxTick); });
+    }
+
+    /* ── 5. Magnetic buttons with spring return ── */
+    if (finePointer && !reduce) {
+      document.querySelectorAll(".btn, .nav-cta").forEach(function (btn) {
+        var sx = new Spring(260, 18), sy = new Spring(260, 18);
+        var update = function (dt) {
+          var a = sx.step(dt), b = sy.step(dt);
+          btn.style.setProperty("--mag-x", sx.x.toFixed(2) + "px");
+          btn.style.setProperty("--mag-y", sy.x.toFixed(2) + "px");
+          return a || b;
+        };
+        btn.addEventListener("pointermove", function (e) {
+          var r = btn.getBoundingClientRect();
+          sx.target = clamp((e.clientX - (r.left + r.width / 2)) * 0.28, -12, 12);
+          sy.target = clamp((e.clientY - (r.top + r.height / 2)) * 0.35, -8, 8);
+          addTicker(update);
+        });
+        btn.addEventListener("pointerleave", function () { sx.target = 0; sy.target = 0; addTicker(update); });
+      });
+    }
+
+    /* ── 6. Cards: 3D tilt with a light that follows the pointer ── */
+    if (finePointer && !reduce) {
+      var tiltables = Array.prototype.slice.call(document.querySelectorAll(".card, .mini-card, .proof-item")).filter(function (el) {
+        if (el.closest(".iso-stage, .sc")) return false;
+        if (el.classList.contains("card") && el.querySelector(".mini-card, input, textarea")) return false;
+        return true;
+      });
+      tiltables.forEach(function (el) {
+        el.classList.add("tilt-on");
+        var light = document.createElement("span");
+        light.className = "tilt-light"; light.setAttribute("aria-hidden", "true");
+        el.insertBefore(light, el.firstChild);
+        var max = el.classList.contains("mini-card") ? 4 : 7;
+        el.addEventListener("pointermove", function (e) {
+          var r = el.getBoundingClientRect();
+          var px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+          el.style.setProperty("--ry", ((px - 0.5) * max * 2).toFixed(2) + "deg");
+          el.style.setProperty("--rx", ((0.5 - py) * max * 2).toFixed(2) + "deg");
+          el.style.setProperty("--lx", (px * 100).toFixed(1) + "%");
+          el.style.setProperty("--ly", (py * 100).toFixed(1) + "%");
+          el.classList.add("is-tilting");
+        });
+        el.addEventListener("pointerleave", function () {
+          el.classList.remove("is-tilting");
+          el.style.setProperty("--rx", "0deg"); el.style.setProperty("--ry", "0deg");
+        });
+      });
+    }
+
+    /* ── 7. Icons draw themselves in as their section reveals ── */
+    if (!reduce && "IntersectionObserver" in window) {
+      document.querySelectorAll(".icon-badge svg").forEach(function (svg) {
+        Array.prototype.slice.call(svg.querySelectorAll("path, circle, rect, line, polyline")).forEach(function (shape, i) {
+          shape.setAttribute("pathLength", "1");
+          shape.setAttribute("data-draw", "");
+          shape.style.setProperty("--d", i);
+        });
+      });
+      document.body.classList.add("draw-ready");
+    }
+
+    /* ── 8. Contextual cursor label ── */
+    var cursorGlowEl = document.getElementById("cursorGlow");
+    if (finePointer) {
+      var cursorLabel = document.createElement("div");
+      cursorLabel.className = "cursor-label"; cursorLabel.setAttribute("aria-hidden", "true");
+      document.body.appendChild(cursorLabel);
+      document.addEventListener("pointermove", function (e) {
+        var target = e.target.closest && e.target.closest("[data-cursor]");
+        cursorLabel.style.left = e.clientX + "px";
+        cursorLabel.style.top = e.clientY + "px";
+        if (target) {
+          cursorLabel.textContent = target.getAttribute("data-cursor");
+          cursorLabel.classList.add("is-on");
+          if (cursorGlowEl) cursorGlowEl.classList.add("is-context");
+        } else {
+          cursorLabel.classList.remove("is-on");
+          if (cursorGlowEl) cursorGlowEl.classList.remove("is-context");
+        }
+      }, { passive: true });
+    }
+
+    /* ── 9. Velocity marquee + scroll typography + process path ── */
+    var marquee = document.getElementById("marquee");
+    var track = document.getElementById("marqueeTrack");
+    var statement = document.getElementById("statementText");
+    var processWrap = document.querySelector(".process-wrap");
+    var processLine = document.getElementById("processLine");
+    var processSteps = document.querySelectorAll(".process-step");
+
+    // scroll typography: wrap each word so it can light up with scroll progress
+    var statementWords = [];
+    if (statement && !reduce) {
+      (function walk(node) {
+        Array.prototype.slice.call(node.childNodes).forEach(function (child) {
+          if (child.nodeType === 3) {
+            var frag = document.createDocumentFragment();
+            child.textContent.split(/(\s+)/).forEach(function (part) {
+              if (!part) return;
+              if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+              var w = document.createElement("span"); w.className = "sw"; w.textContent = part;
+              statementWords.push(w); frag.appendChild(w);
+            });
+            node.replaceChild(frag, child);
+          } else if (child.nodeType === 1) walk(child);
+        });
+      })(statement);
+    }
+
+    var scrollVel = 0, lastScrollY = window.scrollY, lastScrollT = performance.now(), scrollDir = 1;
+    function onScrollFrame() {
+      var vh = window.innerHeight;
+      if (statementWords.length) {
+        var r = statement.getBoundingClientRect();
+        var p = clamp((vh * 0.82 - r.top) / (r.height + vh * 0.3), 0, 1);
+        var lit = Math.round(p * statementWords.length);
+        for (var i = 0; i < statementWords.length; i++) statementWords[i].classList.toggle("on", i < lit);
+      }
+      if (processWrap) {
+        var pr = processWrap.getBoundingClientRect();
+        var pp = reduce ? 1 : clamp((vh * 0.78 - pr.top) / (pr.height * 0.55), 0, 1);
+        if (processLine) processLine.style.setProperty("--pp", pp.toFixed(4));
+        var lineVisible = processLine && processLine.offsetParent !== null && getComputedStyle(processLine).display !== "none";
+        processSteps.forEach(function (step, i) {
+          var reached = lineVisible ? pp >= (i / Math.max(processSteps.length - 1, 1)) - 0.001 && pp > 0.01
+                                    : reduce || step.getBoundingClientRect().top < vh * 0.72;
+          step.classList.toggle("is-reached", reached);
+        });
+      }
+    }
+    var scrollQueued = false;
+    window.addEventListener("scroll", function () {
+      var now = performance.now(), y = window.scrollY;
+      var dt = Math.max(now - lastScrollT, 1);
+      var v = (y - lastScrollY) / dt * 1000; // px per second
+      scrollVel = scrollVel * 0.6 + v * 0.4;
+      if (Math.abs(y - lastScrollY) > 0) scrollDir = y > lastScrollY ? 1 : -1;
+      lastScrollY = y; lastScrollT = now;
+      if (!scrollQueued) { scrollQueued = true; requestAnimationFrame(function () { scrollQueued = false; onScrollFrame(); }); }
+      if (marqueeVisible) addTicker(marqueeTick);
+    }, { passive: true });
+    window.addEventListener("resize", onScrollFrame);
+    onScrollFrame();
+
+    // marquee: base drift, speeds up and follows scroll direction, skews with velocity
+    var marqueeVisible = false, mOffset = 0, groupW = 0, mHover = false;
+    var skewS = new Spring(120, 16), speedS = new Spring(60, 14);
+    function measureMarquee() {
+      if (!track) return;
+      var group = track.querySelector(".marquee-group");
+      groupW = group.getBoundingClientRect().width;
+      var need = Math.ceil((window.innerWidth * 2) / Math.max(groupW, 1)) + 1;
+      while (track.children.length < need) {
+        var clone = group.cloneNode(true);
+        clone.setAttribute("aria-hidden", "true");
+        track.appendChild(clone);
+      }
+    }
+    function marqueeTick(dt) {
+      if (!marqueeVisible) return false;
+      scrollVel *= Math.pow(0.04, dt); // decay toward 0 when scrolling stops
+      speedS.target = (40 + Math.min(Math.abs(scrollVel) * 0.35, 900)) * (mHover ? 0.25 : 1);
+      skewS.target = clamp(scrollVel * -0.006, -7, 7);
+      speedS.step(dt); skewS.step(dt);
+      mOffset -= speedS.x * dt * scrollDir;
+      if (groupW) { mOffset = mOffset % groupW; if (mOffset > 0) mOffset -= groupW; }
+      track.style.transform = "translate3d(" + mOffset.toFixed(2) + "px,0,0) skewX(" + skewS.x.toFixed(2) + "deg)";
+      return true;
+    }
+    if (marquee && track && !reduce) {
+      measureMarquee();
+      window.addEventListener("resize", measureMarquee);
+      marquee.addEventListener("pointerenter", function () { mHover = true; });
+      marquee.addEventListener("pointerleave", function () { mHover = false; });
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (entries) {
+          marqueeVisible = entries[0].isIntersecting;
+          if (marqueeVisible) addTicker(marqueeTick);
+        }).observe(marquee);
+      }
+      document.addEventListener("visibilitychange", function () { if (!document.hidden && marqueeVisible) addTicker(marqueeTick); });
+    }
+
+    /* ── 10. Mobile menu: circular reveal + staggered links ── */
+    var menuToggle = document.getElementById("menuToggle");
+    var mobileMenu = document.getElementById("mobileMenu");
+    var menuCloseTimer = null;
+    function setMenu(open) {
+      if (!menuToggle || !mobileMenu) return;
+      clearTimeout(menuCloseTimer);
+      menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      menuToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      if (open) {
+        mobileMenu.hidden = false;
+        requestAnimationFrame(function () {
+          document.body.classList.add("menu-open");
+          var first = mobileMenu.querySelector("a");
+          if (first) first.focus({ preventScroll: true });
+        });
+      } else {
+        document.body.classList.remove("menu-open");
+        menuCloseTimer = setTimeout(function () { mobileMenu.hidden = true; }, reduce ? 0 : 650);
+      }
+    }
+    if (menuToggle && mobileMenu) {
+      mobileMenu.querySelectorAll(".mobile-menu-links a").forEach(function (a, i) { a.style.setProperty("--i", i); });
+      menuToggle.addEventListener("click", function () { setMenu(!document.body.classList.contains("menu-open")); });
+      mobileMenu.addEventListener("click", function (e) {
+        var a = e.target.closest("a[href^='#']");
+        if (!a) return;
+        e.preventDefault();
+        var href = a.getAttribute("href");
+        setMenu(false);
+        menuToggle.focus({ preventScroll: true });
+        setTimeout(function () {
+          if (typeof smoothScrollTo === "function") smoothScrollTo(href);
+          else { var t = document.querySelector(href); if (t) t.scrollIntoView(); }
+        }, reduce ? 0 : 280);
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && document.body.classList.contains("menu-open")) { setMenu(false); menuToggle.focus(); }
+      });
+      window.addEventListener("resize", function () {
+        if (window.innerWidth > 1100 && document.body.classList.contains("menu-open")) setMenu(false);
+      });
+    }
+
+    /* ── 11. "Apply" jumps to the form and puts the cursor in the first field ── */
+    var applyJump = document.getElementById("applyJump");
+    if (applyJump) {
+      applyJump.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (typeof smoothScrollTo === "function") smoothScrollTo("#qualForm");
+        setTimeout(function () { var f = document.getElementById("qual-name"); if (f) f.focus({ preventScroll: true }); }, reduce ? 0 : 750);
+      });
+    }
+
+    /* ═══ 12. EXECUTION GAP SCORECARD (lead magnet) ═══ */
+    var sc = document.getElementById("sc");
+    if (!sc) return;
+
+    var PILLARS = [
+      { name: "Clarity", scene: "ambiguity",
+        why: "Your team is working hard on a problem that hasn't been pinned down yet. When people describe the goal differently, effort scatters and decisions get relitigated.",
+        fix: "Write a one-sentence problem statement and one success metric. Get your three most important stakeholders to agree on both before anything else moves." },
+      { name: "Structure", scene: "blueprint",
+        why: "There's energy, but no architecture holding it together. Without ranked priorities and single owners, work piles up in parallel and nothing finishes.",
+        fix: "List every active workstream, give each one exactly one owner, and rank the top three. Anything outside the top three waits until one of them ships." },
+      { name: "Alignment", scene: "momentum",
+        why: "The plan exists, but people are carrying different versions of it. That shows up as slow approvals, surprise blockers, and rework.",
+        fix: "Run a 30-minute session where each leader explains the initiative back in their own words. Close every gap you hear before the meeting ends, then send a one-page summary." },
+      { name: "Momentum", scene: "tower",
+        why: "The setup is solid, but progress depends on effort instead of a system. Without a measurement rhythm, wins are hard to see and harder to repeat.",
+        fix: "Pick two or three measurable outcomes, hold a 20-minute weekly review against them, and commit to one visible result in the next 14 days." }
+    ];
+    var QUESTIONS = [
+      [0, "Everyone involved would describe the problem we're solving in the same sentence."],
+      [0, "We know which symptoms are doing the most damage, and which can wait."],
+      [0, "We've agreed on what success looks like, in numbers."],
+      [1, "We have a short, ranked list of priorities, and we actually use it to say no."],
+      [1, "Every workstream has exactly one named owner."],
+      [1, "Decision rights are clear: we know who decides what, and how fast."],
+      [2, "Every leader tells the same story about why this initiative matters."],
+      [2, "Blockers get escalated and removed within days, not weeks."],
+      [2, "Each team can see how its work connects to the overall goal."],
+      [3, "We review progress against measurable outcomes on a regular rhythm."],
+      [3, "This initiative has shipped a visible result in the last 30 days."],
+      [3, "It would keep moving if the person driving it took two weeks off."]
+    ];
+    var LABELS = { 2: "Yes", 1: "Somewhat", 0: "Not yet" };
+
+    var panels = {};
+    sc.querySelectorAll("[data-panel]").forEach(function (p) { panels[p.getAttribute("data-panel")] = p; });
+    var $ = function (id) { return document.getElementById(id); };
+    var qEl = $("scQuestion"), pillarEl = $("scPillar"), countEl = $("scCount"), progressEl = $("scProgressFill");
+    var opts = sc.querySelectorAll(".sc-opt"), backBtn = $("scBack");
+    var answers = [], qi = 0, locked = false, lastResult = null;
+
+    function show(name) {
+      Object.keys(panels).forEach(function (k) { panels[k].hidden = k !== name; });
+      sc.setAttribute("data-state", name);
+    }
+
+    function renderQuestion(dir) {
+      var q = QUESTIONS[qi];
+      var paint = function () {
+        qEl.textContent = q[1];
+        pillarEl.textContent = PILLARS[q[0]].name;
+        countEl.textContent = (qi + 1) + " / " + QUESTIONS.length;
+        progressEl.style.setProperty("--qp", (qi / QUESTIONS.length).toFixed(3));
+        opts.forEach(function (o) {
+          o.classList.remove("is-picked");
+          o.classList.toggle("is-prev", answers[qi] !== undefined && +o.dataset.value === answers[qi]);
+          o.setAttribute("aria-pressed", answers[qi] !== undefined && +o.dataset.value === answers[qi] ? "true" : "false");
+        });
+        backBtn.disabled = qi === 0;
+        if (!reduce) { qEl.classList.remove("swap-out"); qEl.classList.add("swap-in"); }
+        locked = false;
+      };
+      if (reduce || !dir) { paint(); return; }
+      qEl.classList.remove("swap-in");
+      qEl.classList.add("swap-out");
+      setTimeout(paint, 210);
+    }
+
+    function start() {
+      answers = []; qi = 0;
+      show("quiz");
+      renderQuestion(0);
+      var first = opts[0]; if (first) first.focus({ preventScroll: true });
+    }
+
+    function pick(value, sourceEl) {
+      if (locked) return;
+      locked = true;
+      answers[qi] = value;
+      opts.forEach(function (o) { o.classList.toggle("is-picked", +o.dataset.value === value); });
+      setTimeout(function () {
+        if (qi < QUESTIONS.length - 1) { qi++; renderQuestion(1); }
+        else results(sourceEl);
+      }, reduce ? 0 : 260);
+    }
+
+    function compute() {
+      var sums = [0, 0, 0, 0], maxes = [0, 0, 0, 0];
+      QUESTIONS.forEach(function (q, i) { sums[q[0]] += answers[i] || 0; maxes[q[0]] += 2; });
+      var pillarPct = sums.map(function (s, i) { return Math.round(s / maxes[i] * 100); });
+      var total = Math.round(sums.reduce(function (a, b) { return a + b; }, 0) / (QUESTIONS.length * 2) * 100);
+      // biggest gap = lowest pillar; ties go to the earlier pillar, because foundations come first
+      var gap = 0;
+      for (var i = 1; i < 4; i++) if (pillarPct[i] < pillarPct[gap]) gap = i;
+      var band = total <= 40 ? "Stalled" : total <= 70 ? "Leaking momentum" : total <= 89 ? "Building momentum" : "Built to scale";
+      return { total: total, pillarPct: pillarPct, gap: gap, band: band };
+    }
+
+    function countUp(el, to) {
+      if (reduce) { el.textContent = to; return; }
+      var t0 = performance.now(), dur = 1500;
+      (function step(now) {
+        var p = Math.min((now - t0) / dur, 1), e = 1 - Math.pow(1 - p, 4);
+        el.textContent = Math.round(to * e);
+        if (p < 1) requestAnimationFrame(step);
+      })(t0);
+    }
+
+    function results(sourceEl) {
+      var r = compute(); lastResult = r;
+      progressEl.style.setProperty("--qp", "1");
+      var resPanel = panels.results;
+      // iris opens from the answer that was just clicked
+      var scRect = sc.getBoundingClientRect();
+      var src = sourceEl ? sourceEl.getBoundingClientRect() : null;
+      resPanel.style.setProperty("--ix", src ? (src.left + src.width / 2 - scRect.left) + "px" : "50%");
+      resPanel.style.setProperty("--iy", src ? (src.top + src.height / 2 - scRect.top) + "px" : "50%");
+      resPanel.classList.remove("is-open");
+
+      $("scBand").textContent = r.band;
+      var gp = PILLARS[r.gap];
+      $("scGapTitle").textContent = gp.name;
+      $("scGapWhy").textContent = gp.why;
+      $("scGapFix").textContent = gp.fix;
+      var mapLink = $("scMapLink");
+      mapLink.setAttribute("href", "#" + gp.scene);
+      mapLink.textContent = "See the " + gp.name.toLowerCase() + " stage on the map →";
+
+      var bars = $("scBars");
+      bars.innerHTML = "";
+      PILLARS.forEach(function (pl, i) {
+        var row = document.createElement("div");
+        row.className = "sc-bar" + (i === r.gap ? " is-gap" : "");
+        row.innerHTML = '<span></span><span class="sc-bar-track"><span class="sc-bar-fill"></span></span><b></b>';
+        row.children[0].textContent = pl.name;
+        row.children[2].textContent = r.pillarPct[i] + "%";
+        row.querySelector(".sc-bar-fill").style.setProperty("--i", i);
+        bars.appendChild(row);
+      });
+
+      show("results");
+      $("scRing").style.setProperty("--p", "0");
+      void resPanel.offsetWidth; // commit the closed iris before opening it
+      requestAnimationFrame(function () {
+        resPanel.classList.add("is-open");
+        $("scRing").style.setProperty("--p", r.total);
+        bars.querySelectorAll(".sc-bar-fill").forEach(function (f, i) { f.style.transform = "scaleX(" + (r.pillarPct[i] / 100) + ")"; });
+        countUp($("scScore"), r.total);
+      });
+      if (scRect.top < 0 || scRect.top > window.innerHeight * 0.4) {
+        if (typeof smoothScrollTo === "function") smoothScrollTo("#scorecard");
+      }
+      $("scMsg").textContent = ""; $("scMsg").classList.remove("is-error");
+      var send = $("scSend"); send.disabled = false; send.textContent = "Email my full results"; send.style.display = "";
+    }
+
+    $("scStart").addEventListener("click", start);
+    $("scRetake").addEventListener("click", function () { start(); if (typeof smoothScrollTo === "function") smoothScrollTo("#scorecard"); });
+    backBtn.addEventListener("click", function () { if (qi > 0 && !locked) { qi--; renderQuestion(-1); } });
+    opts.forEach(function (o) { o.addEventListener("click", function () { pick(+o.dataset.value, o); }); });
+    document.addEventListener("keydown", function (e) {
+      if (sc.getAttribute("data-state") !== "quiz" || e.target.closest("input, textarea")) return;
+      var map = { "1": 2, "y": 2, "2": 1, "s": 1, "3": 0, "n": 0 };
+      var v = map[e.key.toLowerCase()];
+      if (v !== undefined) { var el = sc.querySelector('.sc-opt[data-value="' + v + '"]'); pick(v, el); }
+      else if (e.key === "Backspace" && qi > 0 && !locked) { e.preventDefault(); qi--; renderQuestion(-1); }
+    });
+
+    $("scSend").addEventListener("click", async function () {
+      var btn = this, name = $("scName"), email = $("scEmail"), msg = $("scMsg");
+      var em = email.value.trim();
+      msg.classList.remove("is-error");
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
+        msg.textContent = "Please enter a valid email address."; msg.classList.add("is-error"); email.focus(); return;
+      }
+      if (!lastResult) return;
+      btn.disabled = true; btn.textContent = "Sending…";
+      var payload = {
+        _subject: "Execution Gap Scorecard: " + lastResult.total + "/100 (" + PILLARS[lastResult.gap].name + " gap)",
+        _replyto: em,
+        "Name": name.value.trim(),
+        "Email": em,
+        "Overall score": lastResult.total + "/100 (" + lastResult.band + ")",
+        "Biggest gap": PILLARS[lastResult.gap].name
+      };
+      PILLARS.forEach(function (pl, i) { payload[pl.name + " score"] = lastResult.pillarPct[i] + "%"; });
+      QUESTIONS.forEach(function (q, i) { payload["Q" + (i + 1) + " (" + PILLARS[q[0]].name + ")"] = q[1] + " → " + LABELS[answers[i]]; });
+      try {
+        if (typeof postToFormspree !== "function") throw new Error("form unavailable");
+        await postToFormspree(payload);
+        btn.style.display = "none";
+        msg.textContent = "Got it" + (name.value.trim() ? ", " + name.value.trim() : "") + ". Your full results and fix plan are on the way to " + em + " within 1–2 business days.";
+      } catch (err) {
+        btn.disabled = false; btn.textContent = "Email my full results";
+        msg.textContent = "Something went wrong. Please email dillon1.noel@outlook.com and mention your score."; msg.classList.add("is-error");
+      }
+    });
+  })();
   </script>
 
   <script>
@@ -3257,6 +4478,11 @@
         if (!reduceMotion) { m.y += m.v * dt; if (m.y > 6.5) m.y = 0; }
         var fade = Math.sin(Math.min(m.y / 6.5, 1) * Math.PI);
         proj(m.x, m.y, m.z, tmpA);
+        if (ptr) {
+          // particles drift away from the cursor (repulsion field)
+          var rx = tmpA[0] - ptr[0], ry = tmpA[1] - ptr[1], rd = Math.hypot(rx, ry);
+          if (rd < 110 && rd > 0.01) { var push = 1 - rd / 110; push = push * push * 46; tmpA[0] += rx / rd * push; tmpA[1] += ry / rd * push; }
+        }
         ctx.fillStyle = "rgba(224,196,112," + (gCur.dust * 0.55 * fade).toFixed(3) + ")";
         ctx.beginPath(); ctx.arc(tmpA[0], tmpA[1], m.size, 0, Math.PI * 2); ctx.fill();
       }
@@ -3313,6 +4539,79 @@
       }
     }
 
+    /* ── pinned scroll mode: scroll position scrubs through the four scenes ── */
+    var trackEl = document.getElementById("isoTrack");
+    var dotsEl = stage.querySelector(".iso-dots");
+    var pinMQ = window.matchMedia("(min-width: 1024px) and (min-height: 640px)");
+    var pinned = false, sp = 0, spTarget = 0, ptr = null;
+
+    function pinTop() {
+      var v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-offset"));
+      return (isNaN(v) ? 88 : v) + 8;
+    }
+    function readProgress() {
+      var r = trackEl.getBoundingClientRect(), range = r.height - stage.offsetHeight;
+      if (range <= 0) return 0;
+      return Math.min(Math.max((pinTop() - r.top) / range, 0), 1) * (SCENES.length - 1);
+    }
+    function scrollToScene(idx, smooth) {
+      var r = trackEl.getBoundingClientRect(), range = r.height - stage.offsetHeight;
+      var y = window.scrollY + r.top - pinTop() + range * idx / (SCENES.length - 1) + (idx ? 2 : 0);
+      window.scrollTo({ top: y, behavior: smooth && !reduceMotion ? "smooth" : "auto" });
+    }
+    function applyScrub(p) {
+      var a = Math.min(Math.floor(p), SCENES.length - 2), f = Math.min(Math.max(p - a, 0), 1);
+      var A = targets[a], B = targets[a + 1];
+      for (var k = 0; k < lots.length; k++) {
+        // inner lots lead, outer lots follow: a staggered scrub
+        var e = ease(Math.min(Math.max((f - lots[k].dist * 0.35) / 0.65, 0), 1));
+        for (var n = 0; n < KEYS.length; n++) {
+          var key = KEYS[n];
+          cur[k][key] = A[k][key] + (B[k][key] - A[k][key]) * e;
+        }
+      }
+      var ge = ease(f), GA = GLOBALS[a], GB = GLOBALS[a + 1];
+      for (var g = 0; g < GKEYS.length; g++) gCur[GKEYS[g]] = GA[GKEYS[g]] + (GB[GKEYS[g]] - GA[GKEYS[g]]) * ge;
+    }
+    function updateMode() {
+      if (trackEl) {
+        var h = Math.min(680, window.innerHeight - pinTop() - 24);
+        trackEl.style.setProperty("--iso-h", Math.max(h, 480) + "px");
+      }
+      var want = !!trackEl && pinMQ.matches && !reduceMotion;
+      if (want !== pinned) {
+        pinned = want;
+        trackEl && trackEl.classList.toggle("is-pinned", pinned);
+        if (pinned) {
+          introduced = true;
+          anims.fill(null); gAnim = null;
+          sp = spTarget = readProgress();
+          applyScrub(sp);
+          current = Math.min(SCENES.length - 1, Math.round(sp));
+          setCopy(current, true);
+        } else {
+          cur = targets[current].map(copyState);
+          gCur = copyState(GLOBALS[current]);
+        }
+      }
+      hintEl.innerHTML = pinned ? "Scroll to build &middot; drag to rotate" : "&harr; Drag to rotate";
+      canvas.setAttribute("data-cursor", "Drag to rotate");
+      resize();
+    }
+
+    function scramble(el, text) {
+      if (reduceMotion) { el.textContent = text; return; }
+      var glyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", t0 = performance.now(), dur = 520, token = {};
+      el._scramble = token;
+      (function step(now) {
+        if (el._scramble !== token) return;
+        var p = Math.min((now - t0) / dur, 1), n = Math.floor(text.length * p), out = text.slice(0, n);
+        for (var i = n; i < text.length; i++) out += /\s/.test(text[i]) ? text[i] : glyphs[(Math.random() * glyphs.length) | 0];
+        el.textContent = out;
+        if (p < 1) requestAnimationFrame(step); else el.textContent = text;
+      })(t0);
+    }
+
     var raf = null, lastT = 0, visible = false, introduced = false;
     // adaptive quality: if frames run slow on this device, drop to 1x pixels and ~30fps
     var lowPower = false, perfFrames = 0, perfTime = 0;
@@ -3331,7 +4630,17 @@
         }
       }
       if (!dragging && Math.abs(yawVel) > 1e-4) { yawUser += yawVel; yawVel *= 0.93; }
-      var busy = stepTweens(now);
+      var busy;
+      if (pinned) {
+        spTarget = readProgress();
+        sp += (spTarget - sp) * (dt ? 1 - Math.exp(-dt * 8) : 1); // lerped scrub: eases toward the scroll position
+        if (Math.abs(spTarget - sp) < 0.0005) sp = spTarget;
+        applyScrub(sp);
+        if (dotsEl) dotsEl.style.setProperty("--sp", (sp / (SCENES.length - 1)).toFixed(4));
+        var idxNow = Math.min(SCENES.length - 1, Math.max(0, Math.round(sp)));
+        if (idxNow !== current) { current = idxNow; setCopy(idxNow); }
+        busy = Math.abs(spTarget - sp) > 0.0005;
+      } else busy = stepTweens(now);
       render(now, dt);
       var keepGoing = visible && !document.hidden && (!reduceMotion || busy || dragging || Math.abs(yawVel) > 1e-4);
       if (keepGoing) raf = requestAnimationFrame(loop);
@@ -3355,7 +4664,7 @@
     function setCopy(idx, instant) {
       var sc = SCENES[idx];
       function fill() {
-        kickerEl.textContent = sc.kicker;
+        if (instant) kickerEl.textContent = sc.kicker; else scramble(kickerEl, sc.kicker);
         titleEl.textContent = sc.title;
         bodyEl.textContent = sc.body;
         tagsEl.innerHTML = "";
@@ -3376,6 +4685,7 @@
       nextBtn.setAttribute("aria-label", idx === SCENES.length - 1 ? "Back to the first stage" : "Next stage");
       clearTimeout(swapTimer);
       if (instant || reduceMotion) { fill(); return; }
+      if (!pinned && document.startViewTransition) { document.startViewTransition(fill); return; }
       copyEl.classList.add("is-swapping");
       swapTimer = setTimeout(fill, 220);
     }
@@ -3383,6 +4693,11 @@
     function goTo(idx, opts) {
       opts = opts || {};
       idx = (idx + SCENES.length) % SCENES.length;
+      if (pinned) {
+        if (opts.updateHash !== false && window.history && history.replaceState) history.replaceState(null, "", "#" + SCENES[idx].id);
+        scrollToScene(idx, true);
+        return;
+      }
       var forward = idx >= current;
       current = idx;
       setCopy(idx, opts.instant);
@@ -3411,7 +4726,10 @@
       if (!hasDragged) { hasDragged = true; hintEl.classList.add("is-hidden"); }
       requestRender();
     });
+    canvas.addEventListener("pointerleave", function () { ptr = null; });
     canvas.addEventListener("pointermove", function (e) {
+      var cr = canvas.getBoundingClientRect();
+      ptr = [e.clientX - cr.left, e.clientY - cr.top];
       if (!dragging) return;
       lastDx = e.clientX - lastX; lastX = e.clientX;
       yawUser -= lastDx * 0.009;
@@ -3431,6 +4749,9 @@
     if ("ResizeObserver" in window) new ResizeObserver(resize).observe(canvas);
     else window.addEventListener("resize", resize);
     resize();
+    updateMode();
+    window.addEventListener("resize", updateMode);
+    if (pinMQ.addEventListener) pinMQ.addEventListener("change", updateMode);
 
     function introduce() {
       if (introduced) return;
@@ -3448,7 +4769,8 @@
     }
     document.addEventListener("visibilitychange", function () { if (!document.hidden) requestRender(); });
 
-    function scrollToStage() {
+    function scrollToStage(idx) {
+      if (pinned) { scrollToScene(idx || 0, false); return; }
       if (typeof smoothScrollTo === "function") smoothScrollTo("#architecture");
       else if (section) section.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
     }
@@ -3459,14 +4781,16 @@
       cur = targets[initial].map(copyState);
       gCur = copyState(GLOBALS[initial]);
       setCopy(initial, true);
-      window.addEventListener("load", function () { setTimeout(scrollToStage, 80); });
+      if (pinned) { sp = spTarget = initial; applyScrub(sp); }
+      window.addEventListener("load", function () { setTimeout(function () { scrollToStage(initial); }, 80); });
     }
 
     window.addEventListener("hashchange", function () {
       var idx = sceneFromHash();
       if (idx < 0) return;
+      if (pinned) { scrollToScene(idx, true); return; }
       goTo(idx, { updateHash: false });
-      scrollToStage();
+      scrollToStage(idx);
     });
   })();
   </script>
